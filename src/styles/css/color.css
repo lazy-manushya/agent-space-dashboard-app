@@ -1,0 +1,10 @@
+:root {
+  --clr-primary-rgb: 0, 0, 0;
+  --clr-danger: 255, 87, 87;
+  --page-background: #fff;
+}
+
+.filter-clr-danger {
+  filter: brightness(0) invert(53%) sepia(41%) saturate(4024%)
+    hue-rotate(327deg) brightness(100%) contrast(103%);
+}

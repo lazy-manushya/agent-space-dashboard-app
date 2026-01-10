@@ -1,0 +1,21 @@
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.debug {
+  border: 2px dashed red !important;
+  /* border: none !important; */
+}
+
+#version {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  background: #000;
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+}
