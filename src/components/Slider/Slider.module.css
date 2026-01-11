@@ -1,0 +1,167 @@
+.Container {
+  position: relative;
+}
+
+.Slider {
+  --border-color: #d4c5ff;
+  --highlight-background: #fff;
+  --background-color: rgb(var(--clr-primary-rgb));
+  --highlight-background-pressed: #fafafa;
+  --focus-ring-color: red;
+  position: relative;
+  display: grid;
+  grid-template-areas:
+    "label output"
+    "track track";
+  grid-template-columns: 1fr auto;
+  color: var(--text-color);
+  padding-top: 2.5rem;
+  padding-inline: 1rem;
+}
+
+.SliderBarGraph {
+  position: absolute;
+  top: 0.25rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 2rem);
+  height: 48px;
+  margin-bottom: 0.5rem;
+  display: block;
+  pointer-events: none;
+}
+
+.Slider .SliderOutput {
+  display: inline-block;
+  position: absolute;
+  top: -2.75rem;
+  left: 50%;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: -1px;
+  box-shadow: 0px 1px 2px 0px #1018280a;
+  background: #fff;
+  border-radius: 0.25rem;
+  padding: 0.35rem 0.5rem;
+  transform: translateX(-50%);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  min-width: 2.25rem;
+  width: max-content;
+  text-align: center;
+}
+
+.SliderOutput:after {
+  content: "";
+  display: block;
+  position: absolute;
+  left: 50%;
+  bottom: calc(-1rem + 1px);
+  width: 0;
+  height: 0;
+  border: 8px solid transparent;
+  border-top-color: #fff;
+  transform: translateX(-50%);
+  border-radius: 0.3px;
+  z-index: -1;
+}
+
+.SliderOutput:before {
+  content: "";
+  display: block;
+  position: absolute;
+  left: 50%;
+  bottom: calc(-1rem + 1px);
+  width: 0;
+  height: 0;
+  border: 7px solid transparent;
+  border-top-color: rgba(0, 0, 0, 0.08);
+  border-radius: 0.3px;
+  transform: translateX(-50%);
+  z-index: -2;
+}
+
+.Slider .SliderTrack {
+  grid-area: track;
+  position: relative;
+}
+
+.Slider .SliderTrack:before {
+  content: "";
+  display: block;
+  position: absolute;
+  background: var(--border-color);
+}
+
+.Slider .SliderThumb {
+  position: relative;
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 50%;
+  background: var(--highlight-background);
+  border: 2px solid var(--background-color);
+  forced-color-adjust: none;
+  cursor: pointer;
+  z-index: 2;
+  cursor: grab;
+}
+
+.SliderThumb[data-dragging] {
+  cursor: grabbing;
+}
+
+.Slider .SliderThumb[data-dragging] {
+  background: var(--highlight-background-pressed);
+}
+
+.Slider .SliderThumb[data-focus-visible] {
+  outline: 2px solid var(--focus-ring-color);
+}
+
+.Slider[data-orientation="horizontal"] {
+  flex-direction: column;
+}
+
+.Slider[data-orientation="horizontal"] .SliderTrack {
+  height: 30px;
+  width: 100%;
+}
+
+.Slider[data-orientation="horizontal"] .SliderTrack:before {
+  height: 0.5rem;
+  width: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  border-radius: 10rem;
+}
+
+.Slider[data-orientation="horizontal"] .SliderThumb {
+  top: 50%;
+}
+
+.Slider[data-orientation="horizontal"] .SliderLabel {
+  display: none;
+}
+
+.Slider .SliderTrackFill {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  height: 0.5rem;
+  background: rgb(var(--clr-primary-rgb));
+  z-index: 1;
+  transform: translateY(-50%);
+  border-radius: 10rem;
+}
+
+.InputContainers {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.InputContainers .Input {
+  flex-grow: 1;
+  max-width: 20rem;
+}
