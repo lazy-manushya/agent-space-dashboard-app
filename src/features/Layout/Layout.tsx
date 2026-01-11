@@ -1,3 +1,4 @@
+"use client";
 import { joinClassNames } from "@/utils";
 import NavMenu from "@/components/NavMenu";
 
