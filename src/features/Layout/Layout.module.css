@@ -1,0 +1,22 @@
+.Container {
+  display: flex;
+  flex-direction: column;
+  --header-height: 60px;
+  height: 100vh;
+  border: 2px dashed red;
+}
+
+.Header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--header-height);
+  border: 2px dashed blue;
+}
+
+.Main {
+  flex-grow: 1;
+  border: 2px dashed green;
+  min-height: calc(100vh - var(--header-height));
+  overflow: auto;
+}
