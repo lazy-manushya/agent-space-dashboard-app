@@ -1,9 +1,1 @@
-import ExampleComponent from "@/components/ExampleComponent";
-
-export default function Home() {
-  return (
-    <div>
-      <ExampleComponent />
-    </div>
-  );
-}
+export { default } from "@/pages_lib/DashboardPage";
