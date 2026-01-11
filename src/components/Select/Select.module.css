@@ -1,0 +1,76 @@
+.Select {
+  width: 100%;
+}
+
+.Button {
+  font-size: 1.072rem;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 0.25rem 0.875rem;
+  height: 3.5rem;
+}
+
+.Button[data-focus-visible] {
+  outline: 2px solid var(--focus-ring-color);
+  outline-offset: -1px;
+}
+
+.Icon {
+  transform: rotate(-90deg);
+  transition: transform 240ms ease;
+}
+
+.Button[aria-expanded="true"] .Icon {
+  transform: rotate(-270deg);
+}
+
+.SelectValue {
+  flex-grow: 1;
+  text-align: left;
+  font-size: 0.875rem;
+}
+
+.SelectValue[data-placeholder] {
+  color: rgba(141, 141, 141, 1);
+}
+
+.Popover[data-trigger="Select"] {
+  min-width: var(--trigger-width);
+}
+
+.ListBox {
+  display: block;
+  width: unset;
+  max-height: inherit;
+  min-height: unset;
+  border: none;
+  background: #fff;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 2px rgba(0 0 0 / 0.1);
+  border: 1px solid rgba(0 0 0 / 0.04);
+  overflow: hidden;
+}
+
+.Header {
+  padding-left: 1.571rem;
+}
+
+.ListBoxItem {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+
+.ListBoxItem[data-focus-visible] {
+  outline: none;
+}
+
+.ListBoxItem[data-focused],
+.ListBoxItem[data-pressed] {
+  background: rgba(0 0 0 / 0.04);
+}
+
+.ListBoxItem[data-selected] {
+  color: #fff;
+  background: rgb(var(--clr-primary-rgb));
+}
