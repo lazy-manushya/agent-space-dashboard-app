@@ -3,14 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "start:dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"
   },
   "dependencies": {
+    "class-variance-authority": "^0.7.1",
     "next": "16.1.1",
     "react": "19.2.3",
+    "react-aria-components": "^1.14.0",
     "react-dom": "19.2.3"
   },
   "devDependencies": {
