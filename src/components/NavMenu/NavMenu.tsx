@@ -4,8 +4,7 @@ import { useRef, useState, useEffect, useMemo } from "react";
 import { usePathname } from "next/navigation";
 import { useLandmark } from "react-aria";
 
-import { joinClassNames } from "@/utils";
-import { isPathActive } from "@/utils/isPathActive";
+import { joinClassNames, isPathActive } from "@/utils";
 import Link from "@/components/Link";
 
 import { INavMenuProps } from "./NavMenu.types";
