@@ -4,7 +4,6 @@
 - Keep it always up to date.
 
 ## Todo / To pick
-- [ ] Add nav-menu component. Use dashboard UI top header nav as reference.
 - [ ] Adding global search feature
     - [ ] A search input that search through all he entities we have available.
     - [ ] Save and show recet searches made similar to google search engine , recent searches options should be selectable.
@@ -19,6 +18,7 @@
 
 ## Team
 ### Dewashish
+- [ ] Add nav-menu component. Use dashboard UI top header nav as reference.
 
 ### Ayush
 
