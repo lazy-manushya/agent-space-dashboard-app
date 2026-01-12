@@ -16,6 +16,8 @@ import {
 } from "react-aria-components";
 import { useBoeHeaders } from "@/services/Routing/hooks/BoeHeaders/useBoeHeaders";
 import TextField from "@/components/TextField";
+import Button from "@/components/Button";
+import Select from "@/components/Select";
 
 function DashboardPage({ className }: IDashboardPageProps) {
   // Filter states
@@ -108,12 +110,7 @@ function DashboardPage({ className }: IDashboardPageProps) {
 
           <div className={styles.FilterGroup}>
             <label htmlFor="year-filter">Year:</label>
-            <select
-              id="year-filter"
-              value={selectedYear}
-              onChange={(e) => handleYearChange(e.target.value)}
-              className={styles.FilterSelect}
-            >
+            <select id="year-filter">
               <option value="">All Years</option>
               <option value="2026">2026</option>
               <option value="2025">2025</option>
@@ -138,9 +135,13 @@ function DashboardPage({ className }: IDashboardPageProps) {
             </select>
           </div>
 
-          <button onClick={handleClearFilters} className={styles.ClearButton}>
+          <Button
+            onClick={handleClearFilters}
+            size={"sm"}
+            className={styles.ClearButton}
+          >
             Clear Filters
-          </button>
+          </Button>
         </div>
 
         <div className={styles.SubContainer}>
