@@ -15,6 +15,7 @@ import {
   TableHeader,
 } from "react-aria-components";
 import { useBoeHeaders } from "@/services/Routing/hooks/BoeHeaders/useBoeHeaders";
+import { useBoeHeadersMetadata } from "@/services/hooks/useBoeHeadersMetadata";
 import TextField from "@/components/TextField";
 import Button from "@/components/Button";
 
@@ -23,11 +24,22 @@ function DashboardPage({ className }: IDashboardPageProps) {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [selectedYear, setSelectedYear] = useState<string>("");
   const [selectedPort, setSelectedPort] = useState<string>("");
+  const [selectedPackages, setSelectedPackages] = useState<string>("");
+  const [selectedInvoices, setSelectedInvoices] = useState<string>("");
+
+  // Fetch metadata (unique values for filters)
+  const {
+    metadata,
+    loading: metadataLoading,
+    error: metadataError,
+  } = useBoeHeadersMetadata();
 
   // Build filters object
   const filters: Record<string, string | number> = {};
   if (selectedYear) filters.year = selectedYear;
   if (selectedPort) filters.port_code = selectedPort;
+  if (selectedPackages) filters.packages = selectedPackages;
+  if (selectedInvoices) filters.no_of_invoices = selectedInvoices;
 
   const {
     data: boeHeaders,
@@ -78,6 +90,32 @@ function DashboardPage({ className }: IDashboardPageProps) {
     });
   };
 
+  const handlePackagesChange = (value: string) => {
+    setSelectedPackages(value);
+    refetch({
+      page: 1,
+      limit: 100,
+      search: searchTerm || undefined,
+      filters: {
+        ...filters,
+        pkg: value || "",
+      },
+    });
+  };
+
+  const handleInvoicesChange = (value: string) => {
+    setSelectedInvoices(value);
+    refetch({
+      page: 1,
+      limit: 100,
+      search: searchTerm || undefined,
+      filters: {
+        ...filters,
+        no_of_invoices: value || "",
+      },
+    });
+  };
+
   const handleClearFilters = () => {
     setSearchTerm("");
     setSelectedYear("");
@@ -116,10 +154,17 @@ function DashboardPage({ className }: IDashboardPageProps) {
               className={styles.FilterSelect}
             >
               <option value="">All Years</option>
-              <option value="2026">2026</option>
-              <option value="2025">2025</option>
-              <option value="2024">2024</option>
-              <option value="2023">2023</option>
+              {metadataLoading ? (
+                <option disabled>Loading years...</option>
+              ) : metadataError ? (
+                <option disabled>Error loading years</option>
+              ) : (
+                metadata?.years.map((year) => (
+                  <option key={year} value={year}>
+                    {year}
+                  </option>
+                ))
+              )}
             </select>
           </div>
 
@@ -132,10 +177,63 @@ function DashboardPage({ className }: IDashboardPageProps) {
               className={styles.FilterSelect}
             >
               <option value="">All Ports</option>
-              <option value="INPRT1">INPRT1</option>
-              <option value="INPRT2">INPRT2</option>
-              <option value="INPRT4">INPRT4</option>
-              <option value="INPRT9">INPRT9</option>
+              {metadataLoading ? (
+                <option disabled>Loading ports...</option>
+              ) : metadataError ? (
+                <option disabled>Error loading ports</option>
+              ) : (
+                metadata?.portCodes.map((port) => (
+                  <option key={port} value={port}>
+                    {port}
+                  </option>
+                ))
+              )}
+            </select>
+          </div>
+
+          <div className={styles.FilterGroup}>
+            <label htmlFor="packages">Packages:</label>
+            <select
+              id="packages"
+              value={selectedPackages}
+              onChange={(e) => handlePackagesChange(e.target.value)}
+              className={styles.FilterSelect}
+            >
+              <option value="">All Packages</option>
+              {metadataLoading ? (
+                <option disabled>Loading packages...</option>
+              ) : metadataError ? (
+                <option disabled>Error loading packages</option>
+              ) : (
+                metadata?.packages.map((pkg) => (
+                  <option key={pkg} value={pkg}>
+                    {pkg}
+                  </option>
+                ))
+              )}
+            </select>
+          </div>
+
+          <div className={styles.FilterGroup}>
+            <label htmlFor="invoices">Invoices:</label>
+            <select
+              id="invoices"
+              value={selectedInvoices}
+              onChange={(e) => handleInvoicesChange(e.target.value)}
+              className={styles.FilterSelect}
+            >
+              <option value="">All Invoices</option>
+              {metadataLoading ? (
+                <option disabled>Loading Invoices...</option>
+              ) : metadataError ? (
+                <option disabled>Error loading invoices</option>
+              ) : (
+                metadata?.invoices.map((invoice) => (
+                  <option key={invoice} value={invoice}>
+                    {invoice}
+                  </option>
+                ))
+              )}
             </select>
           </div>
 

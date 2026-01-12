@@ -22,7 +22,16 @@ export async function GET(request: Request) {
 
     // Extract filter parameters (e.g., ?year=2024&port_code=INNSA1)
     const filters: Record<string, string> = {};
-    const filterableFields = ["year", "port_code", "iec_no", "gst_no"];
+    const filterableFields = [
+      "year",
+      "port_code",
+      "iec_no",
+      "gst_no",
+      "pkg",
+      "no_of_invoices",
+      "total_items",
+      "be_date",
+    ];
 
     filterableFields.forEach((field) => {
       const value = searchParams.get(field);
