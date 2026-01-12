@@ -1,4 +1,3 @@
-"use client";
 import { joinClassNames } from "@/utils";
 import NavMenu from "@/components/NavMenu";
 
@@ -9,7 +8,22 @@ function Layout({ children, className }: ILayoutProps) {
   return (
     <div className={joinClassNames(className, styles.Container)}>
       <header className={styles.Header}>
-        <NavMenu />
+        <NavMenu
+          navItems={[
+            {
+              title: "Home",
+              href: "/",
+            },
+            {
+              title: "Invoices",
+              href: "/invoices",
+            },
+            {
+              title: "Duties",
+              href: "/duties",
+            },
+          ]}
+        />
       </header>
       <main className={styles.Main}>{children}</main>
     </div>
