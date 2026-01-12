@@ -17,7 +17,6 @@ import {
 import { useBoeHeaders } from "@/services/Routing/hooks/BoeHeaders/useBoeHeaders";
 import TextField from "@/components/TextField";
 import Button from "@/components/Button";
-import Select from "@/components/Select";
 
 function DashboardPage({ className }: IDashboardPageProps) {
   // Filter states
@@ -110,7 +109,12 @@ function DashboardPage({ className }: IDashboardPageProps) {
 
           <div className={styles.FilterGroup}>
             <label htmlFor="year-filter">Year:</label>
-            <select id="year-filter">
+            <select
+              id="year-filter"
+              value={selectedYear}
+              onChange={(e) => handleYearChange(e.target.value)}
+              className={styles.FilterSelect}
+            >
               <option value="">All Years</option>
               <option value="2026">2026</option>
               <option value="2025">2025</option>
