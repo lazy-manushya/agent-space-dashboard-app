@@ -215,6 +215,10 @@ function DashboardPage({ className }: IDashboardPageProps) {
     setSearchTerm("");
     setSelectedMinYear("");
     setSelectedMaxYear("");
+    setSelectedMinGWeight("");
+    setSelectedMaxGWeight("");
+    setSelectedMinExRate("");
+    setSelectedMaxExRate("");
     setSelectedPort("");
     refetch({
       page: 1,
