@@ -16,7 +16,6 @@ import {
 } from "react-aria-components";
 import { useBoeHeaders } from "@/services/Routing/hooks/BoeHeaders/useBoeHeaders";
 import TextField from "@/components/TextField";
-import Select from "@/components/Select";
 
 function DashboardPage({ className }: IDashboardPageProps) {
   // Filter states
@@ -97,13 +96,13 @@ function DashboardPage({ className }: IDashboardPageProps) {
         <div className={styles.FilterSection}>
           <div className={styles.FilterGroup}>
             <label htmlFor="search-box">Search:</label>
-            <input
+            <TextField
+              className={styles.SearchInput}
               id="search-box"
               type="text"
               placeholder="Search by BE No, IEC No, or GST No..."
               value={searchTerm}
-              onChange={(e) => handleSearch(e.target.value)}
-              className={styles.SearchInput}
+              onChange={(value) => handleSearch(value)}
             />
           </div>
 
