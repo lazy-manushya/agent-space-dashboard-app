@@ -19,14 +19,17 @@ function Layout({ children, className }: ILayoutProps) {
             {
               title: "Home",
               href: "/",
+              icon: <i className="las la-home" />
             },
             {
               title: "Invoices",
               href: "/invoices",
+              icon: <i className="las la-receipt" />
             },
             {
               title: "Duties",
               href: "/duties",
+              icon: <i className="las la-file-invoice" />
             },
           ]}
         />
