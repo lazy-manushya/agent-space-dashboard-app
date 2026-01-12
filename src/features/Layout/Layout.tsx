@@ -7,7 +7,13 @@ import styles from "./Layout.module.css";
 
 function Layout({ children, className }: ILayoutProps) {
   return (
-    <div className={joinClassNames(className, styles.Container)}>
+    <div
+      className={joinClassNames(
+        className,
+        styles.Container
+        // , styles.Debug
+      )}
+    >
       <header className={styles.Header}>
         <NavMenu />
       </header>
