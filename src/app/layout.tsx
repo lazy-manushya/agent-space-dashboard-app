@@ -8,6 +8,7 @@ import "@/styles/css/reset.css";
 import "@/styles/css/global.css";
 import "@/styles/css/color.css";
 import "@/styles/css/custom-bootstrap.min.css";
+import Script from "next/script";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -39,6 +40,12 @@ export default function RootLayout({
   return (
     <RoutingProvider>
       <html lang="en">
+        <header>
+          <link
+            rel="stylesheet"
+            href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css"
+          ></link>
+        </header>
         <body className={`${geistSans.variable} ${geistMono.variable}`}>
           <Layout>{children}</Layout>
         </body>
