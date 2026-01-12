@@ -1,9 +1,10 @@
 export interface IBoeHeaderMetadata {
   years: string[];
   portCodes: string[];
-  packages: number[];
   invoices: number[];
   items: number[];
+  grossWeights: number[];
+  exchangeRates: number[];
 }
 
 export interface IUseBoeHeadersMetadataReturn {

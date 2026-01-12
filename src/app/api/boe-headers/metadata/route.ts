@@ -10,6 +10,7 @@ import { fetchBoeHeadersMetadata } from "@/api/boe-headers/boeHeadersMetadata.se
  * - invoices
  * - items
  * - exchangeRate
+ * - grossWeights
  */
 
 export async function GET() {

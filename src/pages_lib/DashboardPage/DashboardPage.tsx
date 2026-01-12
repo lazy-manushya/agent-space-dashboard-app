@@ -24,6 +24,8 @@ function DashboardPage({ className }: IDashboardPageProps) {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [selectedMinYear, setSelectedMinYear] = useState<string>("");
   const [selectedMaxYear, setSelectedMaxYear] = useState<string>("");
+  const [selectedMinGWeight, setSelectedMinGWeight] = useState<string>("");
+  const [selectedMaxGWeight, setSelectedMaxGWeight] = useState<string>("");
   const [selectedPort, setSelectedPort] = useState<string>("");
   const [selectedInvoices, setSelectedInvoices] = useState<string>("");
 
@@ -39,6 +41,8 @@ function DashboardPage({ className }: IDashboardPageProps) {
     const filters: Record<string, string | number> = {};
     if (selectedMinYear) filters.min_year = selectedMinYear;
     if (selectedMaxYear) filters.max_year = selectedMaxYear;
+    if (selectedMinGWeight) filters.min_g_weight = selectedMinGWeight;
+    if (selectedMaxGWeight) filters.max_g_weight = selectedMaxGWeight;
     if (selectedPort) filters.port_code = selectedPort;
     if (selectedInvoices) filters.no_of_invoices = selectedInvoices;
     return filters;
@@ -66,6 +70,42 @@ function DashboardPage({ className }: IDashboardPageProps) {
       limit: 100,
       search: value || undefined,
       filters: Object.keys(filters).length > 0 ? filters : undefined,
+    });
+  };
+
+  const handleMinGWeightChange = (value: string) => {
+    setSelectedMinGWeight(value);
+    const newFilters: any = {
+      ...filters,
+      min_g_weight: value || undefined,
+    };
+    // Remove undefined values
+    Object.keys(newFilters).forEach(
+      (key) => newFilters[key] === undefined && delete newFilters[key]
+    );
+    refetch({
+      page: 1,
+      limit: 100,
+      search: searchTerm || undefined,
+      filters: Object.keys(newFilters).length > 0 ? newFilters : undefined,
+    });
+  };
+
+  const handleMaxGWeightChange = (value: string) => {
+    setSelectedMaxGWeight(value);
+    const newFilters: any = {
+      ...filters,
+      max_g_weight: value || undefined,
+    };
+    // Remove undefined values
+    Object.keys(newFilters).forEach(
+      (key) => newFilters[key] === undefined && delete newFilters[key]
+    );
+    refetch({
+      page: 1,
+      limit: 100,
+      search: searchTerm || undefined,
+      filters: Object.keys(newFilters).length > 0 ? newFilters : undefined,
     });
   };
 
@@ -200,6 +240,51 @@ function DashboardPage({ className }: IDashboardPageProps) {
                 metadata?.years.map((year) => (
                   <option key={year} value={year}>
                     {year}
+                  </option>
+                ))
+              )}
+            </select>
+          </div>
+
+          <div className={styles.FilterGroup}>
+            <label htmlFor="gross-weight-filter">Min Gross Weight:</label>
+            <select
+              id="gross-weight-filter"
+              value={selectedMinGWeight}
+              onChange={(e) => handleMinGWeightChange(e.target.value)}
+              className={styles.FilterSelect}
+            >
+              <option value="">All Gross Weights</option>
+              {metadataLoading ? (
+                <option disabled>Loading Gross Weights...</option>
+              ) : metadataError ? (
+                <option disabled>Error loading Gross Weights</option>
+              ) : (
+                metadata?.grossWeights.map((grossWeight) => (
+                  <option key={grossWeight} value={grossWeight}>
+                    {grossWeight}
+                  </option>
+                ))
+              )}
+            </select>
+          </div>
+          <div className={styles.FilterGroup}>
+            <label htmlFor="gross-weight-filter">Max Gross Weight:</label>
+            <select
+              id="gross-weight-filter"
+              value={selectedMaxGWeight}
+              onChange={(e) => handleMaxGWeightChange(e.target.value)}
+              className={styles.FilterSelect}
+            >
+              <option value="">All Gross Weights</option>
+              {metadataLoading ? (
+                <option disabled>Loading Gross Weights...</option>
+              ) : metadataError ? (
+                <option disabled>Error loading Gross Weights</option>
+              ) : (
+                metadata?.grossWeights.map((grossWeight) => (
+                  <option key={grossWeight} value={grossWeight}>
+                    {grossWeight}
                   </option>
                 ))
               )}

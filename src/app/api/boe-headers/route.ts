@@ -32,6 +32,10 @@ export async function GET(request: Request) {
       "be_date",
       "min_year",
       "max_year",
+      "min_g_weight",
+      "max_g_weight",
+      "min_ex_rate",
+      "max_ex_rate",
     ];
 
     filterableFields.forEach((field) => {

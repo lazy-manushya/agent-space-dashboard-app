@@ -3,5 +3,6 @@ export interface IBoeHeaderMetadata {
   portCodes: string[];
   invoices: number[];
   items: number[];
-  exchangeRate: number[];
+  exchangeRates: number[];
+  grossWeights: number[];
 }

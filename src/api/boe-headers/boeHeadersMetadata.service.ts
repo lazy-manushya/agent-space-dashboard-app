@@ -13,7 +13,8 @@ export async function fetchBoeHeadersMetadata(): Promise<IBoeHeaderMetadata> {
   const data = [...boeHeadersData] as IBoeHeader[];
 
   // Extract unique values
-  const exchangeRate = Array.from(new Set(data.map((h) => h.ex_rate))).sort();
+  const exchangeRates = Array.from(new Set(data.map((h) => h.ex_rate))).sort();
+  const grossWeights = Array.from(new Set(data.map((h) => h.g_wt))).sort();
   const years = Array.from(new Set(data.map((h) => h.year))).sort();
   const portCodes = Array.from(new Set(data.map((h) => h.port_code))).sort();
   const invoices = Array.from(new Set(data.map((h) => h.no_of_invoices))).sort(
@@ -28,6 +29,7 @@ export async function fetchBoeHeadersMetadata(): Promise<IBoeHeaderMetadata> {
     portCodes,
     invoices,
     items,
-    exchangeRate,
+    exchangeRates,
+    grossWeights,
   };
 }

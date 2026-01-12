@@ -64,11 +64,49 @@ export async function fetchBoeHeadersService(
     });
   }
 
+  // Apply gross weight range filter if provided
+  if (params?.filters?.min_g_weight || params?.filters?.max_g_weight) {
+    const minGWeight = params.filters.min_g_weight
+      ? parseInt(params.filters.min_g_weight.toString(), 10)
+      : null;
+    const maxGWeight = params.filters.max_g_weight
+      ? parseInt(params.filters.max_g_weight.toString(), 10)
+      : null;
+
+    // Handle edge case: if min_g_weight > max_g_weight, swap them
+    let finalMinGWeight = minGWeight;
+    let finalMaxGWeight = maxGWeight;
+
+    if (minGWeight !== null && maxGWeight !== null && minGWeight > maxGWeight) {
+      // Swap the values
+      finalMinGWeight = maxGWeight;
+      finalMaxGWeight = minGWeight;
+    }
+
+    data = data.filter((header) => {
+      const headerGWeight = parseInt(header.g_wt, 10);
+
+      if (finalMinGWeight !== null && finalMaxGWeight !== null) {
+        return (
+          headerGWeight >= finalMinGWeight && headerGWeight <= finalMaxGWeight
+        );
+      } else if (finalMinGWeight !== null) {
+        return headerGWeight >= finalMinGWeight;
+      } else if (finalMaxGWeight !== null) {
+        return headerGWeight <= finalMaxGWeight;
+      }
+      return true;
+    });
+  }
+
   // Apply additional filters (excluding year filters)
   if (params?.filters) {
     Object.entries(params.filters).forEach(([key, value]) => {
       // Skip year filters as they are already handled above
       if (key === "min_year" || key === "max_year") {
+        return;
+      }
+      if (key === "min_g_weight" || key === "max_g_weight") {
         return;
       }
       data = data.filter((header) => {
