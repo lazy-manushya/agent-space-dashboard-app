@@ -22,9 +22,9 @@ import Button from "@/components/Button";
 function DashboardPage({ className }: IDashboardPageProps) {
   // Filter states
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const [selectedYear, setSelectedYear] = useState<string>("");
+  const [selectedMinYear, setSelectedMinYear] = useState<string>("");
+  const [selectedMaxYear, setSelectedMaxYear] = useState<string>("");
   const [selectedPort, setSelectedPort] = useState<string>("");
-  const [selectedPackages, setSelectedPackages] = useState<string>("");
   const [selectedInvoices, setSelectedInvoices] = useState<string>("");
 
   // Fetch metadata (unique values for filters)
@@ -34,12 +34,17 @@ function DashboardPage({ className }: IDashboardPageProps) {
     error: metadataError,
   } = useBoeHeadersMetadata();
 
-  // Build filters object
-  const filters: Record<string, string | number> = {};
-  if (selectedYear) filters.year = selectedYear;
-  if (selectedPort) filters.port_code = selectedPort;
-  if (selectedPackages) filters.packages = selectedPackages;
-  if (selectedInvoices) filters.no_of_invoices = selectedInvoices;
+  // Build filters object with year range handling
+  const buildFilters = () => {
+    const filters: Record<string, string | number> = {};
+    if (selectedMinYear) filters.min_year = selectedMinYear;
+    if (selectedMaxYear) filters.max_year = selectedMaxYear;
+    if (selectedPort) filters.port_code = selectedPort;
+    if (selectedInvoices) filters.no_of_invoices = selectedInvoices;
+    return filters;
+  };
+
+  const filters = buildFilters();
 
   const {
     data: boeHeaders,
@@ -64,16 +69,39 @@ function DashboardPage({ className }: IDashboardPageProps) {
     });
   };
 
-  const handleYearChange = (value: string) => {
-    setSelectedYear(value);
+  const handleMinYearChange = (value: string) => {
+    setSelectedMinYear(value);
+    const newFilters: any = {
+      ...filters,
+      min_year: value || undefined,
+    };
+    // Remove undefined values
+    Object.keys(newFilters).forEach(
+      (key) => newFilters[key] === undefined && delete newFilters[key]
+    );
     refetch({
       page: 1,
       limit: 100,
       search: searchTerm || undefined,
-      filters: {
-        ...filters,
-        year: value ? value : "",
-      },
+      filters: Object.keys(newFilters).length > 0 ? newFilters : undefined,
+    });
+  };
+
+  const handleMaxYearChange = (value: string) => {
+    setSelectedMaxYear(value);
+    const newFilters: any = {
+      ...filters,
+      max_year: value || undefined,
+    };
+    // Remove undefined values
+    Object.keys(newFilters).forEach(
+      (key) => newFilters[key] === undefined && delete newFilters[key]
+    );
+    refetch({
+      page: 1,
+      limit: 100,
+      search: searchTerm || undefined,
+      filters: Object.keys(newFilters).length > 0 ? newFilters : undefined,
     });
   };
 
@@ -86,19 +114,6 @@ function DashboardPage({ className }: IDashboardPageProps) {
       filters: {
         ...filters,
         port_code: value || "",
-      },
-    });
-  };
-
-  const handlePackagesChange = (value: string) => {
-    setSelectedPackages(value);
-    refetch({
-      page: 1,
-      limit: 100,
-      search: searchTerm || undefined,
-      filters: {
-        ...filters,
-        pkg: value || "",
       },
     });
   };
@@ -118,7 +133,8 @@ function DashboardPage({ className }: IDashboardPageProps) {
 
   const handleClearFilters = () => {
     setSearchTerm("");
-    setSelectedYear("");
+    setSelectedMinYear("");
+    setSelectedMaxYear("");
     setSelectedPort("");
     refetch({
       page: 1,
@@ -146,11 +162,33 @@ function DashboardPage({ className }: IDashboardPageProps) {
           </div>
 
           <div className={styles.FilterGroup}>
-            <label htmlFor="year-filter">Year:</label>
+            <label htmlFor="year-filter">Min Year:</label>
             <select
               id="year-filter"
-              value={selectedYear}
-              onChange={(e) => handleYearChange(e.target.value)}
+              value={selectedMinYear}
+              onChange={(e) => handleMinYearChange(e.target.value)}
+              className={styles.FilterSelect}
+            >
+              <option value="">All Years</option>
+              {metadataLoading ? (
+                <option disabled>Loading years...</option>
+              ) : metadataError ? (
+                <option disabled>Error loading years</option>
+              ) : (
+                metadata?.years.map((year) => (
+                  <option key={year} value={year}>
+                    {year}
+                  </option>
+                ))
+              )}
+            </select>
+          </div>
+          <div className={styles.FilterGroup}>
+            <label htmlFor="year-filter">Max Year:</label>
+            <select
+              id="year-filter"
+              value={selectedMaxYear}
+              onChange={(e) => handleMaxYearChange(e.target.value)}
               className={styles.FilterSelect}
             >
               <option value="">All Years</option>
@@ -185,29 +223,6 @@ function DashboardPage({ className }: IDashboardPageProps) {
                 metadata?.portCodes.map((port) => (
                   <option key={port} value={port}>
                     {port}
-                  </option>
-                ))
-              )}
-            </select>
-          </div>
-
-          <div className={styles.FilterGroup}>
-            <label htmlFor="packages">Packages:</label>
-            <select
-              id="packages"
-              value={selectedPackages}
-              onChange={(e) => handlePackagesChange(e.target.value)}
-              className={styles.FilterSelect}
-            >
-              <option value="">All Packages</option>
-              {metadataLoading ? (
-                <option disabled>Loading packages...</option>
-              ) : metadataError ? (
-                <option disabled>Error loading packages</option>
-              ) : (
-                metadata?.packages.map((pkg) => (
-                  <option key={pkg} value={pkg}>
-                    {pkg}
                   </option>
                 ))
               )}

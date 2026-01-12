@@ -4,7 +4,7 @@ export interface IUseBoeHeadersParams {
   page?: number;
   limit?: number;
   search?: string;
-  filters?: Record<string, string | number>;
+  filters?: Record<string, string | number> | any;
 }
 
 export interface IUseBoeHeadersReturn {

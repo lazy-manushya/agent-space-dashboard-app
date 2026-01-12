@@ -7,9 +7,9 @@ import { fetchBoeHeadersMetadata } from "@/api/boe-headers/boeHeadersMetadata.se
  * Returns unique values for:
  * - years
  * - portCodes
- * - packages
  * - invoices
  * - items
+ * - exchangeRate
  */
 
 export async function GET() {

@@ -9,7 +9,6 @@ export interface IBoeHeader {
   gst_no: string;
   port_code: string;
   be_date: string;
-  pkg: number;
   g_wt: number;
   ex_rate: number;
   no_of_invoices: number;

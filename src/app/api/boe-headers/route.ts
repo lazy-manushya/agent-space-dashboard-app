@@ -27,10 +27,11 @@ export async function GET(request: Request) {
       "port_code",
       "iec_no",
       "gst_no",
-      "pkg",
       "no_of_invoices",
       "total_items",
       "be_date",
+      "min_year",
+      "max_year",
     ];
 
     filterableFields.forEach((field) => {
