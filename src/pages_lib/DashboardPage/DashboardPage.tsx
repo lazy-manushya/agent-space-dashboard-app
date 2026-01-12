@@ -25,6 +25,8 @@ function DashboardPage({ className }: IDashboardPageProps) {
   const [selectedMinYear, setSelectedMinYear] = useState<string>("");
   const [selectedMaxYear, setSelectedMaxYear] = useState<string>("");
   const [selectedMinGWeight, setSelectedMinGWeight] = useState<string>("");
+  const [selectedMaxExRate, setSelectedMaxExRate] = useState<string>("");
+  const [selectedMinExRate, setSelectedMinExRate] = useState<string>("");
   const [selectedMaxGWeight, setSelectedMaxGWeight] = useState<string>("");
   const [selectedPort, setSelectedPort] = useState<string>("");
   const [selectedInvoices, setSelectedInvoices] = useState<string>("");
@@ -43,6 +45,8 @@ function DashboardPage({ className }: IDashboardPageProps) {
     if (selectedMaxYear) filters.max_year = selectedMaxYear;
     if (selectedMinGWeight) filters.min_g_weight = selectedMinGWeight;
     if (selectedMaxGWeight) filters.max_g_weight = selectedMaxGWeight;
+    if (selectedMinExRate) filters.min_ex_rate = selectedMinExRate;
+    if (selectedMaxExRate) filters.max_ex_rate = selectedMaxExRate;
     if (selectedPort) filters.port_code = selectedPort;
     if (selectedInvoices) filters.no_of_invoices = selectedInvoices;
     return filters;
@@ -132,6 +136,42 @@ function DashboardPage({ className }: IDashboardPageProps) {
     const newFilters: any = {
       ...filters,
       max_year: value || undefined,
+    };
+    // Remove undefined values
+    Object.keys(newFilters).forEach(
+      (key) => newFilters[key] === undefined && delete newFilters[key]
+    );
+    refetch({
+      page: 1,
+      limit: 100,
+      search: searchTerm || undefined,
+      filters: Object.keys(newFilters).length > 0 ? newFilters : undefined,
+    });
+  };
+
+  const handleMinExRateChange = (value: string) => {
+    setSelectedMinExRate(value);
+    const newFilters: any = {
+      ...filters,
+      min_ex_rate: value || undefined,
+    };
+    // Remove undefined values
+    Object.keys(newFilters).forEach(
+      (key) => newFilters[key] === undefined && delete newFilters[key]
+    );
+    refetch({
+      page: 1,
+      limit: 100,
+      search: searchTerm || undefined,
+      filters: Object.keys(newFilters).length > 0 ? newFilters : undefined,
+    });
+  };
+
+  const handleMaxExRateChange = (value: string) => {
+    setSelectedMaxExRate(value);
+    const newFilters: any = {
+      ...filters,
+      max_ex_rate: value || undefined,
     };
     // Remove undefined values
     Object.keys(newFilters).forEach(
@@ -285,6 +325,51 @@ function DashboardPage({ className }: IDashboardPageProps) {
                 metadata?.grossWeights.map((grossWeight) => (
                   <option key={grossWeight} value={grossWeight}>
                     {grossWeight}
+                  </option>
+                ))
+              )}
+            </select>
+          </div>
+
+          <div className={styles.FilterGroup}>
+            <label htmlFor="exchange-rate-filter">Min Exchange Rate:</label>
+            <select
+              id="exchange-rate-filter"
+              value={selectedMinExRate}
+              onChange={(e) => handleMinExRateChange(e.target.value)}
+              className={styles.FilterSelect}
+            >
+              <option value="">All Exchange Rates</option>
+              {metadataLoading ? (
+                <option disabled>Loading Exchange Rates...</option>
+              ) : metadataError ? (
+                <option disabled>Error loading Exchange Rates</option>
+              ) : (
+                metadata?.exchangeRates.map((exchangeRate) => (
+                  <option key={exchangeRate} value={exchangeRate}>
+                    {exchangeRate}
+                  </option>
+                ))
+              )}
+            </select>
+          </div>
+          <div className={styles.FilterGroup}>
+            <label htmlFor="exchange-rate-filter">Max Exchange Rate:</label>
+            <select
+              id="exchange-rate-filter"
+              value={selectedMaxExRate}
+              onChange={(e) => handleMaxExRateChange(e.target.value)}
+              className={styles.FilterSelect}
+            >
+              <option value="">All Exchange Rates</option>
+              {metadataLoading ? (
+                <option disabled>Loading Exchange Rates...</option>
+              ) : metadataError ? (
+                <option disabled>Error loading Exchange Rates</option>
+              ) : (
+                metadata?.exchangeRates.map((exchangeRate) => (
+                  <option key={exchangeRate} value={exchangeRate}>
+                    {exchangeRate}
                   </option>
                 ))
               )}

@@ -99,6 +99,39 @@ export async function fetchBoeHeadersService(
     });
   }
 
+  // Apply exchange rate range filter if provided
+  if (params?.filters?.min_ex_rate || params?.filters?.max_ex_rate) {
+    const minExRate = params.filters.min_ex_rate
+      ? parseFloat(params.filters.min_ex_rate.toString())
+      : null;
+    const maxExRate = params.filters.max_ex_rate
+      ? parseFloat(params.filters.max_ex_rate.toString())
+      : null;
+
+    // Handle edge case: if min_ex_rate > max_ex_rate, swap them
+    let finalMinExRate = minExRate;
+    let finalMaxExRate = maxExRate;
+
+    if (minExRate !== null && maxExRate !== null && minExRate > maxExRate) {
+      // Swap the values
+      finalMinExRate = maxExRate;
+      finalMaxExRate = minExRate;
+    }
+
+    data = data.filter((header) => {
+      const headerExRate = parseFloat(header.ex_rate);
+
+      if (finalMinExRate !== null && finalMaxExRate !== null) {
+        return headerExRate >= finalMinExRate && headerExRate <= finalMaxExRate;
+      } else if (finalMinExRate !== null) {
+        return headerExRate >= finalMinExRate;
+      } else if (finalMaxExRate !== null) {
+        return headerExRate <= finalMaxExRate;
+      }
+      return true;
+    });
+  }
+
   // Apply additional filters (excluding year filters)
   if (params?.filters) {
     Object.entries(params.filters).forEach(([key, value]) => {
@@ -107,6 +140,9 @@ export async function fetchBoeHeadersService(
         return;
       }
       if (key === "min_g_weight" || key === "max_g_weight") {
+        return;
+      }
+      if (key === "min_ex_rate" || key === "max_ex_rate") {
         return;
       }
       data = data.filter((header) => {
