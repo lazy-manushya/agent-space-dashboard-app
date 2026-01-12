@@ -1,6 +1,9 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 
+import Layout from "@/features/Layout";
+import { RoutingProvider } from "@/services/Routing";
+
 import "@/styles/css/reset.css";
 import "@/styles/css/global.css";
 import "@/styles/css/color.css";
@@ -34,13 +37,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <header>Header</header>
-        <aside>Sidebar</aside>
-        <main>{children}</main>
-        <footer>Footer</footer>
-      </body>
-    </html>
+    <RoutingProvider>
+      <html lang="en">
+        <body className={`${geistSans.variable} ${geistMono.variable}`}>
+          <Layout>{children}</Layout>
+        </body>
+      </html>
+    </RoutingProvider>
   );
 }
