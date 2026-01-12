@@ -1,0 +1,56 @@
+import { IBoeHeader } from "@/pages_lib/DashboardPage/DashboardPage.types";
+
+import boeHeadersData from "@/app/boe_headers.json";
+import {
+  IFetchBoeHeadersParams,
+  IFetchBoeHeadersResponse,
+} from "./BoeHeaders.types";
+
+/**
+ * Simulates fetching BOE headers from a database
+ * In a real scenario, this would call your backend API
+ */
+export async function fetchBoeHeadersService(
+  params?: IFetchBoeHeadersParams
+): Promise<IFetchBoeHeadersResponse> {
+  // Simulate API delay
+  await new Promise((resolve) => setTimeout(resolve, 500));
+
+  let data = [...boeHeadersData] as IBoeHeader[];
+  const page = params?.page || 1;
+  const limit = params?.limit || 100;
+
+  // Apply search filter if provided
+  if (params?.search) {
+    const searchTerm = params.search.toLowerCase();
+    data = data.filter(
+      (header) =>
+        header.be_no.toLowerCase().includes(searchTerm) ||
+        header.iec_no.toLowerCase().includes(searchTerm) ||
+        header.gst_no.toLowerCase().includes(searchTerm)
+    );
+  }
+
+  // Apply additional filters if provided
+  if (params?.filters) {
+    Object.entries(params.filters).forEach(([key, value]) => {
+      data = data.filter((header) => {
+        const headerValue = (header as Record<string, any>)[key];
+        return headerValue?.toString() === value?.toString();
+      });
+    });
+  }
+
+  // Calculate pagination
+  const total = data.length;
+  const startIndex = (page - 1) * limit;
+  const endIndex = startIndex + limit;
+  const paginatedData = data.slice(startIndex, endIndex);
+
+  return {
+    data: paginatedData,
+    total,
+    page,
+    limit,
+  };
+}
