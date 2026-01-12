@@ -1,9 +1,8 @@
 .Container {
   display: flex;
   flex-direction: column;
-  --header-height: 60px;
   height: 100vh;
-  border: 2px dashed red;
+  background: #f6f6f6;
 }
 
 .Header {
@@ -11,12 +10,26 @@
   align-items: center;
   justify-content: center;
   min-height: var(--header-height);
-  border: 2px dashed blue;
+  padding: 1.5rem;
 }
 
 .Main {
   flex-grow: 1;
-  border: 2px dashed green;
   min-height: calc(100vh - var(--header-height));
   overflow: auto;
 }
+
+/* ------------------- */
+
+.Container.Debug {
+  border: 2px dashed red;
+}
+
+.Debug .Header {
+  border: 2px dashed blue;
+}
+
+.Debug .Main {
+  border: 2px dashed green;
+}
+
