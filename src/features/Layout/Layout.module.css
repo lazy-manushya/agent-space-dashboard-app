@@ -5,17 +5,19 @@
 
 .Header {
   position: absolute;
+  top: 0;
   left: 0;
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   min-height: var(--header-height);
   padding: 1.5rem;
 }
 
 .Main {
   height: 100vh;
+  padding-top: var(--header-height);
 }
 
 /* ------------------- */
@@ -33,6 +35,12 @@
 }
 
 @media screen and (min-width: 768px) {
+  .NavMenu {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
   .Main {
     padding-top: var(--header-height);
   }
@@ -44,10 +52,15 @@
 
 @media screen and (max-width: 768px) {
   .Main {
-    padding-bottom: var(--header-height);
+    padding-bottom: 70px;
   }
 
-  .Header {
-    bottom: 0;
+  .NavMenu {
+    position: fixed;
+    bottom: 1rem;
+    left: 50%;
+    width: 100%;
+    max-width: 23.75rem;
+    transform: translateX(-50%);
   }
 }
