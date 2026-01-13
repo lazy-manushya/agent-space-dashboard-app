@@ -432,17 +432,56 @@ function DashboardPage({ className }: IDashboardPageProps) {
     </div>
   );
 
+  const tableJsx = (
+    <div className={styles.SubContainer}>
+      {loading && <p>Loading...</p>}
+      {error && <p style={{ color: "red" }}>Error: {error}</p>}
+      {!loading && !error && boeHeaders.length > 0 && (
+        <Table className={styles.Table}>
+          <TableHeader>
+            <Column>BE No</Column>
+            <Column>Year</Column>
+            <Column>IEC No</Column>
+            <Column>GST No</Column>
+            <Column>Port Code</Column>
+            <Column>BE Date</Column>
+            <Column>Packages</Column>
+            <Column>Gross Weight</Column>
+            <Column>Exchange Rate</Column>
+            <Column>Invoices</Column>
+            <Column>Items</Column>
+          </TableHeader>
+          <TableBody>
+            {boeHeaders.map((header) => (
+              <Row key={header.be_no}>
+                <Cell className={styles.Cell}>{header.be_no}</Cell>
+                <Cell className={styles.Cell}>{header.year}</Cell>
+                <Cell className={styles.Cell}>{header.iec_no}</Cell>
+                <Cell className={styles.Cell}>{header.gst_no}</Cell>
+                <Cell className={styles.Cell}>{header.port_code}</Cell>
+                <Cell className={styles.Cell}>{header.be_date}</Cell>
+                <Cell className={styles.Cell}>{header.pkg}</Cell>
+                <Cell className={styles.Cell}>{header.g_wt}</Cell>
+                <Cell className={styles.Cell}>{header.ex_rate}</Cell>
+                <Cell className={styles.Cell}>{header.no_of_invoices}</Cell>
+                <Cell className={styles.Cell}>{header.total_items}</Cell>
+              </Row>
+            ))}
+          </TableBody>
+        </Table>
+      )}
+    </div>
+  );
+
   return (
     <div className="container h-100">
       <div className={joinClassNames(className, styles.Container)}>
-        <Card title="Total Sales">240</Card>
-        <Card title="Section B">{filtersJsx}</Card>
-        <Card title="Welcome to the Dashboard">
-          This is the dashboard content.
+        <Card className={styles.StatCard}>
+          <span className={styles.Stat}>240</span>&nbsp;&nbsp;units
         </Card>
-        <Card title="Welcome to the Dashboard">
-          This is the dashboard content.
-        </Card>
+        <Card title="Stats">-</Card>
+        <Card title="Filters">{filtersJsx}</Card>
+        <Card title="Units">{tableJsx}</Card>
       </div>
     </div>
   );
@@ -452,45 +491,6 @@ function DashboardPage({ className }: IDashboardPageProps) {
       <h1>BOE Headers</h1>
 
       {/* Filter Section */}
-
-      <div className={styles.SubContainer}>
-        {loading && <p>Loading...</p>}
-        {error && <p style={{ color: "red" }}>Error: {error}</p>}
-        {!loading && !error && boeHeaders.length > 0 && (
-          <Table className={styles.Table}>
-            <TableHeader>
-              <Column>BE No</Column>
-              <Column>Year</Column>
-              <Column>IEC No</Column>
-              <Column>GST No</Column>
-              <Column>Port Code</Column>
-              <Column>BE Date</Column>
-              <Column>Packages</Column>
-              <Column>Gross Weight</Column>
-              <Column>Exchange Rate</Column>
-              <Column>Invoices</Column>
-              <Column>Items</Column>
-            </TableHeader>
-            <TableBody>
-              {boeHeaders.map((header) => (
-                <Row key={header.be_no}>
-                  <Cell className={styles.Cell}>{header.be_no}</Cell>
-                  <Cell className={styles.Cell}>{header.year}</Cell>
-                  <Cell className={styles.Cell}>{header.iec_no}</Cell>
-                  <Cell className={styles.Cell}>{header.gst_no}</Cell>
-                  <Cell className={styles.Cell}>{header.port_code}</Cell>
-                  <Cell className={styles.Cell}>{header.be_date}</Cell>
-                  <Cell className={styles.Cell}>{header.pkg}</Cell>
-                  <Cell className={styles.Cell}>{header.g_wt}</Cell>
-                  <Cell className={styles.Cell}>{header.ex_rate}</Cell>
-                  <Cell className={styles.Cell}>{header.no_of_invoices}</Cell>
-                  <Cell className={styles.Cell}>{header.total_items}</Cell>
-                </Row>
-              ))}
-            </TableBody>
-          </Table>
-        )}
-      </div>
     </div>
   );
 }
