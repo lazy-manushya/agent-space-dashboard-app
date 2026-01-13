@@ -3,7 +3,6 @@
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   border-radius: 10rem;
   background-color: #fff;
-  width: 100%;
 }
 
 .NavList {
@@ -74,4 +73,10 @@
 .Active .NavLink {
   color: #fff;
   font-weight: 600;
+}
+
+@media screen and (max-width: 768px) {
+  .Container {
+    width: 100%;
+  }
 }
