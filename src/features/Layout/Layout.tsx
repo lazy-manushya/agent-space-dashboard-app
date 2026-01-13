@@ -16,30 +16,32 @@ function Layout({ children, className }: ILayoutProps) {
         // , styles.Debug
       )}
     >
-      <header className={styles.Header}>
-        <Logo />
-        <NavMenu
-          className={styles.NavMenu}
-          navItems={[
-            {
-              title: "Home",
-              href: "/",
-              icon: <i className="las la-home" />,
-            },
-            {
-              title: "Invoices",
-              href: "/invoices",
-              icon: <i className="las la-receipt" />,
-            },
-            {
-              title: "Duties",
-              href: "/duties",
-              icon: <i className="las la-file-invoice" />,
-            },
-          ]}
-        />
-        <AlertsButton />
-      </header>
+      <div className="container position-relative">
+        <header className={joinClassNames(styles.Header)}>
+          <Logo />
+          <NavMenu
+            className={styles.NavMenu}
+            navItems={[
+              {
+                title: "Home",
+                href: "/",
+                icon: <i className="las la-home" />,
+              },
+              {
+                title: "Invoices",
+                href: "/invoices",
+                icon: <i className="las la-receipt" />,
+              },
+              {
+                title: "Duties",
+                href: "/duties",
+                icon: <i className="las la-file-invoice" />,
+              },
+            ]}
+          />
+          <AlertsButton />
+        </header>
+      </div>
       <main className={styles.Main}>{children}</main>
     </div>
   );
