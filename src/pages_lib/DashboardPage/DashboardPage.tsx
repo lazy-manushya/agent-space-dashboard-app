@@ -19,6 +19,10 @@ import { useBoeHeaders } from "@/services/Routing/hooks/BoeHeaders/useBoeHeaders
 import { useBoeHeadersMetadata } from "@/services/hooks/useBoeHeadersMetadata";
 import TextField from "@/components/TextField";
 import Button from "@/components/Button";
+import Select from "@/components/Select";
+import Label from "@/components/Label";
+import FieldGroup from "@/components/FieldGroup";
+import Text from "@/components/Text";
 
 function DashboardPage({ className }: IDashboardPageProps) {
   // Filter states
@@ -78,11 +82,12 @@ function DashboardPage({ className }: IDashboardPageProps) {
     });
   };
 
-  const handleMinGWeightChange = (value: string) => {
-    setSelectedMinGWeight(value);
+  const handleMinGWeightChange = (value: string | number) => {
+    const stringValue = String(value);
+    setSelectedMinGWeight(stringValue);
     const newFilters: any = {
       ...filters,
-      min_g_weight: value || undefined,
+      min_g_weight: stringValue || undefined,
     };
     // Remove undefined values
     Object.keys(newFilters).forEach(
@@ -96,11 +101,12 @@ function DashboardPage({ className }: IDashboardPageProps) {
     });
   };
 
-  const handleMaxGWeightChange = (value: string) => {
-    setSelectedMaxGWeight(value);
+  const handleMaxGWeightChange = (value: string | number) => {
+    const stringValue = String(value);
+    setSelectedMaxGWeight(stringValue);
     const newFilters: any = {
       ...filters,
-      max_g_weight: value || undefined,
+      max_g_weight: stringValue || undefined,
     };
     // Remove undefined values
     Object.keys(newFilters).forEach(
@@ -114,11 +120,12 @@ function DashboardPage({ className }: IDashboardPageProps) {
     });
   };
 
-  const handleMinYearChange = (value: string) => {
-    setSelectedMinYear(value);
+  const handleMinYearChange = (value: string | number) => {
+    const stringValue = String(value);
+    setSelectedMinYear(stringValue);
     const newFilters: any = {
       ...filters,
-      min_year: value || undefined,
+      min_year: stringValue || undefined,
     };
     // Remove undefined values
     Object.keys(newFilters).forEach(
@@ -132,11 +139,12 @@ function DashboardPage({ className }: IDashboardPageProps) {
     });
   };
 
-  const handleMaxYearChange = (value: string) => {
-    setSelectedMaxYear(value);
+  const handleMaxYearChange = (value: string | number) => {
+    const stringValue = String(value);
+    setSelectedMaxYear(stringValue);
     const newFilters: any = {
       ...filters,
-      max_year: value || undefined,
+      max_year: stringValue || undefined,
     };
     // Remove undefined values
     Object.keys(newFilters).forEach(
@@ -150,11 +158,12 @@ function DashboardPage({ className }: IDashboardPageProps) {
     });
   };
 
-  const handleMinExRateChange = (value: string) => {
-    setSelectedMinExRate(value);
+  const handleMinExRateChange = (value: string | number) => {
+    const stringValue = String(value);
+    setSelectedMinExRate(stringValue);
     const newFilters: any = {
       ...filters,
-      min_ex_rate: value || undefined,
+      min_ex_rate: stringValue || undefined,
     };
     // Remove undefined values
     Object.keys(newFilters).forEach(
@@ -168,11 +177,12 @@ function DashboardPage({ className }: IDashboardPageProps) {
     });
   };
 
-  const handleMaxExRateChange = (value: string) => {
-    setSelectedMaxExRate(value);
+  const handleMaxExRateChange = (value: string | number) => {
+    const stringValue = String(value);
+    setSelectedMaxExRate(stringValue);
     const newFilters: any = {
       ...filters,
-      max_ex_rate: value || undefined,
+      max_ex_rate: stringValue || undefined,
     };
     // Remove undefined values
     Object.keys(newFilters).forEach(
@@ -186,28 +196,30 @@ function DashboardPage({ className }: IDashboardPageProps) {
     });
   };
 
-  const handlePortChange = (value: string) => {
-    setSelectedPort(value);
+  const handlePortChange = (value: string | number) => {
+    const stringValue = String(value);
+    setSelectedPort(stringValue);
     refetch({
       page: 1,
       limit: 100,
       search: searchTerm || undefined,
       filters: {
         ...filters,
-        port_code: value || "",
+        port_code: stringValue || "",
       },
     });
   };
 
-  const handleInvoicesChange = (value: string) => {
-    setSelectedInvoices(value);
+  const handleInvoicesChange = (value: string | number) => {
+    const stringValue = String(value);
+    setSelectedInvoices(stringValue);
     refetch({
       page: 1,
       limit: 100,
       search: searchTerm || undefined,
       filters: {
         ...filters,
-        no_of_invoices: value || "",
+        no_of_invoices: stringValue || "",
       },
     });
   };
@@ -229,8 +241,8 @@ function DashboardPage({ className }: IDashboardPageProps) {
 
   const filtersJsx = (
     <div className={styles.FilterSection}>
-      <div className={styles.FilterGroup}>
-        <label htmlFor="search-box">Search:</label>
+      <FieldGroup className={styles.FilterGroup}>
+        <Label htmlFor="search-box">Search:</Label>
         <TextField
           className={styles.SearchInput}
           id="search-box"
@@ -239,188 +251,172 @@ function DashboardPage({ className }: IDashboardPageProps) {
           value={searchTerm}
           onChange={(value) => handleSearch(value)}
         />
-      </div>
+      </FieldGroup>
 
-      <div className={styles.FilterGroup}>
-        <label htmlFor="year-filter">Min Year:</label>
-        <select
-          id="year-filter"
+      <FieldGroup className={styles.FilterGroup}>
+        <Label>Min Year:</Label>
+        <Select
+          label="Min Year"
+          placeholder="All Years"
           value={selectedMinYear}
-          onChange={(e) => handleMinYearChange(e.target.value)}
-          className={styles.FilterSelect}
-        >
-          <option value="">All Years</option>
-          {metadataLoading ? (
-            <option disabled>Loading years...</option>
-          ) : metadataError ? (
-            <option disabled>Error loading years</option>
-          ) : (
-            metadata?.years.map((year) => (
-              <option key={year} value={year}>
-                {year}
-              </option>
-            ))
-          )}
-        </select>
-      </div>
-      <div className={styles.FilterGroup}>
-        <label htmlFor="year-filter">Max Year:</label>
-        <select
-          id="year-filter"
+          onChange={handleMinYearChange}
+          items={[
+            { label: "All Years", value: "" },
+            ...(metadataLoading
+              ? [{ label: "Loading years...", value: "loading" }]
+              : metadataError
+              ? [{ label: "Error loading years", value: "error" }]
+              : (metadata?.years || []).map((year: any) => ({
+                  label: String(year),
+                  value: String(year),
+                }))),
+          ]}
+        />
+      </FieldGroup>
+      <FieldGroup className={styles.FilterGroup}>
+        <Label>Max Year:</Label>
+        <Select
+          label="Max Year"
+          placeholder="All Years"
           value={selectedMaxYear}
-          onChange={(e) => handleMaxYearChange(e.target.value)}
-          className={styles.FilterSelect}
-        >
-          <option value="">All Years</option>
-          {metadataLoading ? (
-            <option disabled>Loading years...</option>
-          ) : metadataError ? (
-            <option disabled>Error loading years</option>
-          ) : (
-            metadata?.years.map((year) => (
-              <option key={year} value={year}>
-                {year}
-              </option>
-            ))
-          )}
-        </select>
-      </div>
+          onChange={handleMaxYearChange}
+          items={[
+            { label: "All Years", value: "" },
+            ...(metadataLoading
+              ? [{ label: "Loading years...", value: "loading" }]
+              : metadataError
+              ? [{ label: "Error loading years", value: "error" }]
+              : (metadata?.years || []).map((year: any) => ({
+                  label: String(year),
+                  value: String(year),
+                }))),
+          ]}
+        />
+      </FieldGroup>
 
-      <div className={styles.FilterGroup}>
-        <label htmlFor="gross-weight-filter">Min Gross Weight:</label>
-        <select
-          id="gross-weight-filter"
+      <FieldGroup className={styles.FilterGroup}>
+        <Label>Min Gross Weight:</Label>
+        <Select
+          label="Min Gross Weight"
+          placeholder="All Gross Weights"
           value={selectedMinGWeight}
-          onChange={(e) => handleMinGWeightChange(e.target.value)}
-          className={styles.FilterSelect}
-        >
-          <option value="">All Gross Weights</option>
-          {metadataLoading ? (
-            <option disabled>Loading Gross Weights...</option>
-          ) : metadataError ? (
-            <option disabled>Error loading Gross Weights</option>
-          ) : (
-            metadata?.grossWeights.map((grossWeight) => (
-              <option key={grossWeight} value={grossWeight}>
-                {grossWeight}
-              </option>
-            ))
-          )}
-        </select>
-      </div>
-      <div className={styles.FilterGroup}>
-        <label htmlFor="gross-weight-filter">Max Gross Weight:</label>
-        <select
-          id="gross-weight-filter"
+          onChange={handleMinGWeightChange}
+          items={[
+            { label: "All Gross Weights", value: "" },
+            ...(metadataLoading
+              ? [{ label: "Loading Gross Weights...", value: "loading" }]
+              : metadataError
+              ? [{ label: "Error loading Gross Weights", value: "error" }]
+              : (metadata?.grossWeights || []).map((grossWeight: any) => ({
+                  label: String(grossWeight),
+                  value: String(grossWeight),
+                }))),
+          ]}
+        />
+      </FieldGroup>
+      <FieldGroup className={styles.FilterGroup}>
+        <Label>Max Gross Weight:</Label>
+        <Select
+          label="Max Gross Weight"
+          placeholder="All Gross Weights"
           value={selectedMaxGWeight}
-          onChange={(e) => handleMaxGWeightChange(e.target.value)}
-          className={styles.FilterSelect}
-        >
-          <option value="">All Gross Weights</option>
-          {metadataLoading ? (
-            <option disabled>Loading Gross Weights...</option>
-          ) : metadataError ? (
-            <option disabled>Error loading Gross Weights</option>
-          ) : (
-            metadata?.grossWeights.map((grossWeight) => (
-              <option key={grossWeight} value={grossWeight}>
-                {grossWeight}
-              </option>
-            ))
-          )}
-        </select>
-      </div>
+          onChange={handleMaxGWeightChange}
+          items={[
+            { label: "All Gross Weights", value: "" },
+            ...(metadataLoading
+              ? [{ label: "Loading Gross Weights...", value: "loading" }]
+              : metadataError
+              ? [{ label: "Error loading Gross Weights", value: "error" }]
+              : (metadata?.grossWeights || []).map((grossWeight: any) => ({
+                  label: String(grossWeight),
+                  value: String(grossWeight),
+                }))),
+          ]}
+        />
+      </FieldGroup>
 
-      <div className={styles.FilterGroup}>
-        <label htmlFor="exchange-rate-filter">Min Exchange Rate:</label>
-        <select
-          id="exchange-rate-filter"
+      <FieldGroup className={styles.FilterGroup}>
+        <Label>Min Exchange Rate:</Label>
+        <Select
+          label="Min Exchange Rate"
+          placeholder="All Exchange Rates"
           value={selectedMinExRate}
-          onChange={(e) => handleMinExRateChange(e.target.value)}
-          className={styles.FilterSelect}
-        >
-          <option value="">All Exchange Rates</option>
-          {metadataLoading ? (
-            <option disabled>Loading Exchange Rates...</option>
-          ) : metadataError ? (
-            <option disabled>Error loading Exchange Rates</option>
-          ) : (
-            metadata?.exchangeRates.map((exchangeRate) => (
-              <option key={exchangeRate} value={exchangeRate}>
-                {exchangeRate}
-              </option>
-            ))
-          )}
-        </select>
-      </div>
-      <div className={styles.FilterGroup}>
-        <label htmlFor="exchange-rate-filter">Max Exchange Rate:</label>
-        <select
-          id="exchange-rate-filter"
+          onChange={handleMinExRateChange}
+          items={[
+            { label: "All Exchange Rates", value: "" },
+            ...(metadataLoading
+              ? [{ label: "Loading Exchange Rates...", value: "loading" }]
+              : metadataError
+              ? [{ label: "Error loading Exchange Rates", value: "error" }]
+              : (metadata?.exchangeRates || []).map((exchangeRate: any) => ({
+                  label: String(exchangeRate),
+                  value: String(exchangeRate),
+                }))),
+          ]}
+        />
+      </FieldGroup>
+      <FieldGroup className={styles.FilterGroup}>
+        <Label>Max Exchange Rate:</Label>
+        <Select
+          label="Max Exchange Rate"
+          placeholder="All Exchange Rates"
           value={selectedMaxExRate}
-          onChange={(e) => handleMaxExRateChange(e.target.value)}
-          className={styles.FilterSelect}
-        >
-          <option value="">All Exchange Rates</option>
-          {metadataLoading ? (
-            <option disabled>Loading Exchange Rates...</option>
-          ) : metadataError ? (
-            <option disabled>Error loading Exchange Rates</option>
-          ) : (
-            metadata?.exchangeRates.map((exchangeRate) => (
-              <option key={exchangeRate} value={exchangeRate}>
-                {exchangeRate}
-              </option>
-            ))
-          )}
-        </select>
-      </div>
+          onChange={handleMaxExRateChange}
+          items={[
+            { label: "All Exchange Rates", value: "" },
+            ...(metadataLoading
+              ? [{ label: "Loading Exchange Rates...", value: "loading" }]
+              : metadataError
+              ? [{ label: "Error loading Exchange Rates", value: "error" }]
+              : (metadata?.exchangeRates || []).map((exchangeRate: any) => ({
+                  label: String(exchangeRate),
+                  value: String(exchangeRate),
+                }))),
+          ]}
+        />
+      </FieldGroup>
 
-      <div className={styles.FilterGroup}>
-        <label htmlFor="port-filter">Port Code:</label>
-        <select
-          id="port-filter"
+      <FieldGroup className={styles.FilterGroup}>
+        <Label>Port Code:</Label>
+        <Select
+          label="Port Code"
+          placeholder="All Ports"
           value={selectedPort}
-          onChange={(e) => handlePortChange(e.target.value)}
-          className={styles.FilterSelect}
-        >
-          <option value="">All Ports</option>
-          {metadataLoading ? (
-            <option disabled>Loading ports...</option>
-          ) : metadataError ? (
-            <option disabled>Error loading ports</option>
-          ) : (
-            metadata?.portCodes.map((port) => (
-              <option key={port} value={port}>
-                {port}
-              </option>
-            ))
-          )}
-        </select>
-      </div>
+          onChange={handlePortChange}
+          items={[
+            { label: "All Ports", value: "" },
+            ...(metadataLoading
+              ? [{ label: "Loading ports...", value: "loading" }]
+              : metadataError
+              ? [{ label: "Error loading ports", value: "error" }]
+              : (metadata?.portCodes || []).map((port: any) => ({
+                  label: String(port),
+                  value: String(port),
+                }))),
+          ]}
+        />
+      </FieldGroup>
 
-      <div className={styles.FilterGroup}>
-        <label htmlFor="invoices">Invoices:</label>
-        <select
-          id="invoices"
+      <FieldGroup className={styles.FilterGroup}>
+        <Label>Invoices:</Label>
+        <Select
+          label="Invoices"
+          placeholder="All Invoices"
           value={selectedInvoices}
-          onChange={(e) => handleInvoicesChange(e.target.value)}
-          className={styles.FilterSelect}
-        >
-          <option value="">All Invoices</option>
-          {metadataLoading ? (
-            <option disabled>Loading Invoices...</option>
-          ) : metadataError ? (
-            <option disabled>Error loading invoices</option>
-          ) : (
-            metadata?.invoices.map((invoice) => (
-              <option key={invoice} value={invoice}>
-                {invoice}
-              </option>
-            ))
-          )}
-        </select>
-      </div>
+          onChange={handleInvoicesChange}
+          items={[
+            { label: "All Invoices", value: "" },
+            ...(metadataLoading
+              ? [{ label: "Loading Invoices...", value: "loading" }]
+              : metadataError
+              ? [{ label: "Error loading invoices", value: "error" }]
+              : (metadata?.invoices || []).map((invoice: any) => ({
+                  label: String(invoice),
+                  value: String(invoice),
+                }))),
+          ]}
+        />
+      </FieldGroup>
 
       <Button
         onClick={handleClearFilters}
@@ -434,8 +430,8 @@ function DashboardPage({ className }: IDashboardPageProps) {
 
   const tableJsx = (
     <div className={styles.SubContainer}>
-      {loading && <p>Loading...</p>}
-      {error && <p style={{ color: "red" }}>Error: {error}</p>}
+      {loading && <Text>Loading...</Text>}
+      {error && <Text style={{ color: "red" }}>Error: {error}</Text>}
       {!loading && !error && boeHeaders.length > 0 && (
         <Table className={styles.Table}>
           <TableHeader>
