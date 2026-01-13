@@ -1,2 +1,2 @@
-export { default as RoutingProvider } from "./Routing.context";
 export * from "./hooks"
+export * from "./Routing.context"

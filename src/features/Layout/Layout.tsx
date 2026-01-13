@@ -6,9 +6,33 @@ import styles from "./Layout.module.css";
 
 function Layout({ children, className }: ILayoutProps) {
   return (
-    <div className={joinClassNames(className, styles.Container)}>
+    <div
+      className={joinClassNames(
+        className,
+        styles.Container
+        // , styles.Debug
+      )}
+    >
       <header className={styles.Header}>
-        <NavMenu />
+        <NavMenu
+          navItems={[
+            {
+              title: "Home",
+              href: "/",
+              icon: <i className="las la-home" />
+            },
+            {
+              title: "Invoices",
+              href: "/invoices",
+              icon: <i className="las la-receipt" />
+            },
+            {
+              title: "Duties",
+              href: "/duties",
+              icon: <i className="las la-file-invoice" />
+            },
+          ]}
+        />
       </header>
       <main className={styles.Main}>{children}</main>
     </div>

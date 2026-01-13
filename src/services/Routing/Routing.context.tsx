@@ -12,7 +12,7 @@ declare module "react-aria-components" {
   }
 }
 
-function RoutingProvider({ children }: { children: ReactNode }) {
+export function RoutingProvider({ children }: { children: ReactNode }) {
   const router = useRouter();
 
   return (
@@ -21,5 +21,3 @@ function RoutingProvider({ children }: { children: ReactNode }) {
     </ReactAriaRouterProvider>
   );
 }
-
-export default RoutingProvider;

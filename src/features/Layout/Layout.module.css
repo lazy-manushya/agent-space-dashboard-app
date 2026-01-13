@@ -1,22 +1,53 @@
 .Container {
-  display: flex;
-  flex-direction: column;
-  --header-height: 60px;
-  height: 100vh;
-  border: 2px dashed red;
+  background: #f6f6f6;
+  --header-height: 104px;
 }
 
 .Header {
+  position: absolute;
+  left: 0;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   min-height: var(--header-height);
-  border: 2px dashed blue;
+  padding: 1.5rem;
 }
 
 .Main {
-  flex-grow: 1;
+  height: 100vh;
+}
+
+/* ------------------- */
+
+.Container.Debug {
+  border: 2px dashed red;
+}
+
+.Debug .Header {
+  border: 2px dashed blue;
+}
+
+.Debug .Main {
   border: 2px dashed green;
-  min-height: calc(100vh - var(--header-height));
-  overflow: auto;
+}
+
+@media screen and (min-width: 768px) {
+  .Main {
+    padding-top: var(--header-height);
+  }
+
+  .Header {
+    top: 0;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .Main {
+    padding-bottom: var(--header-height);
+  }
+
+  .Header {
+    bottom: 0;
+  }
 }
