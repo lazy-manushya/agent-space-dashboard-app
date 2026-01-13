@@ -1,0 +1,7 @@
+.Label {
+  display: inline-block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--clr-text);
+  margin-bottom: 0.25rem;
+}
