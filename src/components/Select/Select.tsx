@@ -32,7 +32,7 @@ function Select({
           placeholder={placeholder}
           selectedKey={value}
           onSelectionChange={(value) => {
-            if (value && onChange) {
+            if (value !== null && value !== undefined && onChange) {
               onChange(value.toString());
             }
           }}
@@ -51,7 +51,7 @@ function Select({
           <Popover className={styles.Popover} offset={8}>
             <ListBox className={styles.ListBox}>
               {items.map(({ label, value }) => (
-                <ListBoxItem key={value} className={styles.ListBoxItem}>
+                <ListBoxItem key={value} id={value} className={styles.ListBoxItem}>
                   {label}
                 </ListBoxItem>
               ))}

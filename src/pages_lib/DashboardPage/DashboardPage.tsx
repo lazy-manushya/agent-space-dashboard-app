@@ -74,25 +74,35 @@ function DashboardPage({ className }: IDashboardPageProps) {
   // Handle filter changes
   const handleSearch = (value: string) => {
     setSearchTerm(value);
+    const newFilters: any = {};
+    if (selectedMinYear) newFilters.min_year = selectedMinYear;
+    if (selectedMaxYear) newFilters.max_year = selectedMaxYear;
+    if (selectedMinGWeight) newFilters.min_g_weight = selectedMinGWeight;
+    if (selectedMaxGWeight) newFilters.max_g_weight = selectedMaxGWeight;
+    if (selectedMinExRate) newFilters.min_ex_rate = selectedMinExRate;
+    if (selectedMaxExRate) newFilters.max_ex_rate = selectedMaxExRate;
+    if (selectedPort) newFilters.port_code = selectedPort;
+    if (selectedInvoices) newFilters.no_of_invoices = selectedInvoices;
     refetch({
       page: 1,
       limit: 100,
       search: value || undefined,
-      filters: Object.keys(filters).length > 0 ? filters : undefined,
+      filters: Object.keys(newFilters).length > 0 ? newFilters : undefined,
     });
   };
 
   const handleMinGWeightChange = (value: string | number) => {
     const stringValue = String(value);
     setSelectedMinGWeight(stringValue);
-    const newFilters: any = {
-      ...filters,
-      min_g_weight: stringValue || undefined,
-    };
-    // Remove undefined values
-    Object.keys(newFilters).forEach(
-      (key) => newFilters[key] === undefined && delete newFilters[key]
-    );
+    const newFilters: any = {};
+    if (selectedMinYear) newFilters.min_year = selectedMinYear;
+    if (selectedMaxYear) newFilters.max_year = selectedMaxYear;
+    if (stringValue) newFilters.min_g_weight = stringValue;
+    if (selectedMaxGWeight) newFilters.max_g_weight = selectedMaxGWeight;
+    if (selectedMinExRate) newFilters.min_ex_rate = selectedMinExRate;
+    if (selectedMaxExRate) newFilters.max_ex_rate = selectedMaxExRate;
+    if (selectedPort) newFilters.port_code = selectedPort;
+    if (selectedInvoices) newFilters.no_of_invoices = selectedInvoices;
     refetch({
       page: 1,
       limit: 100,
@@ -104,14 +114,15 @@ function DashboardPage({ className }: IDashboardPageProps) {
   const handleMaxGWeightChange = (value: string | number) => {
     const stringValue = String(value);
     setSelectedMaxGWeight(stringValue);
-    const newFilters: any = {
-      ...filters,
-      max_g_weight: stringValue || undefined,
-    };
-    // Remove undefined values
-    Object.keys(newFilters).forEach(
-      (key) => newFilters[key] === undefined && delete newFilters[key]
-    );
+    const newFilters: any = {};
+    if (selectedMinYear) newFilters.min_year = selectedMinYear;
+    if (selectedMaxYear) newFilters.max_year = selectedMaxYear;
+    if (selectedMinGWeight) newFilters.min_g_weight = selectedMinGWeight;
+    if (stringValue) newFilters.max_g_weight = stringValue;
+    if (selectedMinExRate) newFilters.min_ex_rate = selectedMinExRate;
+    if (selectedMaxExRate) newFilters.max_ex_rate = selectedMaxExRate;
+    if (selectedPort) newFilters.port_code = selectedPort;
+    if (selectedInvoices) newFilters.no_of_invoices = selectedInvoices;
     refetch({
       page: 1,
       limit: 100,
@@ -122,15 +133,18 @@ function DashboardPage({ className }: IDashboardPageProps) {
 
   const handleMinYearChange = (value: string | number) => {
     const stringValue = String(value);
+    console.log("handleMinYearChange called with:", value, "stringValue:", stringValue);
     setSelectedMinYear(stringValue);
-    const newFilters: any = {
-      ...filters,
-      min_year: stringValue || undefined,
-    };
-    // Remove undefined values
-    Object.keys(newFilters).forEach(
-      (key) => newFilters[key] === undefined && delete newFilters[key]
-    );
+    const newFilters: any = {};
+    if (stringValue) newFilters.min_year = stringValue;
+    if (selectedMaxYear) newFilters.max_year = selectedMaxYear;
+    if (selectedMinGWeight) newFilters.min_g_weight = selectedMinGWeight;
+    if (selectedMaxGWeight) newFilters.max_g_weight = selectedMaxGWeight;
+    if (selectedMinExRate) newFilters.min_ex_rate = selectedMinExRate;
+    if (selectedMaxExRate) newFilters.max_ex_rate = selectedMaxExRate;
+    if (selectedPort) newFilters.port_code = selectedPort;
+    if (selectedInvoices) newFilters.no_of_invoices = selectedInvoices;
+    console.log("Refetching with filters:", newFilters);
     refetch({
       page: 1,
       limit: 100,
@@ -141,15 +155,18 @@ function DashboardPage({ className }: IDashboardPageProps) {
 
   const handleMaxYearChange = (value: string | number) => {
     const stringValue = String(value);
+    console.log("handleMaxYearChange called with:", value, "stringValue:", stringValue);
     setSelectedMaxYear(stringValue);
-    const newFilters: any = {
-      ...filters,
-      max_year: stringValue || undefined,
-    };
-    // Remove undefined values
-    Object.keys(newFilters).forEach(
-      (key) => newFilters[key] === undefined && delete newFilters[key]
-    );
+    const newFilters: any = {};
+    if (selectedMinYear) newFilters.min_year = selectedMinYear;
+    if (stringValue) newFilters.max_year = stringValue;
+    if (selectedMinGWeight) newFilters.min_g_weight = selectedMinGWeight;
+    if (selectedMaxGWeight) newFilters.max_g_weight = selectedMaxGWeight;
+    if (selectedMinExRate) newFilters.min_ex_rate = selectedMinExRate;
+    if (selectedMaxExRate) newFilters.max_ex_rate = selectedMaxExRate;
+    if (selectedPort) newFilters.port_code = selectedPort;
+    if (selectedInvoices) newFilters.no_of_invoices = selectedInvoices;
+    console.log("Refetching with filters:", newFilters);
     refetch({
       page: 1,
       limit: 100,
@@ -161,14 +178,15 @@ function DashboardPage({ className }: IDashboardPageProps) {
   const handleMinExRateChange = (value: string | number) => {
     const stringValue = String(value);
     setSelectedMinExRate(stringValue);
-    const newFilters: any = {
-      ...filters,
-      min_ex_rate: stringValue || undefined,
-    };
-    // Remove undefined values
-    Object.keys(newFilters).forEach(
-      (key) => newFilters[key] === undefined && delete newFilters[key]
-    );
+    const newFilters: any = {};
+    if (selectedMinYear) newFilters.min_year = selectedMinYear;
+    if (selectedMaxYear) newFilters.max_year = selectedMaxYear;
+    if (selectedMinGWeight) newFilters.min_g_weight = selectedMinGWeight;
+    if (selectedMaxGWeight) newFilters.max_g_weight = selectedMaxGWeight;
+    if (stringValue) newFilters.min_ex_rate = stringValue;
+    if (selectedMaxExRate) newFilters.max_ex_rate = selectedMaxExRate;
+    if (selectedPort) newFilters.port_code = selectedPort;
+    if (selectedInvoices) newFilters.no_of_invoices = selectedInvoices;
     refetch({
       page: 1,
       limit: 100,
@@ -180,14 +198,15 @@ function DashboardPage({ className }: IDashboardPageProps) {
   const handleMaxExRateChange = (value: string | number) => {
     const stringValue = String(value);
     setSelectedMaxExRate(stringValue);
-    const newFilters: any = {
-      ...filters,
-      max_ex_rate: stringValue || undefined,
-    };
-    // Remove undefined values
-    Object.keys(newFilters).forEach(
-      (key) => newFilters[key] === undefined && delete newFilters[key]
-    );
+    const newFilters: any = {};
+    if (selectedMinYear) newFilters.min_year = selectedMinYear;
+    if (selectedMaxYear) newFilters.max_year = selectedMaxYear;
+    if (selectedMinGWeight) newFilters.min_g_weight = selectedMinGWeight;
+    if (selectedMaxGWeight) newFilters.max_g_weight = selectedMaxGWeight;
+    if (selectedMinExRate) newFilters.min_ex_rate = selectedMinExRate;
+    if (stringValue) newFilters.max_ex_rate = stringValue;
+    if (selectedPort) newFilters.port_code = selectedPort;
+    if (selectedInvoices) newFilters.no_of_invoices = selectedInvoices;
     refetch({
       page: 1,
       limit: 100,
@@ -199,28 +218,40 @@ function DashboardPage({ className }: IDashboardPageProps) {
   const handlePortChange = (value: string | number) => {
     const stringValue = String(value);
     setSelectedPort(stringValue);
+    const newFilters: any = {};
+    if (selectedMinYear) newFilters.min_year = selectedMinYear;
+    if (selectedMaxYear) newFilters.max_year = selectedMaxYear;
+    if (selectedMinGWeight) newFilters.min_g_weight = selectedMinGWeight;
+    if (selectedMaxGWeight) newFilters.max_g_weight = selectedMaxGWeight;
+    if (selectedMinExRate) newFilters.min_ex_rate = selectedMinExRate;
+    if (selectedMaxExRate) newFilters.max_ex_rate = selectedMaxExRate;
+    if (stringValue) newFilters.port_code = stringValue;
+    if (selectedInvoices) newFilters.no_of_invoices = selectedInvoices;
     refetch({
       page: 1,
       limit: 100,
       search: searchTerm || undefined,
-      filters: {
-        ...filters,
-        port_code: stringValue || "",
-      },
+      filters: Object.keys(newFilters).length > 0 ? newFilters : undefined,
     });
   };
 
   const handleInvoicesChange = (value: string | number) => {
     const stringValue = String(value);
     setSelectedInvoices(stringValue);
+    const newFilters: any = {};
+    if (selectedMinYear) newFilters.min_year = selectedMinYear;
+    if (selectedMaxYear) newFilters.max_year = selectedMaxYear;
+    if (selectedMinGWeight) newFilters.min_g_weight = selectedMinGWeight;
+    if (selectedMaxGWeight) newFilters.max_g_weight = selectedMaxGWeight;
+    if (selectedMinExRate) newFilters.min_ex_rate = selectedMinExRate;
+    if (selectedMaxExRate) newFilters.max_ex_rate = selectedMaxExRate;
+    if (selectedPort) newFilters.port_code = selectedPort;
+    if (stringValue) newFilters.no_of_invoices = stringValue;
     refetch({
       page: 1,
       limit: 100,
       search: searchTerm || undefined,
-      filters: {
-        ...filters,
-        no_of_invoices: stringValue || "",
-      },
+      filters: Object.keys(newFilters).length > 0 ? newFilters : undefined,
     });
   };
 
@@ -233,6 +264,7 @@ function DashboardPage({ className }: IDashboardPageProps) {
     setSelectedMinExRate("");
     setSelectedMaxExRate("");
     setSelectedPort("");
+    setSelectedInvoices("");
     refetch({
       page: 1,
       limit: 100,
