@@ -1,4 +1,82 @@
 .Container {
-    padding: 1rem;
-    border: 1px solid red;
+  padding: 0.45rem 0.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border-radius: 10rem;
+  background-color: #fff;
+}
+
+.NavList {
+  position: relative;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  position: relative;
+  z-index: 1;
+}
+
+.NavItem {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  z-index: 3;
+}
+
+.NavLink {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  color: inherit;
+  transition: color 0.2s ease;
+  position: relative;
+  z-index: 2;
+}
+
+.Icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  font-size: 1.25em;
+}
+
+.Title {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.Indicator {
+  position: absolute;
+  background-color: #000;
+  border-radius: 10rem;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1;
+  pointer-events: none;
+  animation: fadeIn 1s ease forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.Active .NavLink {
+  color: #fff;
+  font-weight: 600;
+}
+
+@media screen and (max-width: 768px) {
+  .Container {
+    width: 100%;
+  }
 }
