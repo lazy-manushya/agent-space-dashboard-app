@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { joinClassNames } from "@/utils";
 
+import Card from "@/components/Card";
+
 import { IDashboardPageProps } from "./DashboardPage.types";
 import styles from "./DashboardPage.module.css";
 import {
@@ -224,6 +226,23 @@ function DashboardPage({ className }: IDashboardPageProps) {
       limit: 100,
     });
   };
+
+  return   <div className="container h-100">
+      <div className={joinClassNames(className, styles.Container)}>
+        <Card title="Total Sales">
+          240
+        </Card>
+        <Card title="Section B">
+          This is the dashboard content.
+        </Card>
+        <Card title="Welcome to the Dashboard">
+          This is the dashboard content.
+        </Card>
+        <Card title="Welcome to the Dashboard">
+          This is the dashboard content.
+        </Card>
+      </div>
+    </div>
 
   return (
     <div className={joinClassNames(className, styles.Container)}>
