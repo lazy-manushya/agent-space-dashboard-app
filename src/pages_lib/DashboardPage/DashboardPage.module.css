@@ -1,7 +1,7 @@
 .Container {
-    padding: 1rem;
-    border: 1px solid red;
-    min-height: 200vh;
+  padding: 1rem;
+  border: 1px solid red;
+  min-height: 200vh;
 }
 
 .FilterSection {
@@ -109,9 +109,25 @@
 }
 
 .Cell {
-    text-align: center;
+  text-align: center;
 }
 
 .Table tbody .Tr:last-child {
   border-bottom: none;
+}
+
+/* -------------------------------- */
+
+.Container {
+  display: grid;
+  gap: 1.125rem;
+  height: 100%;
+}
+
+@media screen and (min-width: 768px) {
+  .Container {
+    gap: 1.5rem;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: 160px 1fr;
+  }
 }
