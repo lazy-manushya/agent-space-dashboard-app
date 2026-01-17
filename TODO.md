@@ -4,6 +4,26 @@
 - Always Update this file in the development branch.
 - Keep it always up to date.
 
+## Phases
+### PHASE 1: Foundation & Technical Readiness
+Objectives: Eliminate technical risks; Establish a stable development foundation
+Deliverables:
+* Project skeleton (frontend + backend)
+* Base UI layout and navigation
+* Initial database schema
+Outcome: System is deployable and ready for feature development.
+
+### PHASE 2: BOE Search & Core Flow
+Objectives: Deliver first business-visible functionality
+Deliverables:
+* BOE Search screen
+* Search APIs with filters and pagination
+* Accounts Summary view
+* Role-based data visibility
+* Error and empty-state handling
+Outcome: End-to-end BOE Search → Accounts Summary flow available for demo.
+
+
 ## Todo / To pick
 
 - [ ] Adding global search feature
