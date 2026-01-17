@@ -10,6 +10,7 @@ export interface IBoeHeader {
   port_code: string;
   be_date: string;
   g_wt: number;
+  pkg: number;
   ex_rate: number;
   no_of_invoices: number;
   total_items: number;

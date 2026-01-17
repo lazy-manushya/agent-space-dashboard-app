@@ -27,8 +27,8 @@ import {
   TableBody,
   TableHeader,
 } from "react-aria-components";
-import { useBoeHeaders } from "@/services/hooks/BoeHeaders/useBoeHeaders";
-import { useBoeHeadersMetadata } from "@/services/hooks/BoeHeadersMetadata/useBoeHeadersMetadata";
+import { useBoeHeaders } from "@/services/hooks/BoeHeaders";
+import { useBoeHeadersMetadata } from "@/services/hooks/BoeHeadersMetadata";
 
 function DashboardPage({ className }: IDashboardPageProps) {
   const now = today(getLocalTimeZone());
