@@ -40,11 +40,11 @@ function DashboardPage({ className }: IDashboardPageProps) {
   const [selectedPort, setSelectedPort] = useState<string>("");
   const [selectedInvoices, setSelectedInvoices] = useState<string>("");
   const [dateRange, setDateRange] = useState<{
-    start: DateValue;
-    end: DateValue;
+    start: DateValue | null;
+    end: DateValue | null;
   }>({
-    start: now.subtract({ days: 30 }),
-    end: now,
+    start: null,
+    end: null,
   });
 
   // Fetch metadata (unique values for filters)
@@ -247,7 +247,18 @@ function DashboardPage({ className }: IDashboardPageProps) {
   const handleDateRangeChange = (value: { start: DateValue; end: DateValue } | null) => {
     if (value) {
       setDateRange(value);
-      const newFilters = buildFilters();
+
+      // Build filters with the new date range values
+      const newFilters: Record<string, string | number> = {};
+      if (selectedMinYear) newFilters.min_year = selectedMinYear;
+      if (selectedMaxYear) newFilters.max_year = selectedMaxYear;
+      if (selectedMinGWeight) newFilters.min_g_weight = selectedMinGWeight;
+      if (selectedMaxGWeight) newFilters.max_g_weight = selectedMaxGWeight;
+      if (selectedMinExRate) newFilters.min_ex_rate = selectedMinExRate;
+      if (selectedMaxExRate) newFilters.max_ex_rate = selectedMaxExRate;
+      if (selectedPort) newFilters.port_code = selectedPort;
+      if (selectedInvoices) newFilters.no_of_invoices = selectedInvoices;
+
       // Add the new date range to filters
       newFilters.start_date = value.start.toString();
       newFilters.end_date = value.end.toString();
@@ -270,10 +281,11 @@ function DashboardPage({ className }: IDashboardPageProps) {
     setSelectedMinExRate("");
     setSelectedMaxExRate("");
     setSelectedPort("");
-    // Reset date range to last 30 days
+    setSelectedInvoices("");
+    // Reset date range to empty/null
     setDateRange({
-      start: now.subtract({ days: 30 }),
-      end: now,
+      start: null,
+      end: null,
     });
     refetch({
       page: 1,

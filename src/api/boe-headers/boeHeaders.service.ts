@@ -132,6 +132,52 @@ export async function fetchBoeHeadersService(
     });
   }
 
+  // Apply date range filter if provided
+  if (params?.filters?.start_date || params?.filters?.end_date) {
+    const startDateStr = params.filters.start_date?.toString();
+    const endDateStr = params.filters.end_date?.toString();
+
+    console.log("=== DATE FILTER DEBUG ===");
+    console.log("Start date string from filter:", startDateStr);
+    console.log("End date string from filter:", endDateStr);
+
+    // Convert filter dates to YYYY-MM-DD format (extract date part only)
+    const extractDatePart = (dateStr: string) => {
+      // If format is like "2026-01-17" or "2026-01-17T14:30:00[America/Los_Angeles]"
+      // Extract just the YYYY-MM-DD part
+      return dateStr.split("T")[0];
+    };
+
+    const startDate = startDateStr ? extractDatePart(startDateStr) : null;
+    const endDate = endDateStr ? extractDatePart(endDateStr) : null;
+
+    console.log("Extracted start date (YYYY-MM-DD):", startDate);
+    console.log("Extracted end date (YYYY-MM-DD):", endDate);
+    console.log("Sample be_date from data:", data[0]?.be_date);
+
+    data = data.filter((header) => {
+      const headerDate = header.be_date; // Already in YYYY-MM-DD format
+
+      if (startDate && endDate) {
+        const result = headerDate >= startDate && headerDate <= endDate;
+        if (!result) {
+          console.log(
+            `Filtered out: ${header.be_no} with date ${headerDate} (not in range ${startDate} to ${endDate})`
+          );
+        }
+        return result;
+      } else if (startDate) {
+        return headerDate >= startDate;
+      } else if (endDate) {
+        return headerDate <= endDate;
+      }
+      return true;
+    });
+
+    console.log("Filtered data count:", data.length);
+    console.log("=== END DATE FILTER DEBUG ===");
+  }
+
   // Apply additional filters (excluding year filters)
   if (params?.filters) {
     Object.entries(params.filters).forEach(([key, value]) => {
@@ -143,6 +189,10 @@ export async function fetchBoeHeadersService(
         return;
       }
       if (key === "min_ex_rate" || key === "max_ex_rate") {
+        return;
+      }
+      // Skip date range filters as they are already handled above
+      if (key === "start_date" || key === "end_date") {
         return;
       }
       data = data.filter((header) => {
