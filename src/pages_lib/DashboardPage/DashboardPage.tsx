@@ -1,7 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { today, getLocalTimeZone, type DateValue } from "@internationalized/date";
+import {
+  today,
+  getLocalTimeZone,
+  type DateValue,
+} from "@internationalized/date";
 
 import { joinClassNames } from "@/utils";
 import Card from "@/components/Card";
@@ -23,8 +27,8 @@ import {
   TableBody,
   TableHeader,
 } from "react-aria-components";
-import { useBoeHeaders } from "@/services/Routing/hooks/BoeHeaders/useBoeHeaders";
-import { useBoeHeadersMetadata } from "@/services/hooks/useBoeHeadersMetadata";
+import { useBoeHeaders } from "@/services/hooks/BoeHeaders/useBoeHeaders";
+import { useBoeHeadersMetadata } from "@/services/hooks/BoeHeadersMetadata/useBoeHeadersMetadata";
 
 function DashboardPage({ className }: IDashboardPageProps) {
   const now = today(getLocalTimeZone());
@@ -111,7 +115,7 @@ function DashboardPage({ className }: IDashboardPageProps) {
     };
     // Remove undefined values
     Object.keys(newFilters).forEach(
-      (key) => newFilters[key] === undefined && delete newFilters[key]
+      (key) => newFilters[key] === undefined && delete newFilters[key],
     );
     refetch({
       page: 1,
@@ -130,7 +134,7 @@ function DashboardPage({ className }: IDashboardPageProps) {
     };
     // Remove undefined values
     Object.keys(newFilters).forEach(
-      (key) => newFilters[key] === undefined && delete newFilters[key]
+      (key) => newFilters[key] === undefined && delete newFilters[key],
     );
     refetch({
       page: 1,
@@ -149,7 +153,7 @@ function DashboardPage({ className }: IDashboardPageProps) {
     };
     // Remove undefined values
     Object.keys(newFilters).forEach(
-      (key) => newFilters[key] === undefined && delete newFilters[key]
+      (key) => newFilters[key] === undefined && delete newFilters[key],
     );
     refetch({
       page: 1,
@@ -168,7 +172,7 @@ function DashboardPage({ className }: IDashboardPageProps) {
     };
     // Remove undefined values
     Object.keys(newFilters).forEach(
-      (key) => newFilters[key] === undefined && delete newFilters[key]
+      (key) => newFilters[key] === undefined && delete newFilters[key],
     );
     refetch({
       page: 1,
@@ -187,7 +191,7 @@ function DashboardPage({ className }: IDashboardPageProps) {
     };
     // Remove undefined values
     Object.keys(newFilters).forEach(
-      (key) => newFilters[key] === undefined && delete newFilters[key]
+      (key) => newFilters[key] === undefined && delete newFilters[key],
     );
     refetch({
       page: 1,
@@ -206,7 +210,7 @@ function DashboardPage({ className }: IDashboardPageProps) {
     };
     // Remove undefined values
     Object.keys(newFilters).forEach(
-      (key) => newFilters[key] === undefined && delete newFilters[key]
+      (key) => newFilters[key] === undefined && delete newFilters[key],
     );
     refetch({
       page: 1,
@@ -244,7 +248,9 @@ function DashboardPage({ className }: IDashboardPageProps) {
     });
   };
 
-  const handleDateRangeChange = (value: { start: DateValue; end: DateValue } | null) => {
+  const handleDateRangeChange = (
+    value: { start: DateValue; end: DateValue } | null,
+  ) => {
     if (value) {
       setDateRange(value);
 
@@ -328,11 +334,11 @@ function DashboardPage({ className }: IDashboardPageProps) {
             ...(metadataLoading
               ? [{ label: "Loading years...", value: "loading" }]
               : metadataError
-              ? [{ label: "Error loading years", value: "error" }]
-              : (metadata?.years || []).map((year: any) => ({
-                  label: String(year),
-                  value: String(year),
-                }))),
+                ? [{ label: "Error loading years", value: "error" }]
+                : (metadata?.years || []).map((year: any) => ({
+                    label: String(year),
+                    value: String(year),
+                  }))),
           ]}
         />
       </FieldGroup>
@@ -348,11 +354,11 @@ function DashboardPage({ className }: IDashboardPageProps) {
             ...(metadataLoading
               ? [{ label: "Loading years...", value: "loading" }]
               : metadataError
-              ? [{ label: "Error loading years", value: "error" }]
-              : (metadata?.years || []).map((year: any) => ({
-                  label: String(year),
-                  value: String(year),
-                }))),
+                ? [{ label: "Error loading years", value: "error" }]
+                : (metadata?.years || []).map((year: any) => ({
+                    label: String(year),
+                    value: String(year),
+                  }))),
           ]}
         />
       </FieldGroup>
@@ -369,11 +375,11 @@ function DashboardPage({ className }: IDashboardPageProps) {
             ...(metadataLoading
               ? [{ label: "Loading Gross Weights...", value: "loading" }]
               : metadataError
-              ? [{ label: "Error loading Gross Weights", value: "error" }]
-              : (metadata?.grossWeights || []).map((grossWeight: any) => ({
-                  label: String(grossWeight),
-                  value: String(grossWeight),
-                }))),
+                ? [{ label: "Error loading Gross Weights", value: "error" }]
+                : (metadata?.grossWeights || []).map((grossWeight: any) => ({
+                    label: String(grossWeight),
+                    value: String(grossWeight),
+                  }))),
           ]}
         />
       </FieldGroup>
@@ -389,11 +395,11 @@ function DashboardPage({ className }: IDashboardPageProps) {
             ...(metadataLoading
               ? [{ label: "Loading Gross Weights...", value: "loading" }]
               : metadataError
-              ? [{ label: "Error loading Gross Weights", value: "error" }]
-              : (metadata?.grossWeights || []).map((grossWeight: any) => ({
-                  label: String(grossWeight),
-                  value: String(grossWeight),
-                }))),
+                ? [{ label: "Error loading Gross Weights", value: "error" }]
+                : (metadata?.grossWeights || []).map((grossWeight: any) => ({
+                    label: String(grossWeight),
+                    value: String(grossWeight),
+                  }))),
           ]}
         />
       </FieldGroup>
@@ -410,11 +416,11 @@ function DashboardPage({ className }: IDashboardPageProps) {
             ...(metadataLoading
               ? [{ label: "Loading Exchange Rates...", value: "loading" }]
               : metadataError
-              ? [{ label: "Error loading Exchange Rates", value: "error" }]
-              : (metadata?.exchangeRates || []).map((exchangeRate: any) => ({
-                  label: String(exchangeRate),
-                  value: String(exchangeRate),
-                }))),
+                ? [{ label: "Error loading Exchange Rates", value: "error" }]
+                : (metadata?.exchangeRates || []).map((exchangeRate: any) => ({
+                    label: String(exchangeRate),
+                    value: String(exchangeRate),
+                  }))),
           ]}
         />
       </FieldGroup>
@@ -430,11 +436,11 @@ function DashboardPage({ className }: IDashboardPageProps) {
             ...(metadataLoading
               ? [{ label: "Loading Exchange Rates...", value: "loading" }]
               : metadataError
-              ? [{ label: "Error loading Exchange Rates", value: "error" }]
-              : (metadata?.exchangeRates || []).map((exchangeRate: any) => ({
-                  label: String(exchangeRate),
-                  value: String(exchangeRate),
-                }))),
+                ? [{ label: "Error loading Exchange Rates", value: "error" }]
+                : (metadata?.exchangeRates || []).map((exchangeRate: any) => ({
+                    label: String(exchangeRate),
+                    value: String(exchangeRate),
+                  }))),
           ]}
         />
       </FieldGroup>
@@ -451,11 +457,11 @@ function DashboardPage({ className }: IDashboardPageProps) {
             ...(metadataLoading
               ? [{ label: "Loading ports...", value: "loading" }]
               : metadataError
-              ? [{ label: "Error loading ports", value: "error" }]
-              : (metadata?.portCodes || []).map((port: any) => ({
-                  label: String(port),
-                  value: String(port),
-                }))),
+                ? [{ label: "Error loading ports", value: "error" }]
+                : (metadata?.portCodes || []).map((port: any) => ({
+                    label: String(port),
+                    value: String(port),
+                  }))),
           ]}
         />
       </FieldGroup>
@@ -472,11 +478,11 @@ function DashboardPage({ className }: IDashboardPageProps) {
             ...(metadataLoading
               ? [{ label: "Loading Invoices...", value: "loading" }]
               : metadataError
-              ? [{ label: "Error loading invoices", value: "error" }]
-              : (metadata?.invoices || []).map((invoice: any) => ({
-                  label: String(invoice),
-                  value: String(invoice),
-                }))),
+                ? [{ label: "Error loading invoices", value: "error" }]
+                : (metadata?.invoices || []).map((invoice: any) => ({
+                    label: String(invoice),
+                    value: String(invoice),
+                  }))),
           ]}
         />
       </FieldGroup>

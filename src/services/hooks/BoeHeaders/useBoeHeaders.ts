@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import { useState, useCallback, useEffect } from "react";
 import { IBoeHeader } from "@/pages_lib/DashboardPage/DashboardPage.types";
 import {
@@ -14,7 +14,7 @@ import {
  * const { data, loading, error, refetch } = useBoeHeaders({ page: 1, limit: 100 });
  */
 export function useBoeHeaders(
-  initialParams?: IUseBoeHeadersParams
+  initialParams?: IUseBoeHeadersParams,
 ): IUseBoeHeadersReturn {
   const [data, setData] = useState<IBoeHeader[]>([]);
   const [total, setTotal] = useState(0);
@@ -54,7 +54,7 @@ export function useBoeHeaders(
 
         if (!response.ok) {
           throw new Error(
-            `HTTP error! status: ${response.status} - ${response.statusText}`
+            `HTTP error! status: ${response.status} - ${response.statusText}`,
           );
         }
 
@@ -73,7 +73,7 @@ export function useBoeHeaders(
         setLoading(false);
       }
     },
-    [page, limit]
+    [page, limit],
   );
 
   // Fetch data on component mount and when params change
