@@ -1,0 +1,91 @@
+.Container {
+  min-height: 100vh;
+  padding: 2rem;
+  background: #f5f7fa;
+}
+
+.Header {
+  max-width: 800px;
+  margin: 0 auto 2rem;
+}
+
+.BackButton {
+  margin-bottom: 1rem;
+  font-size: 0.9375rem;
+}
+
+.Title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.DetailCard {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.DetailRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.DetailRow:last-child {
+  border-bottom: none;
+}
+
+.Label {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #666;
+}
+
+.Value {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #1a1a1a;
+}
+
+.Note {
+  max-width: 800px;
+  margin: 2rem auto 0;
+  padding: 1rem;
+  background: #fff3cd;
+  border: 1px solid #ffc107;
+  border-radius: 0.5rem;
+  text-align: center;
+}
+
+.Note p {
+  margin: 0;
+  font-size: 0.875rem;
+  color: #856404;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+  .Container {
+    padding: 1rem;
+  }
+
+  .Title {
+    font-size: 1.5rem;
+  }
+
+  .DetailCard {
+    padding: 1.5rem;
+  }
+
+  .DetailRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding: 0.75rem 0;
+  }
+}
