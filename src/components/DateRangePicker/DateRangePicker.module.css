@@ -3,6 +3,8 @@
   flex-direction: column;
   gap: 0.5rem;
   width: 100%;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 .Label {
@@ -21,6 +23,10 @@
   border: 1px solid #e0e0e0;
   border-radius: 0.75rem;
   transition: border-color 240ms ease;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  flex-wrap: nowrap;
 }
 
 .Group[data-focus-within] {
@@ -38,6 +44,9 @@
   display: flex;
   align-items: center;
   gap: 0.25rem;
+  flex-shrink: 1;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .DateSegment {
@@ -49,6 +58,7 @@
   text-align: center;
   min-width: 1.5rem;
   transition: background 240ms ease;
+  flex-shrink: 0;
 }
 
 .DateSegment[data-placeholder] {
@@ -111,5 +121,28 @@
   to {
     opacity: 0;
     transform: translateY(-8px);
+  }
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+  .Group {
+    gap: 0.35rem;
+    padding: 0.5rem;
+  }
+
+  .DateSegment {
+    padding: 0.2rem 0.25rem;
+    font-size: 0.75rem;
+    min-width: 1.25rem;
+  }
+
+  .Separator {
+    font-size: 0.75rem;
+    padding: 0 0.15rem;
+  }
+
+  .Button {
+    padding: 0.15rem;
   }
 }

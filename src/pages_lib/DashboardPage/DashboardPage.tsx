@@ -1,9 +1,17 @@
 "use client";
 
 import { useState } from "react";
-import { joinClassNames } from "@/utils";
+import { today, getLocalTimeZone, type DateValue } from "@internationalized/date";
 
+import { joinClassNames } from "@/utils";
 import Card from "@/components/Card";
+import TextField from "@/components/TextField";
+import Button from "@/components/Button";
+import Select from "@/components/Select";
+import Label from "@/components/Label";
+import FieldGroup from "@/components/FieldGroup";
+import Text from "@/components/Text";
+import DateRangePicker from "@/components/DateRangePicker";
 
 import { IDashboardPageProps } from "./DashboardPage.types";
 import styles from "./DashboardPage.module.css";
@@ -17,14 +25,10 @@ import {
 } from "react-aria-components";
 import { useBoeHeaders } from "@/services/Routing/hooks/BoeHeaders/useBoeHeaders";
 import { useBoeHeadersMetadata } from "@/services/hooks/useBoeHeadersMetadata";
-import TextField from "@/components/TextField";
-import Button from "@/components/Button";
-import Select from "@/components/Select";
-import Label from "@/components/Label";
-import FieldGroup from "@/components/FieldGroup";
-import Text from "@/components/Text";
 
 function DashboardPage({ className }: IDashboardPageProps) {
+  const now = today(getLocalTimeZone());
+
   // Filter states
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [selectedMinYear, setSelectedMinYear] = useState<string>("");
@@ -35,6 +39,13 @@ function DashboardPage({ className }: IDashboardPageProps) {
   const [selectedMaxGWeight, setSelectedMaxGWeight] = useState<string>("");
   const [selectedPort, setSelectedPort] = useState<string>("");
   const [selectedInvoices, setSelectedInvoices] = useState<string>("");
+  const [dateRange, setDateRange] = useState<{
+    start: DateValue;
+    end: DateValue;
+  }>({
+    start: now.subtract({ days: 30 }),
+    end: now,
+  });
 
   // Fetch metadata (unique values for filters)
   const {
@@ -43,7 +54,7 @@ function DashboardPage({ className }: IDashboardPageProps) {
     error: metadataError,
   } = useBoeHeadersMetadata();
 
-  // Build filters object with year range handling
+  // Build filters object with year range handling and date range
   const buildFilters = () => {
     const filters: Record<string, string | number> = {};
     if (selectedMinYear) filters.min_year = selectedMinYear;
@@ -54,6 +65,15 @@ function DashboardPage({ className }: IDashboardPageProps) {
     if (selectedMaxExRate) filters.max_ex_rate = selectedMaxExRate;
     if (selectedPort) filters.port_code = selectedPort;
     if (selectedInvoices) filters.no_of_invoices = selectedInvoices;
+
+    // Add date range filters
+    if (dateRange.start) {
+      filters.start_date = dateRange.start.toString(); // Format: YYYY-MM-DD
+    }
+    if (dateRange.end) {
+      filters.end_date = dateRange.end.toString(); // Format: YYYY-MM-DD
+    }
+
     return filters;
   };
 
@@ -224,6 +244,23 @@ function DashboardPage({ className }: IDashboardPageProps) {
     });
   };
 
+  const handleDateRangeChange = (value: { start: DateValue; end: DateValue } | null) => {
+    if (value) {
+      setDateRange(value);
+      const newFilters = buildFilters();
+      // Add the new date range to filters
+      newFilters.start_date = value.start.toString();
+      newFilters.end_date = value.end.toString();
+
+      refetch({
+        page: 1,
+        limit: 100,
+        search: searchTerm || undefined,
+        filters: Object.keys(newFilters).length > 0 ? newFilters : undefined,
+      });
+    }
+  };
+
   const handleClearFilters = () => {
     setSearchTerm("");
     setSelectedMinYear("");
@@ -233,6 +270,11 @@ function DashboardPage({ className }: IDashboardPageProps) {
     setSelectedMinExRate("");
     setSelectedMaxExRate("");
     setSelectedPort("");
+    // Reset date range to last 30 days
+    setDateRange({
+      start: now.subtract({ days: 30 }),
+      end: now,
+    });
     refetch({
       page: 1,
       limit: 100,
@@ -250,6 +292,15 @@ function DashboardPage({ className }: IDashboardPageProps) {
           placeholder="Search by BE No, IEC No, or GST No..."
           value={searchTerm}
           onChange={(value) => handleSearch(value)}
+        />
+      </FieldGroup>
+
+      <FieldGroup className={styles.FilterGroup}>
+        <DateRangePicker
+          label="Date Range"
+          value={dateRange}
+          onChange={handleDateRangeChange}
+          aria-label="Select date range for filtering"
         />
       </FieldGroup>
 
