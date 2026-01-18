@@ -1,0 +1,115 @@
+.Container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.Label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: rgb(var(--clr-primary-rgb));
+  margin-bottom: 0.25rem;
+}
+
+.Group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 0.75rem;
+  transition: border-color 240ms ease;
+}
+
+.Group[data-focus-within] {
+  border-color: rgb(var(--clr-primary-rgb));
+  outline: 2px solid rgba(var(--clr-primary-rgb), 0.1);
+  outline-offset: 0;
+}
+
+.Group[data-disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.DateInput {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.DateSegment {
+  padding: 0.25rem 0.35rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: rgb(var(--clr-primary-rgb));
+  border-radius: 0.25rem;
+  text-align: center;
+  min-width: 1.5rem;
+  transition: background 240ms ease;
+}
+
+.DateSegment[data-placeholder] {
+  color: #8d8d8d;
+}
+
+.DateSegment[data-focused] {
+  background: rgba(var(--clr-primary-rgb), 0.1);
+  outline: none;
+}
+
+.DateSegment[data-disabled] {
+  color: #d0d0d0;
+}
+
+.Separator {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #8d8d8d;
+  padding: 0 0.25rem;
+}
+
+.Button {
+  margin-left: auto;
+  padding: 0.25rem;
+}
+
+.Popover {
+  background: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  padding: 0;
+  z-index: 1000;
+}
+
+.Popover[data-entering] {
+  animation: slideIn 240ms ease;
+}
+
+.Popover[data-exiting] {
+  animation: slideOut 240ms ease;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
