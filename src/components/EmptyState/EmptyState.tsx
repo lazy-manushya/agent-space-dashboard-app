@@ -3,7 +3,7 @@
 import Button from "@/components/Button";
 import { IEmptyStateProps } from "./EmptyState.types";
 import styles from "./EmptyState.module.css";
-import { joinClassNames } from "@/utils/joinClassNames";
+import { joinClassNames } from "@/utils/classNames";
 
 function EmptyState({
   title = "No data found",

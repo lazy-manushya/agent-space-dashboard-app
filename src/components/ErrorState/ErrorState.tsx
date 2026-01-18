@@ -3,7 +3,7 @@
 import Button from "@/components/Button";
 import { IErrorStateProps } from "./ErrorState.types";
 import styles from "./ErrorState.module.css";
-import { joinClassNames } from "@/utils/joinClassNames";
+import { joinClassNames } from "@/utils/classNames";
 
 function ErrorState({
   title = "Something went wrong",

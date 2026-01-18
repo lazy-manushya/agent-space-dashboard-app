@@ -23,8 +23,16 @@ import Select from "@/components/Select";
 import Label from "@/components/Label";
 import FieldGroup from "@/components/FieldGroup";
 import Text from "@/components/Text";
+import TableShimmer from "@/components/TableShimmer";
+import CardShimmer from "@/components/CardShimmer";
+import ErrorState from "@/components/ErrorState";
+import EmptyState from "@/components/EmptyState";
 
 function DashboardPage({ className }: IDashboardPageProps) {
+  // Mock states for testing shimmer/error (later we'll bind to real data)
+  const isLoading = false; // Set to true to see shimmer loaders
+  const hasError = false;  // Set to true to see error states
+
   // Filter states
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [selectedMinYear, setSelectedMinYear] = useState<string>("");
@@ -462,9 +470,22 @@ function DashboardPage({ className }: IDashboardPageProps) {
 
   const tableJsx = (
     <div className={styles.SubContainer}>
-      {loading && <Text>Loading...</Text>}
-      {error && <Text style={{ color: "red" }}>Error: {error}</Text>}
-      {!loading && !error && boeHeaders.length > 0 && (
+      {isLoading ? (
+        <TableShimmer rows={10} columns={11} />
+      ) : hasError ? (
+        <ErrorState
+          title="Failed to load BOE headers"
+          message="Unable to fetch BOE headers. Please try again."
+          onRetry={() => refetch({ page: 1, limit: 100 })}
+        />
+      ) : boeHeaders.length === 0 ? (
+        <EmptyState
+          title="No BOE headers found"
+          message="Try adjusting your filters or search criteria."
+          actionLabel="Clear Filters"
+          onAction={handleClearFilters}
+        />
+      ) : (
         <Table className={styles.Table}>
           <TableHeader>
             <Column>BE No</Column>
@@ -504,9 +525,20 @@ function DashboardPage({ className }: IDashboardPageProps) {
   return (
     <div className="container h-100">
       <div className={joinClassNames(className, styles.Container)}>
-        <Card className={styles.StatCard}>
-          <span className={styles.Stat}>240</span>&nbsp;&nbsp;units
-        </Card>
+        {isLoading ? (
+          <CardShimmer count={1} className={styles.StatCard} />
+        ) : hasError ? (
+          <Card className={styles.StatCard}>
+            <ErrorState
+              title="Failed to load stats"
+              message="Unable to fetch statistics at this time."
+            />
+          </Card>
+        ) : (
+          <Card className={styles.StatCard}>
+            <span className={styles.Stat}>240</span>&nbsp;&nbsp;units
+          </Card>
+        )}
         <Card title="Stats">-</Card>
         <Card title="Filters">{filtersJsx}</Card>
         <Card title="Units">{tableJsx}</Card>
