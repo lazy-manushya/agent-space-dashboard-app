@@ -1,14 +1,7 @@
-export interface IBoeHeaderMetadata {
-  years: string[];
-  portCodes: string[];
-  invoices: number[];
-  items: number[];
-  grossWeights: number[];
-  exchangeRates: number[];
-}
+import { IMetadata } from "@/types/data";
 
 export interface IUseBoeHeadersMetadataReturn {
-  metadata: IBoeHeaderMetadata | null;
+  metadata: IMetadata | null;
   loading: boolean;
   error: string | null;
 }

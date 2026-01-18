@@ -1,4 +1,4 @@
-import { IBoeHeader } from "@/pages_lib/DashboardPage/DashboardPage.types";
+import { IBoeHeader } from "@/types/data";
 
 export interface IUseBoeHeadersParams {
   page?: number;

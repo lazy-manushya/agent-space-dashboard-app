@@ -1,8 +1,4 @@
-export interface IBoeHeaderMetadata {
-  years: string[];
-  portCodes: string[];
-  invoices: number[];
-  items: number[];
-  exchangeRates: number[];
-  grossWeights: number[];
-}
+import { IMetadata } from "@/types/data";
+
+// Re-export from centralized types
+export type { IMetadata as IBoeHeaderMetadata };
