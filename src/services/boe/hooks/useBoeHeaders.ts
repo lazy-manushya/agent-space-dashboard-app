@@ -1,6 +1,6 @@
 "use client";
 import { useState, useCallback, useEffect } from "react";
-import { IBoeHeader } from "@/pages_lib/DashboardPage/DashboardPage.types";
+import { IBoeHeader } from "@/types/data";
 import {
   IUseBoeHeadersParams,
   IUseBoeHeadersReturn,
@@ -46,7 +46,9 @@ export function useBoeHeaders(
 
         if (finalFilters) {
           Object.entries(finalFilters).forEach(([key, value]) => {
-            queryParams.append(key, value.toString());
+            if (value !== null && value !== undefined) {
+              queryParams.append(key, String(value));
+            }
           });
         }
 

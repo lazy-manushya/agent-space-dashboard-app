@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
-import {
-  IBoeHeaderMetadata,
-  IUseBoeHeadersMetadataReturn,
-} from "./useBoeHeadersMetadata.type";
+import { IMetadata } from "@/types/data";
+import { IUseBoeHeadersMetadataReturn } from "./useBoeHeadersMetadata.type";
 
 /**
  * Custom hook to fetch BOE headers metadata
@@ -12,7 +10,7 @@ import {
  * const { metadata, loading, error } = useBoeHeadersMetadata();
  */
 export function useBoeHeadersMetadata(): IUseBoeHeadersMetadataReturn {
-  const [metadata, setMetadata] = useState<IBoeHeaderMetadata | null>(null);
+  const [metadata, setMetadata] = useState<IMetadata | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -28,7 +26,7 @@ export function useBoeHeadersMetadata(): IUseBoeHeadersMetadataReturn {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        const data: IBoeHeaderMetadata = await response.json();
+        const data: IMetadata = await response.json();
         setMetadata(data);
       } catch (err) {
         const errorMessage =

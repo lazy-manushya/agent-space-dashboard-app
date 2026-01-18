@@ -1,17 +1,17 @@
-import { IBoeHeader } from "@/pages_lib/DashboardPage/DashboardPage.types";
-
-import boeHeadersData from "@/app/boe_headers.json";
 import {
+  IBoeHeader,
   IFetchBoeHeadersParams,
   IFetchBoeHeadersResponse,
-} from "./BoeHeaders.types";
+} from "@/types/data";
+
+import boeHeadersData from "@/app/boe_headers.json";
 
 /**
  * Simulates fetching BOE headers from a database
  * In a real scenario, this would call your backend API
  */
 export async function fetchBoeHeadersService(
-  params?: IFetchBoeHeadersParams
+  params?: IFetchBoeHeadersParams,
 ): Promise<IFetchBoeHeadersResponse> {
   // Simulate API delay
   await new Promise((resolve) => setTimeout(resolve, 500));
@@ -27,7 +27,7 @@ export async function fetchBoeHeadersService(
       (header) =>
         header.be_no.toLowerCase().includes(searchTerm) ||
         header.iec_no.toLowerCase().includes(searchTerm) ||
-        header.gst_no.toLowerCase().includes(searchTerm)
+        header.gst_no.toLowerCase().includes(searchTerm),
     );
   }
 
@@ -84,7 +84,7 @@ export async function fetchBoeHeadersService(
     }
 
     data = data.filter((header) => {
-      const headerGWeight = parseInt(header.g_wt, 10);
+      const headerGWeight = header.g_wt; // Already a number
 
       if (finalMinGWeight !== null && finalMaxGWeight !== null) {
         return (
@@ -119,7 +119,7 @@ export async function fetchBoeHeadersService(
     }
 
     data = data.filter((header) => {
-      const headerExRate = parseFloat(header.ex_rate);
+      const headerExRate = header.ex_rate; // Already a number
 
       if (finalMinExRate !== null && finalMaxExRate !== null) {
         return headerExRate >= finalMinExRate && headerExRate <= finalMaxExRate;
@@ -162,7 +162,7 @@ export async function fetchBoeHeadersService(
         const result = headerDate >= startDate && headerDate <= endDate;
         if (!result) {
           console.log(
-            `Filtered out: ${header.be_no} with date ${headerDate} (not in range ${startDate} to ${endDate})`
+            `Filtered out: ${header.be_no} with date ${headerDate} (not in range ${startDate} to ${endDate})`,
           );
         }
         return result;
