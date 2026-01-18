@@ -1,20 +1,7 @@
-/**
- * API Route Handler for BOE Headers
- * Endpoint: GET /api/boe-headers
- *
- * Query Parameters:
- * - page: number (optional, default: 1)
- * - limit: number (optional, default: 10)
- * - search: string (optional)
- * - filters: Record<string, string> (optional)
- */
-
 import {
-  generateBoeHeaderArray,
-  generateRandomData,
-  generateMetadata,
-  generateCompleteBoeRecord,
-} from "@/utils/dataGenerator";
+  getMasterDataset,
+  getMasterMetadata,
+} from "@/api/boe-headers/boeHeadersData.service";
 import type { IBoeHeader, IFetchBoeHeadersResponse } from "@/types/data";
 
 /**
@@ -135,11 +122,7 @@ export async function handleGetBoeHeaders(
   seed?: number,
   filters?: Record<string, string>,
 ): Promise<IFetchBoeHeadersResponse> {
-  // Use provided seed or generate deterministic seed from pagination
-  const determinedSeed = seed || page * 1000;
-
-  // Generate larger dataset to apply filters on
-  const allData = generateBoeHeaderArray(1000, determinedSeed + 10000);
+  const allData = getMasterDataset();
 
   // Apply filters if provided
   let filteredData = allData;
@@ -154,10 +137,6 @@ export async function handleGetBoeHeaders(
   const start = (page - 1) * limit;
   const end = start + limit;
   const data = filteredData.slice(start, end);
-
-  // Generate metadata from all data
-  const metadata = generateMetadata(allData);
-  console.log("DEBUG:", { metadata });
 
   return {
     data,

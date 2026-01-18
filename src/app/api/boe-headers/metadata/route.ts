@@ -1,17 +1,4 @@
-import { fetchBoeHeadersMetadata } from "@/api/boe-headers/boeHeadersMetadata.service";
-
-/**
- * API Route Handler for BOE Headers Metadata
- * Endpoint: GET /api/boe-headers/metadata
- *
- * Returns unique values for:
- * - years
- * - portCodes
- * - invoices
- * - items
- * - exchangeRate
- * - grossWeights
- */
+import { fetchBoeHeadersMetadata } from "@/api/boe-headers/boeHeadersData.service";
 
 export async function GET() {
   try {
@@ -21,7 +8,7 @@ export async function GET() {
     console.error("Error fetching BOE headers metadata:", error);
     return Response.json(
       { error: "Failed to fetch metadata" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
