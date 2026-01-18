@@ -1,49 +1,30 @@
-import { useState, useEffect } from "react";
+import useSWR from "swr";
 import { IMetadata } from "@/types/data";
 import { IUseBoeHeadersMetadataReturn } from "./useBoeHeadersMetadata.type";
 
-/**
- * Custom hook to fetch BOE headers metadata
- * Fetches unique years, port codes, and other metadata on mount
- *
- * Usage:
- * const { metadata, loading, error } = useBoeHeadersMetadata();
- */
+async function fetcher(url: string): Promise<IMetadata> {
+  const response = await fetch(url);
+
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+
+  return response.json();
+}
+
 export function useBoeHeadersMetadata(): IUseBoeHeadersMetadataReturn {
-  const [metadata, setMetadata] = useState<IMetadata | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchMetadata = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-
-        const response = await fetch("/api/boe-headers/metadata");
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const data: IMetadata = await response.json();
-        setMetadata(data);
-      } catch (err) {
-        const errorMessage =
-          err instanceof Error ? err.message : "Failed to fetch metadata";
-        setError(errorMessage);
-        console.error("Error fetching metadata:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchMetadata();
-  }, []);
+  const {
+    data: metadata,
+    isLoading: loading,
+    error,
+  } = useSWR("/api/boe-headers/metadata", fetcher, {
+    revalidateOnFocus: false,
+    revalidateOnReconnect: true,
+  });
 
   return {
-    metadata,
+    metadata: metadata || null,
     loading,
-    error,
+    error: error?.message || null,
   };
 }

@@ -6,12 +6,14 @@ import {
   IUseBoeHeadersReturn,
 } from "./useBoeHeaders.type";
 
-async function fetchBoeHeadersData(url: string): Promise<{
+type BoeHeadersResponse = {
   data: IBoeHeader[];
   total: number;
   page: number;
   limit: number;
-}> {
+};
+
+async function fetcher(url: string): Promise<BoeHeadersResponse> {
   const response = await fetch(url);
 
   if (!response.ok) {
@@ -20,31 +22,26 @@ async function fetchBoeHeadersData(url: string): Promise<{
     );
   }
 
-  const result = await response.json();
-  return result;
+  return response.json();
 }
 
 export function useBoeHeaders(
-  initialParams?: IUseBoeHeadersParams,
+  params: IUseBoeHeadersParams = {},
 ): IUseBoeHeadersReturn {
-  // Build query string from params
-  const buildQueryString = (params?: IUseBoeHeadersParams) => {
+  const buildQueryString = (params: IUseBoeHeadersParams) => {
     const queryParams = new URLSearchParams();
-
-    const page = params?.page || 1;
-    const limit = params?.limit || 10;
-    const search = params?.search;
-    const filters = params?.filters;
+    const page = params.page || 1;
+    const limit = params.limit || 25;
 
     queryParams.append("page", page.toString());
     queryParams.append("limit", limit.toString());
 
-    if (search) {
-      queryParams.append("search", search);
+    if (params.search) {
+      queryParams.append("search", params.search);
     }
 
-    if (filters) {
-      Object.entries(filters).forEach(([key, value]) => {
+    if (params.filters) {
+      Object.entries(params.filters).forEach(([key, value]) => {
         if (value !== null && value !== undefined) {
           queryParams.append(key, String(value));
         }
@@ -54,37 +51,22 @@ export function useBoeHeaders(
     return queryParams.toString();
   };
 
-  const queryString = buildQueryString(initialParams);
+  const queryString = buildQueryString(params);
   const apiUrl = `/api/boe-headers?${queryString}`;
 
-  // Use SWR for data fetching
-  const {
-    data,
-    isLoading: isLoadingFromHook,
-    error,
-    mutate,
-  } = useSWR(apiUrl, fetchBoeHeadersData, {
+  const { data, isLoading, error, mutate } = useSWR(apiUrl, fetcher, {
     revalidateOnFocus: false,
     revalidateOnReconnect: true,
     dedupingInterval: 60000,
   });
 
-  // Extract data or use defaults
+  // Derived state
   const headers = data?.data || [];
   const total = data?.total || 0;
-  const page = data?.page || initialParams?.page || 1;
-  const limit = data?.limit || initialParams?.limit || 10;
-
-  const isLoading = isLoadingFromHook && !data;
-  const isUpdating = isLoadingFromHook && !!data;
-
+  const page = data?.page || params.page || 1;
+  const limit = data?.limit || params.limit || 25;
+  const isUpdating = isLoading && !!data;
   const noData = !isLoading && (!data || !headers.length);
-
-  const refetch = async (params?: IUseBoeHeadersParams) => {
-    const newQueryString = buildQueryString(params || initialParams);
-    const newApiUrl: any = `/api/boe-headers?${newQueryString}`;
-    await mutate(newApiUrl);
-  };
 
   return {
     data: headers,
@@ -94,7 +76,7 @@ export function useBoeHeaders(
     loading: isLoading,
     updating: isUpdating,
     error: error?.message || null,
-    refetch,
     noData,
+    mutate,
   };
 }
