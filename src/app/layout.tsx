@@ -33,12 +33,12 @@ export default function RootLayout({
   return (
     <RoutingProvider>
       <html lang="en">
-        <header>
+        <head>
           <link
             rel="stylesheet"
             href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css"
-          ></link>
-        </header>
+          />
+        </head>
         <body className={`${robotoFont.variable}`}>
           <Layout>{children}</Layout>
         </body>

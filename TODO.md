@@ -40,6 +40,7 @@ Outcome: End-to-end BOE Search → Accounts Summary flow available for demo.
 ## Team
 
 ### Dewashish
+- [ ] (merged to adding-base-components-services) Add nav-menu component. Use dashboard UI top header nav as reference.
 
 - [ ] Add nav-menu component. Use dashboard UI top header nav as reference.
 

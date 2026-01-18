@@ -1,1 +1,1 @@
-export * from "./useParamState"
+export * from "./useParamState";
