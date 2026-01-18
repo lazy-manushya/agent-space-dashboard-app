@@ -13,6 +13,9 @@ export interface IUseBoeHeadersReturn {
   page: number;
   limit: number;
   loading: boolean;
+  updating?: boolean;
   error: string | null;
   refetch: (params?: IUseBoeHeadersParams) => Promise<void>;
+  noData?: boolean;
+  mutate?: (data?: any) => Promise<any>;
 }
