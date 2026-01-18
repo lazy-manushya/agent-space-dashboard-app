@@ -180,3 +180,156 @@ export interface IBoeLicenceAdditionalDetail {
   inv_sr_no_lic?: number; // Invoice serial number for licence
   licence_items?: ILicenceItem[];
 }
+
+// ============================================================================
+// API RESPONSE TYPES
+// ============================================================================
+
+export interface IFetchBoeHeadersResponse {
+  data: IBoeHeader[];
+  total: number;
+  page: number;
+  limit: number;
+}
+
+export interface IFetchBoeHeadersParams {
+  page?: number;
+  limit?: number;
+  search?: string;
+  filters?: Record<string, string | number>;
+}
+
+export interface IMetadata {
+  years: string[];
+  portCodes: string[];
+  packages: number[];
+  invoices: number[];
+  items: number[];
+  exchangeRates: number[];
+  grossWeights: number[];
+}
+
+// ============================================================================
+// FILTER TYPES
+// ============================================================================
+
+export interface IYearRangeFilter {
+  min_year?: string | number;
+  max_year?: string | number;
+}
+
+export interface IWeightRangeFilter {
+  min_g_weight?: string | number;
+  max_g_weight?: string | number;
+}
+
+export interface IExchangeRateRangeFilter {
+  min_ex_rate?: string | number;
+  max_ex_rate?: string | number;
+}
+
+export interface IDateRangeFilter {
+  start_date?: string; // ISO format date
+  end_date?: string; // ISO format date
+}
+
+export interface IBasicFilter {
+  search?: string;
+  port_code?: string;
+  packages?: string | number;
+  no_of_invoices?: string | number;
+  iec_no?: string;
+  gst_no?: string;
+}
+
+export type IAllFilters = IYearRangeFilter &
+  IWeightRangeFilter &
+  IExchangeRateRangeFilter &
+  IDateRangeFilter &
+  IBasicFilter;
+
+// ============================================================================
+// PAGINATION TYPES
+// ============================================================================
+
+export interface IPaginationParams {
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
+  hasNextPage: boolean;
+  hasPreviousPage: boolean;
+}
+
+// ============================================================================
+// DASHBOARD STATE TYPES
+// ============================================================================
+
+export interface IDashboardFilterState {
+  searchTerm: string;
+  selectedMinYear: string;
+  selectedMaxYear: string;
+  selectedPort: string;
+  selectedPackages: string;
+  selectedInvoices: string;
+  selectedMinGWeight?: string;
+  selectedMaxGWeight?: string;
+  selectedMinExRate?: string;
+  selectedMaxExRate?: string;
+  selectedStartDate?: string;
+  selectedEndDate?: string;
+}
+
+export interface IDashboardDataState {
+  boeHeaders: IBoeHeader[];
+  total: number;
+  page: number;
+  limit: number;
+  loading: boolean;
+  error: string | null;
+}
+
+export interface IDashboardMetadataState {
+  metadata: IMetadata | null;
+  loading: boolean;
+  error: string | null;
+}
+
+// ============================================================================
+// UTILITY TYPES
+// ============================================================================
+
+export type KeyOfBoeHeader = keyof IBoeHeader;
+
+export interface ITableColumn<T> {
+  key: KeyOfBoeHeader;
+  label: string;
+  sortable?: boolean;
+  filterable?: boolean;
+  render?: (value: any, row: IBoeHeader) => React.ReactNode;
+}
+
+export interface IApiError {
+  status: number;
+  message: string;
+  code?: string;
+  details?: Record<string, any>;
+}
+
+// ============================================================================
+// EXPORT TYPE GUARDS
+// ============================================================================
+
+export function isBoeHeader(obj: any): obj is IBoeHeader {
+  return (
+    obj &&
+    typeof obj === "object" &&
+    typeof obj.be_no === "string" &&
+    typeof obj.year === "string" &&
+    typeof obj.iec_no === "string"
+  );
+}
+
+export function isBoeHeaderArray(obj: any): obj is IBoeHeader[] {
+  return Array.isArray(obj) && obj.every(isBoeHeader);
+}
