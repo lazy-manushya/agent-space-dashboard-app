@@ -1,0 +1,22 @@
+.Container {
+  display: flex;
+  align-items: center;
+  padding-inline: 0.75rem;
+  border-radius: 0.5rem;
+  height: 3.5rem;
+  background: rgba(141, 141, 141, 0.1);
+}
+
+.Container:has([data-focused]) {
+  outline: 1px solid rgba(0, 0, 0, 0.25) !important;
+}
+
+.Error {
+  outline: 1px solid rgb(255, 0, 0, 0.5);
+}
+
+.InputContainer {
+  flex-grow: 1;
+  height: 100%;
+  min-height: inherit;
+}

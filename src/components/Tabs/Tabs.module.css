@@ -1,0 +1,161 @@
+.Tabs {
+  display: flex;
+  gap: var(--spacing-2);
+  color: var(--text-color);
+  max-width: 100%;
+}
+
+.Tabs[data-orientation="horizontal"] {
+  flex-direction: column;
+}
+
+.Tabs[data-orientation="vertical"] {
+  flex-direction: row;
+  width: 100%;
+  .react-aria-TabPanels {
+    flex: 1;
+  }
+}
+
+/* ---------------------- */
+
+.SelectionIndicator {
+  background: rgb(var(--clr-primary-rgb));
+}
+
+/* ---------------------- */
+
+.TabList {
+  display: flex;
+  min-height: fit-content;
+}
+
+.TabList[data-orientation="horizontal"] {
+  border-bottom: 0.5px solid rgb(0, 0, 0, 0.1);
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: clip;
+  scrollbar-width: none;
+}
+
+.TabList[data-orientation="horizontal"] .SelectionIndicator {
+  left: 0;
+  bottom: 0px;
+  width: 100%;
+  height: 3px;
+  transition-property: translate, width;
+}
+
+.TabList[data-orientation="vertical"] {
+  flex-direction: column;
+  border-inline-end: 1px solid rgb(var(--clr-primary-rgb));
+}
+
+.TabList[data-orientation="vertical"] .SelectionIndicator {
+  top: 0;
+  right: 0px;
+  height: 100%;
+  width: 3px;
+  transition-property: translate, height;
+}
+
+/* ---------------------- */
+
+.Tab {
+  padding: 10px;
+  cursor: default;
+  outline: none;
+  position: relative;
+  font: var(--font-size) system-ui;
+  color: var(--text-color);
+  transition: color 200ms;
+  --border-color: transparent;
+  forced-color-adjust: none;
+  -webkit-tap-highlight-color: transparent;
+  min-width: max-content;
+  flex-grow: 1;
+  text-align: center;
+}
+
+.Tab .SelectionIndicator {
+  position: absolute;
+  transition-duration: 200ms;
+  border-radius: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .Tab .SelectionIndicator {
+    transition: none;
+  }
+}
+
+.Tab[data-hovered],
+.Tab[data-focus-visible] {
+  color: var(--text-color-hover);
+}
+
+.Tab[data-selected] {
+  --border-color: var(--highlight-background);
+  color: var(--text-color-hover);
+}
+
+.Tab[data-disabled] {
+  color: var(--text-color-disabled);
+}
+
+.Tab[data-disabled][data-selected] {
+  --border-color: var(--text-color-disabled);
+}
+
+.Tab[data-focus-visible] {
+  border-radius: calc(var(--radius-sm) + 8px);
+  outline: 2px solid var(--focus-ring-color);
+  outline-offset: -8px;
+}
+
+.Tab[href] {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* ---------------------- */
+
+.TabPanels {
+  position: relative;
+  height: var(--tab-panel-height);
+  width: var(--tab-panel-width);
+  transition: height 400ms;
+  overflow: clip;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .TabPanels {
+    transition: none;
+  }
+}
+
+/* ---------------------- */
+
+.TabPanel {
+  padding: var(--spacing-3);
+  border-radius: var(--radius);
+  outline: none;
+  box-sizing: border-box;
+  transition: opacity 400ms;
+}
+
+.TabPanel[data-focus-visible] {
+  outline: 2px solid var(--focus-ring-color);
+}
+
+.TabPanel[data-entering],
+.TabPanel[data-exiting] {
+  opacity: 0;
+}
+
+.TabPanel[data-exiting] {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}

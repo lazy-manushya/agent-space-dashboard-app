@@ -1,0 +1,140 @@
+.Button {
+  --color: #fff;
+  --background: rgb(var(--clr-primary-rgb));
+  --border-color: rgb(var(--clr-primary-rgb));
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  background: var(--background);
+  color: var(--color);
+  border-radius: 0.75rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  will-change: filter;
+  transition: filter 240ms ease;
+  letter-spacing: 0.05em;
+}
+
+.Button:after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  background: rgba(0, 0, 0, 0.05);
+  pointer-events: none;
+  opacity: 0;
+  will-change: opacity;
+  transition: opacity 240ms ease;
+}
+
+.Button[data-hovered]:after,
+.Button[data-pressed]:after {
+  opacity: 1;
+}
+
+.Button[data-pressed]:after {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.ButtonPrimary,
+.ButtonSecondary {
+  border: 1px solid var(--border-color);
+}
+
+.ButtonPrimary {
+  --color: #fff;
+  --background: rgb(var(--clr-primary-rgb));
+  --border-color: rgb(var(--clr-primary-rgb));
+}
+
+.ButtonSecondary {
+  --color: rgb(var(--clr-primary-rgb));
+  --background: #fff;
+  --border-color: rgb(var(--clr-primary-rgb));
+}
+
+.ButtonGhost {
+  background: transparent;
+  border-color: transparent;
+  border: none;
+}
+
+.ButtonDisabled {
+  cursor: not-allowed;
+  filter: grayscale(0.75);
+}
+
+.ButtonSmall {
+  padding: 0.35rem 0.5rem;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.ButtonMedium {
+  padding: 1rem;
+}
+
+.ButtonLarge {
+  padding: 1.25rem;
+}
+
+.ButtonBlack {
+  --background: #000;
+  --border-color: #000;
+  --color: #fff;
+}
+
+.ButtonGray {
+  --background: #8d8d8d1a;
+  --border-color: #8d8d8d1a;
+  --color: #000;
+}
+
+.ButtonGray.ButtonGhost {
+  --color: #8d8d8d;
+}
+
+.ButtonRed {
+  --background: #fff;
+  --border-color: #f00;
+  --color: #f00;
+}
+
+.ButtonRed.ButtonGhost {
+  --color: #f00;
+}
+
+/* ----------------------- */
+
+.ButtonColorPrimary {
+  --color: #fff;
+  --background: rgb(var(--clr-primary-rgb));
+  --border-color: rgb(var(--clr-primary-rgb));
+}
+
+.ButtonSecondary.ButtonColorPrimary {
+  --color: rgb(var(--clr-primary-rgb));
+  --background: #fff;
+  --border-color: rgb(var(--clr-primary-rgb));
+}
+
+.ButtonColorPrimary.ButtonGhost {
+  --color: rgb(var(--clr-primary-rgb));
+}
+
+/* ----------------------- */
+
+.ButtonGray.ButtonSecondary {
+  --color: #8d8d8d;
+  --background: transparent;
+  --border-color: #8d8d8d33;
+}

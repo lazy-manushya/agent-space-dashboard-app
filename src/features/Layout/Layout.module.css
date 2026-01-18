@@ -1,0 +1,67 @@
+.Container {
+  background: #f6f6f6;
+  --header-height: 104px;
+}
+
+.Header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: var(--header-height);
+  padding: 0.75rem 1rem;
+}
+
+.Main {
+  height: 100vh;
+  padding-top: var(--header-height);
+}
+
+/* ------------------- */
+
+.Container.Debug {
+  border: 2px dashed red;
+}
+
+.Debug .Header {
+  border: 2px dashed blue;
+}
+
+.Debug .Main {
+  border: 2px dashed green;
+}
+
+@media screen and (min-width: 768px) {
+  .NavMenu {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .Main {
+    padding-top: var(--header-height);
+  }
+
+  .Header {
+    top: 0;
+    padding: 1.5rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .Main {
+    padding-bottom: 70px;
+  }
+
+  .NavMenu {
+    position: fixed;
+    bottom: 1rem;
+    left: 50%;
+    width: 100%;
+    max-width: 23.75rem;
+    transform: translateX(-50%);
+  }
+}

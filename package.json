@@ -1,0 +1,29 @@
+{
+  "name": "boe-fe",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "start:dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint"
+  },
+  "dependencies": {
+    "class-variance-authority": "^0.7.1",
+    "lodash": "^4.17.21",
+    "next": "16.1.1",
+    "react": "19.2.3",
+    "react-aria-components": "^1.14.0",
+    "react-dom": "19.2.3",
+    "swr": "^2.3.8"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.17.23",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.1.1",
+    "typescript": "^5"
+  }
+}

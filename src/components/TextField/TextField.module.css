@@ -1,0 +1,40 @@
+.TextField {
+  position: relative;
+  flex-grow: 1;
+  border-radius: inherit;
+  height: 100%;
+}
+
+.Input {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: transparent;
+  border-radius: inherit;
+  padding: 0.25rem 0.875rem;
+  outline: none;
+  font-weight: 400;
+  font-size: 0.875rem;
+  line-height: 1.5rem;
+  letter-spacing: -1%;
+}
+
+.Input::placeholder {
+  color: rgba(141, 141, 141, 1);
+}
+
+.Input[type="date"]::-webkit-calendar-picker-indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: auto;
+  height: auto;
+  color: transparent;
+  background: transparent;
+  cursor: pointer;
+}

@@ -1,0 +1,50 @@
+import { joinClassNames } from "@/utils";
+
+import NavMenu from "@/components/NavMenu";
+import Logo from "@/features/Logo";
+import AlertsButton from "@/features/AlertsButton";
+
+import { ILayoutProps } from "./Layout.types";
+import styles from "./Layout.module.css";
+
+function Layout({ children, className }: ILayoutProps) {
+  return (
+    <div
+      className={joinClassNames(
+        className,
+        styles.Container
+        // , styles.Debug
+      )}
+    >
+      <div className="container position-relative">
+        <header className={joinClassNames(styles.Header)}>
+          <Logo />
+          <NavMenu
+            className={styles.NavMenu}
+            navItems={[
+              {
+                title: "Home",
+                href: "/",
+                icon: <i className="las la-home" />,
+              },
+              {
+                title: "Invoices",
+                href: "/invoices",
+                icon: <i className="las la-receipt" />,
+              },
+              {
+                title: "Duties",
+                href: "/duties",
+                icon: <i className="las la-file-invoice" />,
+              },
+            ]}
+          />
+          <AlertsButton />
+        </header>
+      </div>
+      <main className={styles.Main}>{children}</main>
+    </div>
+  );
+}
+
+export default Layout;
