@@ -16,6 +16,9 @@ import Label from "@/components/Label";
 import FieldGroup from "@/components/FieldGroup";
 import Text from "@/components/Text";
 import DateRangePicker from "@/components/DateRangePicker";
+import ShimmerLoader from "@/components/ShimmerLoader";
+import CardShimmer from "@/components/CardShimmer";
+import TableShimmer from "@/components/TableShimmer";
 
 import { IDashboardPageProps } from "./DashboardPage.types";
 import styles from "./DashboardPage.module.css";
@@ -371,7 +374,7 @@ function DashboardPage({ className }: IDashboardPageProps) {
 
   const tableJsx = (
     <div className={styles.SubContainer}>
-      {loading && <Text>Loading...</Text>}
+      {loading && <TableShimmer rows={10} columns={11} />}
       {error && <Text style={{ color: "red" }}>Error: {error}</Text>}
       {!loading && !error && boeHeaders.length > 0 && (
         <Table className={styles.Table}>
@@ -414,9 +417,17 @@ function DashboardPage({ className }: IDashboardPageProps) {
     <div className="container h-100">
       <div className={joinClassNames(className, styles.Container)}>
         <Card className={styles.StatCard}>
-          <span className={styles.Stat}>240</span>&nbsp;&nbsp;units
+          {loading ? (
+            <ShimmerLoader.Default style={{ height: "96px", width: "200px" }} />
+          ) : (
+            <>
+              <span className={styles.Stat}>240</span>&nbsp;&nbsp;units
+            </>
+          )}
         </Card>
-        <Card title="Stats">-</Card>
+        <Card title="Stats">
+          {loading ? <CardShimmer count={1} /> : "-"}
+        </Card>
         <Card title="Filters">{filtersJsx}</Card>
         <Card title="Units">{tableJsx}</Card>
       </div>
