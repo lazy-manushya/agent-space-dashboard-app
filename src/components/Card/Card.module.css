@@ -3,15 +3,25 @@
   flex-direction: column;
   padding: 1.5rem;
   border-radius: 1rem;
-  box-shadow: 0px 1px 3px rgba(3, 7, 18, 0.01),
-    0px 5px 12px rgba(3, 7, 18, 0.02), 0px 10px 26px rgba(3, 7, 18, 0.02),
-    0px 19px 47px rgba(3, 7, 18, 0.03), 0px 29px 73px rgba(3, 7, 18, 0.04);
+  background: #f5f7fa;
+  box-shadow:
+    0px 1px 3px rgba(3, 7, 18, 0.01),
+    0px 5px 12px rgba(3, 7, 18, 0.02),
+    0px 10px 26px rgba(3, 7, 18, 0.02),
+    0px 19px 47px rgba(3, 7, 18, 0.03),
+    0px 29px 73px rgba(3, 7, 18, 0.04);
 }
 
 .Title {
-  font-size: 1rem;
+  font-size: 1.5rem;
   margin-bottom: 1.125rem;
   color: #b2b2b2;
+  font-weight: 300;
+  text-transform: uppercase;
+}
+
+.Title::first-letter {
+  font-weight: 500;
 }
 
 .Content {
