@@ -11,8 +11,8 @@
   "dependencies": {
     "class-variance-authority": "^0.7.1",
     "lodash": "^4.17.21",
-    "next": "16.1.1",
-    "react": "19.2.3",
+    "next": "^16.1.1",
+    "react": "^19.2.3",
     "react-aria-components": "^1.14.0",
     "react-dom": "19.2.3",
     "swr": "^2.3.8"
