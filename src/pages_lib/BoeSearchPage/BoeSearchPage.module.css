@@ -1,0 +1,44 @@
+.Container {
+  min-height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  height: 100%;
+}
+
+.SearchWrapper {
+  width: 100%;
+  max-width: 600px;
+  text-align: center;
+}
+
+.Title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.02em;
+}
+
+.Subtitle {
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 2rem;
+  line-height: 1.5;
+}
+
+.SearchField {
+  width: 100%;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+  .Title {
+    font-size: 2rem;
+  }
+
+  .Subtitle {
+    font-size: 0.875rem;
+  }
+}

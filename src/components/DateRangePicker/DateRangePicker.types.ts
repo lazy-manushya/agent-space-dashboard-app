@@ -8,6 +8,6 @@ export interface IDateRangePickerProps {
     start: DateValue | null;
     end: DateValue | null;
   };
-  onChange?: (value: { start: DateValue; end: DateValue } | null) => void;
+  onChange?: (value: { start: DateValue | null; end: DateValue | null }) => void;
   "aria-label"?: string;
 }

@@ -16,6 +16,9 @@ import Label from "@/components/Label";
 import FieldGroup from "@/components/FieldGroup";
 import Text from "@/components/Text";
 import DateRangePicker from "@/components/DateRangePicker";
+import ShimmerLoader from "@/components/ShimmerLoader";
+import CardShimmer from "@/components/CardShimmer";
+import TableShimmer from "@/components/TableShimmer";
 
 import { IDashboardPageProps } from "./DashboardPage.types";
 import styles from "./DashboardPage.module.css";
@@ -87,7 +90,6 @@ function DashboardPage({ className }: IDashboardPageProps) {
     data: boeHeaders,
     loading,
     error,
-    refetch,
   } = useBoeHeaders({
     page: 1,
     limit: 100,
@@ -96,186 +98,55 @@ function DashboardPage({ className }: IDashboardPageProps) {
   });
 
   // Handle filter changes
+  // SWR automatically refetches when state changes, so we just update state
   const handleSearch = (value: string) => {
     setSearchTerm(value);
-    refetch({
-      page: 1,
-      limit: 100,
-      search: value || undefined,
-      filters: Object.keys(filters).length > 0 ? filters : undefined,
-    });
   };
 
   const handleMinGWeightChange = (value: string | number) => {
     const stringValue = String(value);
     setSelectedMinGWeight(stringValue);
-    const newFilters: any = {
-      ...filters,
-      min_g_weight: stringValue || undefined,
-    };
-    // Remove undefined values
-    Object.keys(newFilters).forEach(
-      (key) => newFilters[key] === undefined && delete newFilters[key],
-    );
-    refetch({
-      page: 1,
-      limit: 100,
-      search: searchTerm || undefined,
-      filters: Object.keys(newFilters).length > 0 ? newFilters : undefined,
-    });
   };
 
   const handleMaxGWeightChange = (value: string | number) => {
     const stringValue = String(value);
     setSelectedMaxGWeight(stringValue);
-    const newFilters: any = {
-      ...filters,
-      max_g_weight: stringValue || undefined,
-    };
-    // Remove undefined values
-    Object.keys(newFilters).forEach(
-      (key) => newFilters[key] === undefined && delete newFilters[key],
-    );
-    refetch({
-      page: 1,
-      limit: 100,
-      search: searchTerm || undefined,
-      filters: Object.keys(newFilters).length > 0 ? newFilters : undefined,
-    });
   };
 
   const handleMinYearChange = (value: string | number) => {
     const stringValue = String(value);
     setSelectedMinYear(stringValue);
-    const newFilters: any = {
-      ...filters,
-      min_year: stringValue || undefined,
-    };
-    // Remove undefined values
-    Object.keys(newFilters).forEach(
-      (key) => newFilters[key] === undefined && delete newFilters[key],
-    );
-    refetch({
-      page: 1,
-      limit: 100,
-      search: searchTerm || undefined,
-      filters: Object.keys(newFilters).length > 0 ? newFilters : undefined,
-    });
   };
 
   const handleMaxYearChange = (value: string | number) => {
     const stringValue = String(value);
     setSelectedMaxYear(stringValue);
-    const newFilters: any = {
-      ...filters,
-      max_year: stringValue || undefined,
-    };
-    // Remove undefined values
-    Object.keys(newFilters).forEach(
-      (key) => newFilters[key] === undefined && delete newFilters[key],
-    );
-    refetch({
-      page: 1,
-      limit: 100,
-      search: searchTerm || undefined,
-      filters: Object.keys(newFilters).length > 0 ? newFilters : undefined,
-    });
   };
 
   const handleMinExRateChange = (value: string | number) => {
     const stringValue = String(value);
     setSelectedMinExRate(stringValue);
-    const newFilters: any = {
-      ...filters,
-      min_ex_rate: stringValue || undefined,
-    };
-    // Remove undefined values
-    Object.keys(newFilters).forEach(
-      (key) => newFilters[key] === undefined && delete newFilters[key],
-    );
-    refetch({
-      page: 1,
-      limit: 100,
-      search: searchTerm || undefined,
-      filters: Object.keys(newFilters).length > 0 ? newFilters : undefined,
-    });
   };
 
   const handleMaxExRateChange = (value: string | number) => {
     const stringValue = String(value);
     setSelectedMaxExRate(stringValue);
-    const newFilters: any = {
-      ...filters,
-      max_ex_rate: stringValue || undefined,
-    };
-    // Remove undefined values
-    Object.keys(newFilters).forEach(
-      (key) => newFilters[key] === undefined && delete newFilters[key],
-    );
-    refetch({
-      page: 1,
-      limit: 100,
-      search: searchTerm || undefined,
-      filters: Object.keys(newFilters).length > 0 ? newFilters : undefined,
-    });
   };
 
   const handlePortChange = (value: string | number) => {
     const stringValue = String(value);
     setSelectedPort(stringValue);
-    refetch({
-      page: 1,
-      limit: 100,
-      search: searchTerm || undefined,
-      filters: {
-        ...filters,
-        port_code: stringValue || "",
-      },
-    });
   };
 
   const handleInvoicesChange = (value: string | number) => {
     const stringValue = String(value);
     setSelectedInvoices(stringValue);
-    refetch({
-      page: 1,
-      limit: 100,
-      search: searchTerm || undefined,
-      filters: {
-        ...filters,
-        no_of_invoices: stringValue || "",
-      },
-    });
   };
 
   const handleDateRangeChange = (
-    value: { start: DateValue; end: DateValue } | null,
+    value: { start: DateValue | null; end: DateValue | null },
   ) => {
-    if (value) {
-      setDateRange(value);
-
-      // Build filters with the new date range values
-      const newFilters: Record<string, string | number> = {};
-      if (selectedMinYear) newFilters.min_year = selectedMinYear;
-      if (selectedMaxYear) newFilters.max_year = selectedMaxYear;
-      if (selectedMinGWeight) newFilters.min_g_weight = selectedMinGWeight;
-      if (selectedMaxGWeight) newFilters.max_g_weight = selectedMaxGWeight;
-      if (selectedMinExRate) newFilters.min_ex_rate = selectedMinExRate;
-      if (selectedMaxExRate) newFilters.max_ex_rate = selectedMaxExRate;
-      if (selectedPort) newFilters.port_code = selectedPort;
-      if (selectedInvoices) newFilters.no_of_invoices = selectedInvoices;
-
-      // Add the new date range to filters
-      newFilters.start_date = value.start.toString();
-      newFilters.end_date = value.end.toString();
-
-      refetch({
-        page: 1,
-        limit: 100,
-        search: searchTerm || undefined,
-        filters: Object.keys(newFilters).length > 0 ? newFilters : undefined,
-      });
-    }
+    setDateRange(value);
   };
 
   const handleClearFilters = () => {
@@ -292,10 +163,6 @@ function DashboardPage({ className }: IDashboardPageProps) {
     setDateRange({
       start: null,
       end: null,
-    });
-    refetch({
-      page: 1,
-      limit: 100,
     });
   };
 
@@ -326,6 +193,7 @@ function DashboardPage({ className }: IDashboardPageProps) {
         <Label>Min Year:</Label>
         <Select
           label="Min Year"
+          aria-label="Select minimum year filter"
           placeholder="All Years"
           value={selectedMinYear}
           onChange={handleMinYearChange}
@@ -346,6 +214,7 @@ function DashboardPage({ className }: IDashboardPageProps) {
         <Label>Max Year:</Label>
         <Select
           label="Max Year"
+          aria-label="Select maximum year filter"
           placeholder="All Years"
           value={selectedMaxYear}
           onChange={handleMaxYearChange}
@@ -367,6 +236,7 @@ function DashboardPage({ className }: IDashboardPageProps) {
         <Label>Min Gross Weight:</Label>
         <Select
           label="Min Gross Weight"
+          aria-label="Select minimum gross weight filter"
           placeholder="All Gross Weights"
           value={selectedMinGWeight}
           onChange={handleMinGWeightChange}
@@ -387,6 +257,7 @@ function DashboardPage({ className }: IDashboardPageProps) {
         <Label>Max Gross Weight:</Label>
         <Select
           label="Max Gross Weight"
+          aria-label="Select maximum gross weight filter"
           placeholder="All Gross Weights"
           value={selectedMaxGWeight}
           onChange={handleMaxGWeightChange}
@@ -408,6 +279,7 @@ function DashboardPage({ className }: IDashboardPageProps) {
         <Label>Min Exchange Rate:</Label>
         <Select
           label="Min Exchange Rate"
+          aria-label="Select minimum exchange rate filter"
           placeholder="All Exchange Rates"
           value={selectedMinExRate}
           onChange={handleMinExRateChange}
@@ -428,6 +300,7 @@ function DashboardPage({ className }: IDashboardPageProps) {
         <Label>Max Exchange Rate:</Label>
         <Select
           label="Max Exchange Rate"
+          aria-label="Select maximum exchange rate filter"
           placeholder="All Exchange Rates"
           value={selectedMaxExRate}
           onChange={handleMaxExRateChange}
@@ -449,6 +322,7 @@ function DashboardPage({ className }: IDashboardPageProps) {
         <Label>Port Code:</Label>
         <Select
           label="Port Code"
+          aria-label="Select port code filter"
           placeholder="All Ports"
           value={selectedPort}
           onChange={handlePortChange}
@@ -470,6 +344,7 @@ function DashboardPage({ className }: IDashboardPageProps) {
         <Label>Invoices:</Label>
         <Select
           label="Invoices"
+          aria-label="Select invoices filter"
           placeholder="All Invoices"
           value={selectedInvoices}
           onChange={handleInvoicesChange}
@@ -499,37 +374,37 @@ function DashboardPage({ className }: IDashboardPageProps) {
 
   const tableJsx = (
     <div className={styles.SubContainer}>
-      {loading && <Text>Loading...</Text>}
+      {loading && <TableShimmer rows={10} columns={11} />}
       {error && <Text style={{ color: "red" }}>Error: {error}</Text>}
       {!loading && !error && boeHeaders.length > 0 && (
         <Table className={styles.Table}>
           <TableHeader>
-            <Column>BE No</Column>
-            <Column>Year</Column>
-            <Column>IEC No</Column>
-            <Column>GST No</Column>
-            <Column>Port Code</Column>
-            <Column>BE Date</Column>
-            <Column>Packages</Column>
-            <Column>Gross Weight</Column>
-            <Column>Exchange Rate</Column>
-            <Column>Invoices</Column>
-            <Column>Items</Column>
+            <Column isRowHeader><span>BE No</span></Column>
+            <Column><span>Year</span></Column>
+            <Column><span>IEC No</span></Column>
+            <Column><span>GST No</span></Column>
+            <Column><span>Port Code</span></Column>
+            <Column><span>BE Date</span></Column>
+            <Column><span>Packages</span></Column>
+            <Column><span>Gross Weight</span></Column>
+            <Column><span>Exchange Rate</span></Column>
+            <Column><span>Invoices</span></Column>
+            <Column><span>Items</span></Column>
           </TableHeader>
           <TableBody>
             {boeHeaders.map((header) => (
               <Row key={header.be_no}>
-                <Cell className={styles.Cell}>{header.be_no}</Cell>
-                <Cell className={styles.Cell}>{header.year}</Cell>
-                <Cell className={styles.Cell}>{header.iec_no}</Cell>
-                <Cell className={styles.Cell}>{header.gst_no}</Cell>
-                <Cell className={styles.Cell}>{header.port_code}</Cell>
-                <Cell className={styles.Cell}>{header.be_date}</Cell>
-                <Cell className={styles.Cell}>{header.pkg}</Cell>
-                <Cell className={styles.Cell}>{header.g_wt}</Cell>
-                <Cell className={styles.Cell}>{header.ex_rate}</Cell>
-                <Cell className={styles.Cell}>{header.no_of_invoices}</Cell>
-                <Cell className={styles.Cell}>{header.total_items}</Cell>
+                <Cell className={styles.Cell}><span>{header.be_no}</span></Cell>
+                <Cell className={styles.Cell}><span>{header.year}</span></Cell>
+                <Cell className={styles.Cell}><span>{header.iec_no}</span></Cell>
+                <Cell className={styles.Cell}><span>{header.gst_no}</span></Cell>
+                <Cell className={styles.Cell}><span>{header.port_code}</span></Cell>
+                <Cell className={styles.Cell}><span>{header.be_date}</span></Cell>
+                <Cell className={styles.Cell}><span>{header.pkg}</span></Cell>
+                <Cell className={styles.Cell}><span>{header.g_wt}</span></Cell>
+                <Cell className={styles.Cell}><span>{header.ex_rate}</span></Cell>
+                <Cell className={styles.Cell}><span>{header.no_of_invoices}</span></Cell>
+                <Cell className={styles.Cell}><span>{header.total_items}</span></Cell>
               </Row>
             ))}
           </TableBody>
@@ -542,20 +417,20 @@ function DashboardPage({ className }: IDashboardPageProps) {
     <div className="container h-100">
       <div className={joinClassNames(className, styles.Container)}>
         <Card className={styles.StatCard}>
-          <span className={styles.Stat}>240</span>&nbsp;&nbsp;units
+          {loading ? (
+            <ShimmerLoader.Default style={{ height: "96px", width: "200px" }} />
+          ) : (
+            <>
+              <span className={styles.Stat}>240</span>&nbsp;&nbsp;units
+            </>
+          )}
         </Card>
-        <Card title="Stats">-</Card>
+        <Card title="Stats">
+          {loading ? <CardShimmer count={1} /> : "-"}
+        </Card>
         <Card title="Filters">{filtersJsx}</Card>
         <Card title="Units">{tableJsx}</Card>
       </div>
-    </div>
-  );
-
-  return (
-    <div className={joinClassNames(className, styles.Container)}>
-      <h1>BOE Headers</h1>
-
-      {/* Filter Section */}
     </div>
   );
 }

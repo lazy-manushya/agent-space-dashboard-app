@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import {
   DatePicker,
   DateInput,
@@ -7,6 +8,7 @@ import {
   Group,
   Label,
   Popover,
+  type DateValue,
 } from "react-aria-components";
 
 import { joinClassNames } from "@/utils/classNames";
@@ -24,19 +26,57 @@ function DateRangePicker({
   onChange,
   "aria-label": ariaLabel,
 }: IDateRangePickerProps) {
+  const [localStart, setLocalStart] = useState<DateValue | null>(value?.start || null);
+  const [localEnd, setLocalEnd] = useState<DateValue | null>(value?.end || null);
+
+  // Update local state when external value changes
+  useEffect(() => {
+    setLocalStart(value?.start || null);
+    setLocalEnd(value?.end || null);
+  }, [value]);
+
+  const isValidDate = (date: any): boolean => {
+    if (!date) return false;
+    try {
+      // Check if the date has all required fields and they are valid
+      const year = date.year;
+      const month = date.month;
+      const day = date.day;
+
+      // Validate year (should be 4 digits)
+      if (!year || year < 1000 || year > 9999) return false;
+
+      // Validate month (1-12)
+      if (!month || month < 1 || month > 12) return false;
+
+      // Validate day (1-31, depending on month)
+      if (!day || day < 1 || day > 31) return false;
+
+      return true;
+    } catch {
+      return false;
+    }
+  };
+
   const handleStartChange = (newStart: any) => {
-    if (newStart && onChange) {
+    setLocalStart(newStart);
+
+    // Only call onChange if we have a valid complete date or if clearing (null)
+    if (onChange && (newStart === null || isValidDate(newStart))) {
       onChange({
         start: newStart,
-        end: value?.end || newStart,
+        end: localEnd,
       });
     }
   };
 
   const handleEndChange = (newEnd: any) => {
-    if (newEnd && onChange) {
+    setLocalEnd(newEnd);
+
+    // Only call onChange if we have a valid complete date or if clearing (null)
+    if (onChange && (newEnd === null || isValidDate(newEnd))) {
       onChange({
-        start: value?.start || newEnd,
+        start: localStart,
         end: newEnd,
       });
     }
@@ -49,7 +89,7 @@ function DateRangePicker({
         <div className={styles.DateInputWrapper}>
           <span className={styles.DateLabel}>Start Date</span>
           <DatePicker
-            value={value?.start}
+            value={localStart}
             onChange={handleStartChange}
             aria-label={ariaLabel ? `${ariaLabel} - Start` : "Start date"}
           >
@@ -59,7 +99,7 @@ function DateRangePicker({
                   <DateSegment segment={segment} className={styles.DateSegment} />
                 )}
               </DateInput>
-              <Button variant="ghost" size="sm" className={styles.Button}>
+              <Button variant="ghost" size="sm" className={styles.Button} aria-label="Open start date calendar">
                 <Image
                   src="/assets/images/icons/chevron_left.svg"
                   alt="Open calendar"
@@ -77,7 +117,7 @@ function DateRangePicker({
         <div className={styles.DateInputWrapper}>
           <span className={styles.DateLabel}>End Date</span>
           <DatePicker
-            value={value?.end}
+            value={localEnd}
             onChange={handleEndChange}
             aria-label={ariaLabel ? `${ariaLabel} - End` : "End date"}
           >
@@ -87,7 +127,7 @@ function DateRangePicker({
                   <DateSegment segment={segment} className={styles.DateSegment} />
                 )}
               </DateInput>
-              <Button variant="ghost" size="sm" className={styles.Button}>
+              <Button variant="ghost" size="sm" className={styles.Button} aria-label="Open end date calendar">
                 <Image
                   src="/assets/images/icons/chevron_left.svg"
                   alt="Open calendar"

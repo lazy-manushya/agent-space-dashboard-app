@@ -1,21 +1,22 @@
 .Loader {
-  background: #f6f7f8;
+  background: #e8e8e8;
   background-image: linear-gradient(
-    to right,
-    #f6f7f8 0%,
-    #edeef1 20%,
-    #f6f7f8 40%,
-    #f6f7f8 100%
+    90deg,
+    #e8e8e8 0%,
+    #f5f5f5 25%,
+    #ffffff 50%,
+    #f5f5f5 75%,
+    #e8e8e8 100%
   ) !important;
   background-repeat: no-repeat;
-  background-size: 800px 800px !important;
-  border-radius: 3px;
+  background-size: 200% 100% !important;
+  border-radius: 4px;
 
-  animation-duration: 1s;
+  animation-duration: 1.8s;
   animation-fill-mode: forwards;
   animation-iteration-count: infinite;
   animation-name: shimmer;
-  animation-timing-function: linear;
+  animation-timing-function: ease-in-out;
 }
 
 .CircularLoader {
@@ -29,10 +30,10 @@
 
 @keyframes shimmer {
   0% {
-    background-position: -468px 0;
+    background-position: -200% 0;
   }
 
   100% {
-    background-position: 468px 0;
+    background-position: 200% 0;
   }
 }

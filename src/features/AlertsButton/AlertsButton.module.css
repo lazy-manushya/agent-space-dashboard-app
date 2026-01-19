@@ -1,10 +1,13 @@
 .Container {
+  --size: 2.75rem;
   padding: 1rem;
-  border: 1px solid red;
   border-radius: 10rem;
-  width: 48px;
-  height: 48px;
+  width: var(--size);
+  height: var(--size);
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  filter: brightness(0);
+  opacity: 0.4;
+  border: 1px solid #000000;
 }

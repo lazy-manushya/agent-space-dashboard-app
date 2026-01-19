@@ -79,4 +79,8 @@
   .Container {
     width: 100%;
   }
+
+  .Title {
+    display: none;
+  }
 }

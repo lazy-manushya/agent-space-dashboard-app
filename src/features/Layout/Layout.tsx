@@ -28,6 +28,11 @@ function Layout({ children, className }: ILayoutProps) {
                 icon: <i className="las la-home" />,
               },
               {
+                title: "BOE",
+                href: "/boe",
+                icon: <i className="las la-book-open" />,
+              },
+              {
                 title: "Invoices",
                 href: "/invoices",
                 icon: <i className="las la-receipt" />,

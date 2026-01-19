@@ -1,6 +1,7 @@
 .Container {
-  background: #f6f6f6;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
   --header-height: 104px;
+  min-height: 100vh;
 }
 
 .Header {
@@ -18,6 +19,8 @@
 .Main {
   height: 100vh;
   padding-top: var(--header-height);
+  overflow: auto;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
 }
 
 /* ------------------- */
