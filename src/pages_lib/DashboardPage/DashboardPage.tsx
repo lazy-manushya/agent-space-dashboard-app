@@ -379,32 +379,32 @@ function DashboardPage({ className }: IDashboardPageProps) {
       {!loading && !error && boeHeaders.length > 0 && (
         <Table className={styles.Table}>
           <TableHeader>
-            <Column isRowHeader>BE No</Column>
-            <Column>Year</Column>
-            <Column>IEC No</Column>
-            <Column>GST No</Column>
-            <Column>Port Code</Column>
-            <Column>BE Date</Column>
-            <Column>Packages</Column>
-            <Column>Gross Weight</Column>
-            <Column>Exchange Rate</Column>
-            <Column>Invoices</Column>
-            <Column>Items</Column>
+            <Column isRowHeader><span>BE No</span></Column>
+            <Column><span>Year</span></Column>
+            <Column><span>IEC No</span></Column>
+            <Column><span>GST No</span></Column>
+            <Column><span>Port Code</span></Column>
+            <Column><span>BE Date</span></Column>
+            <Column><span>Packages</span></Column>
+            <Column><span>Gross Weight</span></Column>
+            <Column><span>Exchange Rate</span></Column>
+            <Column><span>Invoices</span></Column>
+            <Column><span>Items</span></Column>
           </TableHeader>
           <TableBody>
             {boeHeaders.map((header) => (
               <Row key={header.be_no}>
-                <Cell className={styles.Cell}>{header.be_no}</Cell>
-                <Cell className={styles.Cell}>{header.year}</Cell>
-                <Cell className={styles.Cell}>{header.iec_no}</Cell>
-                <Cell className={styles.Cell}>{header.gst_no}</Cell>
-                <Cell className={styles.Cell}>{header.port_code}</Cell>
-                <Cell className={styles.Cell}>{header.be_date}</Cell>
-                <Cell className={styles.Cell}>{header.pkg}</Cell>
-                <Cell className={styles.Cell}>{header.g_wt}</Cell>
-                <Cell className={styles.Cell}>{header.ex_rate}</Cell>
-                <Cell className={styles.Cell}>{header.no_of_invoices}</Cell>
-                <Cell className={styles.Cell}>{header.total_items}</Cell>
+                <Cell className={styles.Cell}><span>{header.be_no}</span></Cell>
+                <Cell className={styles.Cell}><span>{header.year}</span></Cell>
+                <Cell className={styles.Cell}><span>{header.iec_no}</span></Cell>
+                <Cell className={styles.Cell}><span>{header.gst_no}</span></Cell>
+                <Cell className={styles.Cell}><span>{header.port_code}</span></Cell>
+                <Cell className={styles.Cell}><span>{header.be_date}</span></Cell>
+                <Cell className={styles.Cell}><span>{header.pkg}</span></Cell>
+                <Cell className={styles.Cell}><span>{header.g_wt}</span></Cell>
+                <Cell className={styles.Cell}><span>{header.ex_rate}</span></Cell>
+                <Cell className={styles.Cell}><span>{header.no_of_invoices}</span></Cell>
+                <Cell className={styles.Cell}><span>{header.total_items}</span></Cell>
               </Row>
             ))}
           </TableBody>
@@ -431,14 +431,6 @@ function DashboardPage({ className }: IDashboardPageProps) {
         <Card title="Filters">{filtersJsx}</Card>
         <Card title="Units">{tableJsx}</Card>
       </div>
-    </div>
-  );
-
-  return (
-    <div className={joinClassNames(className, styles.Container)}>
-      <h1>BOE Headers</h1>
-
-      {/* Filter Section */}
     </div>
   );
 }
