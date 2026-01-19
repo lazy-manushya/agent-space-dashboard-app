@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   ComboBox,
   Input,
@@ -73,7 +73,8 @@ function AutocompleteSearchField<T extends { id: string; label: string }>({
   className,
   "aria-label": ariaLabel,
 }: IAutocompleteSearchFieldProps<T>) {
-
+  const inputWrapperRef = useRef<HTMLDivElement>(null);
+  const [inputWidth, setInputWidth] = useState<number | null>(null);
   const [InputValue, setInputValue] = React.useState("");
 
   const filterItems = React.useMemo(() => {
@@ -95,6 +96,14 @@ function AutocompleteSearchField<T extends { id: string; label: string }>({
 
     return sorted;
   }, [items, InputValue]);
+
+  useEffect(() => {
+    if (inputWrapperRef.current) {
+      const { width } = inputWrapperRef.current.getBoundingClientRect();
+      setInputWidth(width);
+    }
+  }, []);
+
   return (
     <ComboBox
       className={className}
@@ -105,29 +114,29 @@ function AutocompleteSearchField<T extends { id: string; label: string }>({
       onInputChange={setInputValue}
     >
       {label && <Label className={styles.Label}>{label}</Label>}
-      <div className={styles.InputWrapper}>
+      <div ref={inputWrapperRef} className={styles.InputWrapper}>
         <Input
           className={styles.Input}
           placeholder={placeholder || "Search..."}
         />
       </div>
-      
-   {
-     InputValue &&    <Popover className={styles.Popover} offset={8}>
-     <ListBox className={styles.ListBox} items={filterItems}>
-       {(item) => (
-         <ListBoxItem
-           key={item.id}
-           id={item.id}
-           textValue={item.label}
-           className={styles.ListBoxItem}
-         >
-           {item.label}
-         </ListBoxItem>
-       )}
-     </ListBox>
-   </Popover>
-   }
+
+      {InputValue && (
+        <Popover className={styles.Popover} offset={8}>
+          <ListBox className={styles.ListBox} items={filterItems}>
+            {(item) => (
+              <ListBoxItem
+                key={item.id}
+                id={item.id}
+                textValue={item.label}
+                className={styles.ListBoxItem}
+              >
+                {item.label}
+              </ListBoxItem>
+            )}
+          </ListBox>
+        </Popover>
+      )}
     </ComboBox>
   );
 }
