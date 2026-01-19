@@ -16,6 +16,9 @@ import Label from "@/components/Label";
 import FieldGroup from "@/components/FieldGroup";
 import Text from "@/components/Text";
 import DateRangePicker from "@/components/DateRangePicker";
+import ShimmerLoader from "@/components/ShimmerLoader";
+import CardShimmer from "@/components/CardShimmer";
+import TableShimmer from "@/components/TableShimmer";
 
 import { IDashboardPageProps } from "./DashboardPage.types";
 import styles from "./DashboardPage.module.css";
@@ -87,7 +90,6 @@ function DashboardPage({ className }: IDashboardPageProps) {
     data: boeHeaders,
     loading,
     error,
-    refetch,
   } = useBoeHeaders({
     page: 1,
     limit: 100,
@@ -96,186 +98,55 @@ function DashboardPage({ className }: IDashboardPageProps) {
   });
 
   // Handle filter changes
+  // SWR automatically refetches when state changes, so we just update state
   const handleSearch = (value: string) => {
     setSearchTerm(value);
-    refetch({
-      page: 1,
-      limit: 100,
-      search: value || undefined,
-      filters: Object.keys(filters).length > 0 ? filters : undefined,
-    });
   };
 
   const handleMinGWeightChange = (value: string | number) => {
     const stringValue = String(value);
     setSelectedMinGWeight(stringValue);
-    const newFilters: any = {
-      ...filters,
-      min_g_weight: stringValue || undefined,
-    };
-    // Remove undefined values
-    Object.keys(newFilters).forEach(
-      (key) => newFilters[key] === undefined && delete newFilters[key],
-    );
-    refetch({
-      page: 1,
-      limit: 100,
-      search: searchTerm || undefined,
-      filters: Object.keys(newFilters).length > 0 ? newFilters : undefined,
-    });
   };
 
   const handleMaxGWeightChange = (value: string | number) => {
     const stringValue = String(value);
     setSelectedMaxGWeight(stringValue);
-    const newFilters: any = {
-      ...filters,
-      max_g_weight: stringValue || undefined,
-    };
-    // Remove undefined values
-    Object.keys(newFilters).forEach(
-      (key) => newFilters[key] === undefined && delete newFilters[key],
-    );
-    refetch({
-      page: 1,
-      limit: 100,
-      search: searchTerm || undefined,
-      filters: Object.keys(newFilters).length > 0 ? newFilters : undefined,
-    });
   };
 
   const handleMinYearChange = (value: string | number) => {
     const stringValue = String(value);
     setSelectedMinYear(stringValue);
-    const newFilters: any = {
-      ...filters,
-      min_year: stringValue || undefined,
-    };
-    // Remove undefined values
-    Object.keys(newFilters).forEach(
-      (key) => newFilters[key] === undefined && delete newFilters[key],
-    );
-    refetch({
-      page: 1,
-      limit: 100,
-      search: searchTerm || undefined,
-      filters: Object.keys(newFilters).length > 0 ? newFilters : undefined,
-    });
   };
 
   const handleMaxYearChange = (value: string | number) => {
     const stringValue = String(value);
     setSelectedMaxYear(stringValue);
-    const newFilters: any = {
-      ...filters,
-      max_year: stringValue || undefined,
-    };
-    // Remove undefined values
-    Object.keys(newFilters).forEach(
-      (key) => newFilters[key] === undefined && delete newFilters[key],
-    );
-    refetch({
-      page: 1,
-      limit: 100,
-      search: searchTerm || undefined,
-      filters: Object.keys(newFilters).length > 0 ? newFilters : undefined,
-    });
   };
 
   const handleMinExRateChange = (value: string | number) => {
     const stringValue = String(value);
     setSelectedMinExRate(stringValue);
-    const newFilters: any = {
-      ...filters,
-      min_ex_rate: stringValue || undefined,
-    };
-    // Remove undefined values
-    Object.keys(newFilters).forEach(
-      (key) => newFilters[key] === undefined && delete newFilters[key],
-    );
-    refetch({
-      page: 1,
-      limit: 100,
-      search: searchTerm || undefined,
-      filters: Object.keys(newFilters).length > 0 ? newFilters : undefined,
-    });
   };
 
   const handleMaxExRateChange = (value: string | number) => {
     const stringValue = String(value);
     setSelectedMaxExRate(stringValue);
-    const newFilters: any = {
-      ...filters,
-      max_ex_rate: stringValue || undefined,
-    };
-    // Remove undefined values
-    Object.keys(newFilters).forEach(
-      (key) => newFilters[key] === undefined && delete newFilters[key],
-    );
-    refetch({
-      page: 1,
-      limit: 100,
-      search: searchTerm || undefined,
-      filters: Object.keys(newFilters).length > 0 ? newFilters : undefined,
-    });
   };
 
   const handlePortChange = (value: string | number) => {
     const stringValue = String(value);
     setSelectedPort(stringValue);
-    refetch({
-      page: 1,
-      limit: 100,
-      search: searchTerm || undefined,
-      filters: {
-        ...filters,
-        port_code: stringValue || "",
-      },
-    });
   };
 
   const handleInvoicesChange = (value: string | number) => {
     const stringValue = String(value);
     setSelectedInvoices(stringValue);
-    refetch({
-      page: 1,
-      limit: 100,
-      search: searchTerm || undefined,
-      filters: {
-        ...filters,
-        no_of_invoices: stringValue || "",
-      },
-    });
   };
 
   const handleDateRangeChange = (
-    value: { start: DateValue; end: DateValue } | null,
+    value: { start: DateValue | null; end: DateValue | null },
   ) => {
-    if (value) {
-      setDateRange(value);
-
-      // Build filters with the new date range values
-      const newFilters: Record<string, string | number> = {};
-      if (selectedMinYear) newFilters.min_year = selectedMinYear;
-      if (selectedMaxYear) newFilters.max_year = selectedMaxYear;
-      if (selectedMinGWeight) newFilters.min_g_weight = selectedMinGWeight;
-      if (selectedMaxGWeight) newFilters.max_g_weight = selectedMaxGWeight;
-      if (selectedMinExRate) newFilters.min_ex_rate = selectedMinExRate;
-      if (selectedMaxExRate) newFilters.max_ex_rate = selectedMaxExRate;
-      if (selectedPort) newFilters.port_code = selectedPort;
-      if (selectedInvoices) newFilters.no_of_invoices = selectedInvoices;
-
-      // Add the new date range to filters
-      newFilters.start_date = value.start.toString();
-      newFilters.end_date = value.end.toString();
-
-      refetch({
-        page: 1,
-        limit: 100,
-        search: searchTerm || undefined,
-        filters: Object.keys(newFilters).length > 0 ? newFilters : undefined,
-      });
-    }
+    setDateRange(value);
   };
 
   const handleClearFilters = () => {
@@ -292,10 +163,6 @@ function DashboardPage({ className }: IDashboardPageProps) {
     setDateRange({
       start: null,
       end: null,
-    });
-    refetch({
-      page: 1,
-      limit: 100,
     });
   };
 
@@ -507,7 +374,7 @@ function DashboardPage({ className }: IDashboardPageProps) {
 
   const tableJsx = (
     <div className={styles.SubContainer}>
-      {loading && <Text>Loading...</Text>}
+      {loading && <TableShimmer rows={10} columns={11} />}
       {error && <Text style={{ color: "red" }}>Error: {error}</Text>}
       {!loading && !error && boeHeaders.length > 0 && (
         <Table className={styles.Table}>
@@ -550,9 +417,17 @@ function DashboardPage({ className }: IDashboardPageProps) {
     <div className="container h-100">
       <div className={joinClassNames(className, styles.Container)}>
         <Card className={styles.StatCard}>
-          <span className={styles.Stat}>240</span>&nbsp;&nbsp;units
+          {loading ? (
+            <ShimmerLoader.Default style={{ height: "96px", width: "200px" }} />
+          ) : (
+            <>
+              <span className={styles.Stat}>240</span>&nbsp;&nbsp;units
+            </>
+          )}
         </Card>
-        <Card title="Stats">-</Card>
+        <Card title="Stats">
+          {loading ? <CardShimmer count={1} /> : "-"}
+        </Card>
         <Card title="Filters">{filtersJsx}</Card>
         <Card title="Units">{tableJsx}</Card>
       </div>
