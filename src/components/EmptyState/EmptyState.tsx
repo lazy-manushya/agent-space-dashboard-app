@@ -1,9 +1,10 @@
 "use client";
 
 import Button from "@/components/Button";
+import { joinClassNames } from "@/utils/classNames";
+
 import { IEmptyStateProps } from "./EmptyState.types";
 import styles from "./EmptyState.module.css";
-import { joinClassNames } from "@/utils/joinClassNames";
 
 function EmptyState({
   title = "No data found",

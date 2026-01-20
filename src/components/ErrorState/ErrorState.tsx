@@ -1,9 +1,10 @@
 "use client";
 
 import Button from "@/components/Button";
+import { joinClassNames } from "@/utils/classNames";
+
 import { IErrorStateProps } from "./ErrorState.types";
 import styles from "./ErrorState.module.css";
-import { joinClassNames } from "@/utils/joinClassNames";
 
 function ErrorState({
   title = "Something went wrong",

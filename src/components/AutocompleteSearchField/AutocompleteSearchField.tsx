@@ -104,10 +104,18 @@ function AutocompleteSearchField<T extends { id: string; label: string }>({
     }
   }, []);
 
+  // Ensure aria-label is always a string or undefined
+  const comboBoxAriaLabel =
+    typeof ariaLabel === "string"
+      ? ariaLabel
+      : typeof label === "string"
+      ? label
+      : "Search Field";
+
   return (
     <ComboBox
       className={className}
-      aria-label={ariaLabel || label || "Search Field"}
+      aria-label={comboBoxAriaLabel}
       onSelectionChange={onSelectionChange}
       menuTrigger="focus"
       inputValue={InputValue}
