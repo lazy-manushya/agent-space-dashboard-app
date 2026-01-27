@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import {
   today,
   getLocalTimeZone,
@@ -33,6 +33,27 @@ import {
 import { useBoeHeaders } from "@/services/boe";
 import { useBoeHeadersMetadata } from "@/services/boe";
 
+// Number formatting utilities
+const formatNumber = (value: number | undefined, maxDecimals: number = 2): string => {
+  if (value === undefined || value === null) return "-";
+
+  // For large numbers, use compact notation
+  if (value >= 1000000) {
+    return (value / 1000000).toFixed(maxDecimals) + "M";
+  }
+  if (value >= 1000) {
+    return (value / 1000).toFixed(maxDecimals) + "k";
+  }
+
+  // For regular numbers, limit decimals
+  return Number(value.toFixed(maxDecimals)).toLocaleString();
+};
+
+const formatDecimal = (value: number | undefined, maxDecimals: number = 2): string => {
+  if (value === undefined || value === null) return "-";
+  return Number(value.toFixed(maxDecimals)).toLocaleString();
+};
+
 function DashboardPage({ className }: IDashboardPageProps) {
   const now = today(getLocalTimeZone());
 
@@ -54,7 +75,65 @@ function DashboardPage({ className }: IDashboardPageProps) {
     end: null,
   });
 
-  // Fetch metadata (unique values for filters)
+
+  const [visibleColumns, setVisibleColumns] = useState({
+    be_no: true,
+    year: false,
+    iec_no: false,
+    gst_no: false,
+    port_code: true,
+    be_date: true,
+    pkg: true,
+    g_wt: true,
+    ex_rate: false,
+    no_of_invoices: false,
+    total_items: false,
+  });
+
+  const toggleColumn = (columnKey: keyof typeof visibleColumns) => {
+    setVisibleColumns(prev => ({ ...prev, [columnKey]: !prev[columnKey] }));
+  };
+
+  const showAllColumns = () => {
+    setVisibleColumns({
+      be_no: true,
+      year: true,
+      iec_no: true,
+      gst_no: true,
+      port_code: true,
+      be_date: true,
+      pkg: true,
+      g_wt: true,
+      ex_rate: true,
+      no_of_invoices: true,
+      total_items: true,
+    });
+  };
+
+  const showCoreColumns = () => {
+    setVisibleColumns({
+      be_no: true,
+      year: false,
+      iec_no: false,
+      gst_no: false,
+      port_code: true,
+      be_date: true,
+      pkg: true,
+      g_wt: true,
+      ex_rate: false,
+      no_of_invoices: false,
+      total_items: false,
+    });
+  };
+
+
+  const [expandedRow, setExpandedRow] = useState<string | null>(null);
+
+  const toggleRowExpansion = (beNo: string) => {
+    setExpandedRow(expandedRow === beNo ? null : beNo);
+  };
+
+
   const {
     metadata,
     loading: metadataLoading,
@@ -73,12 +152,12 @@ function DashboardPage({ className }: IDashboardPageProps) {
     if (selectedPort) filters.port_code = selectedPort;
     if (selectedInvoices) filters.no_of_invoices = selectedInvoices;
 
-    // Add date range filters
+
     if (dateRange.start) {
-      filters.start_date = dateRange.start.toString(); // Format: YYYY-MM-DD
+      filters.start_date = dateRange.start.toString(); 
     }
     if (dateRange.end) {
-      filters.end_date = dateRange.end.toString(); // Format: YYYY-MM-DD
+      filters.end_date = dateRange.end.toString(); 
     }
 
     return filters;
@@ -97,8 +176,7 @@ function DashboardPage({ className }: IDashboardPageProps) {
     filters: Object.keys(filters).length > 0 ? filters : undefined,
   });
 
-  // Handle filter changes
-  // SWR automatically refetches when state changes, so we just update state
+
   const handleSearch = (value: string) => {
     setSearchTerm(value);
   };
@@ -159,7 +237,7 @@ function DashboardPage({ className }: IDashboardPageProps) {
     setSelectedMaxExRate("");
     setSelectedPort("");
     setSelectedInvoices("");
-    // Reset date range to empty/null
+
     setDateRange({
       start: null,
       end: null,
@@ -369,6 +447,30 @@ function DashboardPage({ className }: IDashboardPageProps) {
       >
         Clear Filters
       </Button>
+
+      <div className={styles.ColumnToggleSection}>
+        <Label>Column Visibility:</Label>
+        <div className={styles.ColumnToggleButtons}>
+          <Button onClick={showCoreColumns} size="sm" variant="secondary">
+            Core Columns
+          </Button>
+          <Button onClick={showAllColumns} size="sm" variant="secondary">
+            All Columns
+          </Button>
+        </div>
+        <div className={styles.ColumnToggles}>
+          {Object.entries(visibleColumns).map(([key, isVisible]) => (
+            <label key={key} className={styles.ColumnToggle}>
+              <input
+                type="checkbox"
+                checked={isVisible}
+                onChange={() => toggleColumn(key as keyof typeof visibleColumns)}
+              />
+              <span>{key.replace(/_/g, ' ').toUpperCase()}</span>
+            </label>
+          ))}
+        </div>
+      </div>
     </div>
   );
 
@@ -379,34 +481,130 @@ function DashboardPage({ className }: IDashboardPageProps) {
       {!loading && !error && boeHeaders.length > 0 && (
         <Table className={styles.Table}>
           <TableHeader>
-            <Column isRowHeader><span>BE No</span></Column>
-            <Column><span>Year</span></Column>
-            <Column><span>IEC No</span></Column>
-            <Column><span>GST No</span></Column>
-            <Column><span>Port Code</span></Column>
-            <Column><span>BE Date</span></Column>
-            <Column><span>Packages</span></Column>
-            <Column><span>Gross Weight</span></Column>
-            <Column><span>Exchange Rate</span></Column>
-            <Column><span>Invoices</span></Column>
-            <Column><span>Items</span></Column>
+            {visibleColumns.be_no && <Column isRowHeader><span>BE No</span></Column>}
+            {visibleColumns.year && <Column><span>Year</span></Column>}
+            {visibleColumns.iec_no && <Column><span>IEC No</span></Column>}
+            {visibleColumns.gst_no && <Column><span>GST No</span></Column>}
+            {visibleColumns.port_code && <Column><span>Port Code</span></Column>}
+            {visibleColumns.be_date && <Column><span>BE Date</span></Column>}
+            {visibleColumns.pkg && <Column><span>Packages</span></Column>}
+            {visibleColumns.g_wt && <Column><span>Gross Weight</span></Column>}
+            {visibleColumns.ex_rate && <Column><span>Exchange Rate</span></Column>}
+            {visibleColumns.no_of_invoices && <Column><span>Invoices</span></Column>}
+            {visibleColumns.total_items && <Column><span>Items</span></Column>}
           </TableHeader>
           <TableBody>
-            {boeHeaders.map((header) => (
-              <Row key={header.be_no}>
-                <Cell className={styles.Cell}><span>{header.be_no}</span></Cell>
-                <Cell className={styles.Cell}><span>{header.year}</span></Cell>
-                <Cell className={styles.Cell}><span>{header.iec_no}</span></Cell>
-                <Cell className={styles.Cell}><span>{header.gst_no}</span></Cell>
-                <Cell className={styles.Cell}><span>{header.port_code}</span></Cell>
-                <Cell className={styles.Cell}><span>{header.be_date}</span></Cell>
-                <Cell className={styles.Cell}><span>{header.pkg}</span></Cell>
-                <Cell className={styles.Cell}><span>{header.g_wt}</span></Cell>
-                <Cell className={styles.Cell}><span>{header.ex_rate}</span></Cell>
-                <Cell className={styles.Cell}><span>{header.no_of_invoices}</span></Cell>
-                <Cell className={styles.Cell}><span>{header.total_items}</span></Cell>
-              </Row>
-            ))}
+            {boeHeaders.map((header) => {
+              const isExpanded = expandedRow === header.be_no;
+              return (
+                <React.Fragment key={header.be_no}>
+                  <Row
+                    className={styles.ClickableRow}
+                    onAction={() => toggleRowExpansion(header.be_no)}
+                  >
+                    {visibleColumns.be_no && (
+                      <Cell className={styles.Cell}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                          <span className={styles.ExpandIcon}>{isExpanded ? '▼' : '▶'}</span>
+                          <span className={`${styles.BeNumber} ${styles.PrimaryData}`}>{header.be_no}</span>
+                        </div>
+                      </Cell>
+                    )}
+                    {visibleColumns.year && <Cell className={styles.Cell}><span className={styles.MetaInfo}>{header.year}</span></Cell>}
+                    {visibleColumns.iec_no && <Cell className={styles.Cell}><span className={styles.MetaInfo}>{header.iec_no}</span></Cell>}
+                    {visibleColumns.gst_no && <Cell className={styles.Cell}><span className={styles.MetaInfo}>{header.gst_no}</span></Cell>}
+                    {visibleColumns.port_code && (
+                      <Cell className={styles.Cell}>
+                        <span className={`${styles.PortBadge} ${styles[header.port_code?.toLowerCase()]} ${styles.PrimaryData}`}>
+                          {header.port_code}
+                        </span>
+                      </Cell>
+                    )}
+                    {visibleColumns.be_date && <Cell className={styles.Cell}><span className={styles.SecondaryData}>{header.be_date}</span></Cell>}
+                    {visibleColumns.pkg && <Cell className={`${styles.Cell} ${styles.NumberCell}`}><span className={styles.PrimaryData}>{formatNumber(header.pkg, 0)}</span></Cell>}
+                    {visibleColumns.g_wt && <Cell className={`${styles.Cell} ${styles.NumberCell}`}><span className={styles.PrimaryData}>{formatNumber(header.g_wt, 2)}</span></Cell>}
+                    {visibleColumns.ex_rate && <Cell className={`${styles.Cell} ${styles.NumberCell}`}><span className={styles.MetaInfo}>{formatDecimal(header.ex_rate, 2)}</span></Cell>}
+                    {visibleColumns.no_of_invoices && <Cell className={`${styles.Cell} ${styles.NumberCell}`}><span className={styles.MetaInfo}>{formatNumber(header.no_of_invoices, 0)}</span></Cell>}
+                    {visibleColumns.total_items && <Cell className={`${styles.Cell} ${styles.NumberCell}`}><span className={styles.MetaInfo}>{formatNumber(header.total_items, 0)}</span></Cell>}
+                  </Row>
+                  {isExpanded && (
+                    <Row key={`${header.be_no}-details`}>
+                      <Cell colSpan={Object.values(visibleColumns).filter(Boolean).length} className={styles.DetailsCell}>
+                        <div className={styles.DetailsPanel}>
+                          <h4 className={styles.DetailsTitle}>Full Details for {header.be_no}</h4>
+                          <div className={styles.DetailsGrid}>
+                            <div className={styles.DetailItem}>
+                              <span className={styles.DetailLabel}>Year:</span>
+                              <span className={styles.DetailValue}>{header.year}</span>
+                            </div>
+                            <div className={styles.DetailItem}>
+                              <span className={styles.DetailLabel}>IEC Number:</span>
+                              <span className={styles.DetailValue}>{header.iec_no}</span>
+                            </div>
+                            <div className={styles.DetailItem}>
+                              <span className={styles.DetailLabel}>GST Number:</span>
+                              <span className={styles.DetailValue}>{header.gst_no}</span>
+                            </div>
+                            <div className={styles.DetailItem}>
+                              <span className={styles.DetailLabel}>Port Code:</span>
+                              <span className={styles.DetailValue}>{header.port_code}</span>
+                            </div>
+                            <div className={styles.DetailItem}>
+                              <span className={styles.DetailLabel}>BE Date:</span>
+                              <span className={styles.DetailValue}>{header.be_date}</span>
+                            </div>
+                            <div className={styles.DetailItem}>
+                              <span className={styles.DetailLabel}>Packages:</span>
+                              <span className={styles.DetailValue}>{header.pkg?.toLocaleString()}</span>
+                            </div>
+                            <div className={styles.DetailItem}>
+                              <span className={styles.DetailLabel}>Gross Weight:</span>
+                              <span className={styles.DetailValue}>{header.g_wt?.toLocaleString(undefined, { maximumFractionDigits: 2 })}</span>
+                            </div>
+                            <div className={styles.DetailItem}>
+                              <span className={styles.DetailLabel}>Exchange Rate (Exact):</span>
+                              <span className={styles.DetailValue}>{header.ex_rate}</span>
+                            </div>
+                            <div className={styles.DetailItem}>
+                              <span className={styles.DetailLabel}>Number of Invoices:</span>
+                              <span className={styles.DetailValue}>{header.no_of_invoices}</span>
+                            </div>
+                            <div className={styles.DetailItem}>
+                              <span className={styles.DetailLabel}>Total Items:</span>
+                              <span className={styles.DetailValue}>{header.total_items}</span>
+                            </div>
+                            {header.submission && (
+                              <div className={styles.DetailItem}>
+                                <span className={styles.DetailLabel}>Submission:</span>
+                                <span className={styles.DetailValue}>{header.submission}</span>
+                              </div>
+                            )}
+                            {header.assessment && (
+                              <div className={styles.DetailItem}>
+                                <span className={styles.DetailLabel}>Assessment:</span>
+                                <span className={styles.DetailValue}>{header.assessment}</span>
+                              </div>
+                            )}
+                            {header.examination && (
+                              <div className={styles.DetailItem}>
+                                <span className={styles.DetailLabel}>Examination:</span>
+                                <span className={styles.DetailValue}>{header.examination}</span>
+                              </div>
+                            )}
+                            {header.ooc && (
+                              <div className={styles.DetailItem}>
+                                <span className={styles.DetailLabel}>OOC:</span>
+                                <span className={styles.DetailValue}>{header.ooc}</span>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </Cell>
+                    </Row>
+                  )}
+                </React.Fragment>
+              );
+            })}
           </TableBody>
         </Table>
       )}
