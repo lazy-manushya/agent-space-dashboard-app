@@ -35,13 +35,13 @@
   --details-value: #374151;
   --details-separator: rgba(139, 146, 167, 0.2);
 
-  --toggle-section-bg: #f9fafb;
-  --toggle-section-border: #e5e7eb;
-  --toggle-item-bg: white;
-  --toggle-item-border: #d1d5db;
-  --toggle-item-hover-bg: #f3f4f6;
-  --toggle-item-hover-border: #9ca3af;
-  --toggle-item-text: #374151;
+  --toggle-section-bg: #f8fafc;
+  --toggle-section-border: #e2e8f0;
+  --toggle-item-bg: #ffffff;
+  --toggle-item-border: #cbd5e1;
+  --toggle-item-hover-bg: #f1f5f9;
+  --toggle-item-hover-border: #94a3b8;
+  --toggle-item-text: #334155;
 
   --expand-icon: #8b92a7;
 
