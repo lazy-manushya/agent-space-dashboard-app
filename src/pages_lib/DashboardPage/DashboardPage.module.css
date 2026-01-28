@@ -83,7 +83,6 @@
 }
 
 .SubContainer {
-  margin-top: 20px;
   overflow-x: auto;
 }
 
@@ -290,6 +289,26 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.TableCard {
+  display: flex;
+  flex-direction: column;
+  padding: 0.4rem;
+  border-radius: 1rem;
+background-color: white;
+  box-shadow:
+    0px 1px 3px rgba(3, 7, 18, 0.01),
+    0px 5px 12px rgba(3, 7, 18, 0.02),
+    0px 10px 26px rgba(3, 7, 18, 0.02),
+    0px 19px 47px rgba(3, 7, 18, 0.03),
+    0px 29px 73px rgba(3, 7, 18, 0.04);
+}
+
+.TableCard .Content {
+  font-size: 1rem;
+  color: #333;
+  overflow: auto;
 }
 
 .Stat {

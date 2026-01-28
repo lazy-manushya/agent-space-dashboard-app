@@ -736,7 +736,9 @@ function DashboardPage({ className }: IDashboardPageProps) {
           {loading ? <CardShimmer count={1} /> : "-"}
         </Card>
         <Card title="Filters">{filtersJsx}</Card>
-        <Card title="Units">{tableJsx}</Card>
+        <div className={styles.TableCard}>
+          {tableJsx}
+        </div>
       </div>
     </div>
   );
