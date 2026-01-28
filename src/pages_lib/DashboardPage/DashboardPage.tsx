@@ -6,6 +6,14 @@ import {
   getLocalTimeZone,
   type DateValue,
 } from "@internationalized/date";
+import {
+  IoChevronDown,
+  IoChevronForward,
+  IoInformationCircleOutline,
+  IoBusinessOutline,
+  IoCubeOutline,
+  IoStatsChartOutline
+} from "react-icons/io5";
 
 import { joinClassNames } from "@/utils";
 import Card from "@/components/Card";
@@ -90,8 +98,65 @@ function DashboardPage({ className }: IDashboardPageProps) {
     total_items: false,
   });
 
+  const [expandedCategories, setExpandedCategories] = useState({
+    basicInfo: true,
+    businessDetails: true,
+    shipmentDetails: true,
+    financialSummary: false,
+  });
+
+  const columnCategories = {
+    basicInfo: {
+      label: "Basic Information",
+      icon: <IoInformationCircleOutline />,
+      columns: ["be_no", "year", "be_date"] as const,
+    },
+    businessDetails: {
+      label: "Business Details",
+      icon: <IoBusinessOutline />,
+      columns: ["iec_no", "gst_no", "port_code"] as const,
+    },
+    shipmentDetails: {
+      label: "Shipment Details",
+      icon: <IoCubeOutline />,
+      columns: ["pkg", "g_wt"] as const,
+    },
+    financialSummary: {
+      label: "Financial & Summary",
+      icon: <IoStatsChartOutline />,
+      columns: ["ex_rate", "no_of_invoices", "total_items"] as const,
+    },
+  };
+
   const toggleColumn = (columnKey: keyof typeof visibleColumns) => {
     setVisibleColumns(prev => ({ ...prev, [columnKey]: !prev[columnKey] }));
+  };
+
+  const toggleCategory = (category: keyof typeof expandedCategories) => {
+    setExpandedCategories(prev => ({ ...prev, [category]: !prev[category] }));
+  };
+
+  const toggleCategoryColumns = (categoryKey: keyof typeof columnCategories, checked: boolean) => {
+    const category = columnCategories[categoryKey];
+    const updates: Partial<typeof visibleColumns> = {};
+    category.columns.forEach((col) => {
+      updates[col] = checked;
+    });
+    setVisibleColumns(prev => ({ ...prev, ...updates }));
+  };
+
+  const isCategoryFullyVisible = (categoryKey: keyof typeof columnCategories) => {
+    const category = columnCategories[categoryKey];
+    return category.columns.every((col) => visibleColumns[col]);
+  };
+
+  // Get the first visible column to use as row header
+  const getRowHeaderColumn = (): keyof typeof visibleColumns | null => {
+    const columnOrder: (keyof typeof visibleColumns)[] = [
+      'be_no', 'year', 'iec_no', 'gst_no', 'port_code',
+      'be_date', 'pkg', 'g_wt', 'ex_rate', 'no_of_invoices', 'total_items'
+    ];
+    return columnOrder.find(col => visibleColumns[col]) || null;
   };
 
   const showAllColumns = () => {
@@ -108,6 +173,12 @@ function DashboardPage({ className }: IDashboardPageProps) {
       no_of_invoices: true,
       total_items: true,
     });
+    setExpandedCategories({
+      basicInfo: true,
+      businessDetails: true,
+      shipmentDetails: true,
+      financialSummary: true,
+    });
   };
 
   const showCoreColumns = () => {
@@ -123,6 +194,12 @@ function DashboardPage({ className }: IDashboardPageProps) {
       ex_rate: false,
       no_of_invoices: false,
       total_items: false,
+    });
+    setExpandedCategories({
+      basicInfo: true,
+      businessDetails: true,
+      shipmentDetails: true,
+      financialSummary: false,
     });
   };
 
@@ -459,15 +536,47 @@ function DashboardPage({ className }: IDashboardPageProps) {
           </Button>
         </div>
         <div className={styles.ColumnToggles}>
-          {Object.entries(visibleColumns).map(([key, isVisible]) => (
-            <label key={key} className={styles.ColumnToggle}>
-              <input
-                type="checkbox"
-                checked={isVisible}
-                onChange={() => toggleColumn(key as keyof typeof visibleColumns)}
-              />
-              <span>{key.replace(/_/g, ' ').toUpperCase()}</span>
-            </label>
+          {Object.entries(columnCategories).map(([categoryKey, category]) => (
+            <div key={categoryKey} className={styles.CategoryGroup}>
+              <div
+                className={styles.CategoryHeader}
+                onClick={() => toggleCategory(categoryKey as keyof typeof expandedCategories)}
+              >
+                <span className={styles.CategoryIcon}>
+                  {expandedCategories[categoryKey as keyof typeof expandedCategories] ? (
+                    <IoChevronDown />
+                  ) : (
+                    <IoChevronForward />
+                  )}
+                </span>
+                <span className={styles.CategoryEmoji}>{category.icon}</span>
+                <span className={styles.CategoryLabel}>{category.label}</span>
+                <input
+                  type="checkbox"
+                  checked={isCategoryFullyVisible(categoryKey as keyof typeof columnCategories)}
+                  onChange={(e) => {
+                    e.stopPropagation();
+                    toggleCategoryColumns(categoryKey as keyof typeof columnCategories, e.target.checked);
+                  }}
+                  className={styles.CategoryCheckbox}
+                />
+              </div>
+
+              {expandedCategories[categoryKey as keyof typeof expandedCategories] && (
+                <div className={styles.CategoryColumns}>
+                  {category.columns.map((columnKey) => (
+                    <label key={columnKey} className={styles.ColumnToggle}>
+                      <input
+                        type="checkbox"
+                        checked={visibleColumns[columnKey]}
+                        onChange={() => toggleColumn(columnKey)}
+                      />
+                      <span>{columnKey.replace(/_/g, ' ').toUpperCase()}</span>
+                    </label>
+                  ))}
+                </div>
+              )}
+            </div>
           ))}
         </div>
       </div>
@@ -481,17 +590,17 @@ function DashboardPage({ className }: IDashboardPageProps) {
       {!loading && !error && boeHeaders.length > 0 && (
         <Table className={styles.Table}>
           <TableHeader>
-            {visibleColumns.be_no && <Column isRowHeader><span>BE No</span></Column>}
-            {visibleColumns.year && <Column><span>Year</span></Column>}
-            {visibleColumns.iec_no && <Column><span>IEC No</span></Column>}
-            {visibleColumns.gst_no && <Column><span>GST No</span></Column>}
-            {visibleColumns.port_code && <Column><span>Port Code</span></Column>}
-            {visibleColumns.be_date && <Column><span>BE Date</span></Column>}
-            {visibleColumns.pkg && <Column><span>Packages</span></Column>}
-            {visibleColumns.g_wt && <Column><span>Gross Weight</span></Column>}
-            {visibleColumns.ex_rate && <Column><span>Exchange Rate</span></Column>}
-            {visibleColumns.no_of_invoices && <Column><span>Invoices</span></Column>}
-            {visibleColumns.total_items && <Column><span>Items</span></Column>}
+            {visibleColumns.be_no && <Column isRowHeader={getRowHeaderColumn() === 'be_no'}><span>BE No</span></Column>}
+            {visibleColumns.year && <Column isRowHeader={getRowHeaderColumn() === 'year'}><span>Year</span></Column>}
+            {visibleColumns.iec_no && <Column isRowHeader={getRowHeaderColumn() === 'iec_no'}><span>IEC No</span></Column>}
+            {visibleColumns.gst_no && <Column isRowHeader={getRowHeaderColumn() === 'gst_no'}><span>GST No</span></Column>}
+            {visibleColumns.port_code && <Column isRowHeader={getRowHeaderColumn() === 'port_code'}><span>Port Code</span></Column>}
+            {visibleColumns.be_date && <Column isRowHeader={getRowHeaderColumn() === 'be_date'}><span>BE Date</span></Column>}
+            {visibleColumns.pkg && <Column isRowHeader={getRowHeaderColumn() === 'pkg'}><span>Packages</span></Column>}
+            {visibleColumns.g_wt && <Column isRowHeader={getRowHeaderColumn() === 'g_wt'}><span>Gross Weight</span></Column>}
+            {visibleColumns.ex_rate && <Column isRowHeader={getRowHeaderColumn() === 'ex_rate'}><span>Exchange Rate</span></Column>}
+            {visibleColumns.no_of_invoices && <Column isRowHeader={getRowHeaderColumn() === 'no_of_invoices'}><span>Invoices</span></Column>}
+            {visibleColumns.total_items && <Column isRowHeader={getRowHeaderColumn() === 'total_items'}><span>Items</span></Column>}
           </TableHeader>
           <TableBody>
             {boeHeaders.map((header) => {
