@@ -86,9 +86,9 @@ function DashboardPage({ className }: IDashboardPageProps) {
 
   const [visibleColumns, setVisibleColumns] = useState({
     be_no: true,
-    year: false,
+    year: true,
     iec_no: false,
-    gst_no: false,
+    gst_no: true,
     port_code: true,
     be_date: true,
     pkg: true,
@@ -184,9 +184,9 @@ function DashboardPage({ className }: IDashboardPageProps) {
   const showCoreColumns = () => {
     setVisibleColumns({
       be_no: true,
-      year: false,
+      year: true,
       iec_no: false,
-      gst_no: false,
+      gst_no: true,
       port_code: true,
       be_date: true,
       pkg: true,
