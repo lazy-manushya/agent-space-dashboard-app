@@ -16,37 +16,39 @@ function Layout({ children, className }: ILayoutProps) {
         // , styles.Debug
       )}
     >
-      <div className="container position-relative">
+      <div className="position-relative">
         <header className={joinClassNames(styles.Header)}>
-          <Logo />
-          <NavMenu
-            className={styles.NavMenu}
-            navItems={[
-              {
-                title: "Home",
-                href: "/",
-                icon: <i className="las la-home" />,
-              },
-              {
-                title: "BOE",
-                href: "/boe",
-                icon: <i className="las la-book-open" />,
-              },
-              {
-                title: "Invoices",
-                href: "/invoices",
-                icon: <i className="las la-receipt" />,
-                disabled: true,
-              },
-              {
-                title: "Duties",
-                href: "/duties",
-                icon: <i className="las la-file-invoice" />,
-                disabled: true,
-              },
-            ]}
-          />
-          {false && <AlertsButton />}
+          <div className={joinClassNames("container", styles.HeaderInner)}>
+            <Logo />
+            <NavMenu
+              className={styles.NavMenu}
+              navItems={[
+                {
+                  title: "Home",
+                  href: "/",
+                  icon: <i className="las la-home" />,
+                },
+                {
+                  title: "BOE",
+                  href: "/boe",
+                  icon: <i className="las la-book-open" />,
+                },
+                {
+                  title: "Invoices",
+                  href: "/invoices",
+                  icon: <i className="las la-receipt" />,
+                  disabled: true,
+                },
+                {
+                  title: "Duties",
+                  href: "/duties",
+                  icon: <i className="las la-file-invoice" />,
+                  disabled: true,
+                },
+              ]}
+            />
+            {false && <AlertsButton />}
+          </div>
         </header>
       </div>
       <main className={styles.Main}>{children}</main>

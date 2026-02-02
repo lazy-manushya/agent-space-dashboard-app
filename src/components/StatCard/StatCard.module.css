@@ -7,10 +7,9 @@
 }
 
 .PrimaryContent {
-  font-size: 5rem;
+  font-size: 3.5rem;
   font-weight: 600;
   color: rgba(var(--clr-primary-rgb), 0.75);
-  line-height: 1em;
 }
 
 .SecondaryContent {

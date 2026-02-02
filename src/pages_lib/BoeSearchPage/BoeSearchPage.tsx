@@ -6,6 +6,7 @@ import AutocompleteSearchField from "@/components/AutocompleteSearchField";
 import { IBoeSearchPageProps } from "./BoeSearchPage.types";
 import styles from "./BoeSearchPage.module.css";
 import { joinClassNames } from "@/utils";
+import Card from "@/components/Card";
 
 // Mock BOE data with complete details
 const MOCK_BOE_DATA = [
@@ -171,21 +172,29 @@ function BoeSearchPage({ className }: IBoeSearchPageProps) {
 
   return (
     <div className={joinClassNames(className, styles.Container)}>
-      <div className={styles.SearchWrapper}>
-        <h1 className={styles.Title}>BOE Search</h1>
-        <p className={styles.Subtitle}>
-          Search for Bill of Entry by BE Number, IEC Number, or Port Code
-        </p>
+      <Card
+        className="p-5"
+        style={{
+          position: "absolute",
+        }}
+      />
+      <Card className="p-5">
+        <div className={styles.SearchWrapper}>
+          <h1 className={styles.Title}>BOE Search</h1>
+          <p className={styles.Subtitle}>
+            Search for Bill of Entry by BE Number, IEC Number, or Port Code
+          </p>
 
-        <AutocompleteSearchField
-          items={MOCK_SUGGESTIONS}
-          placeholder="Enter BE Number, IEC Number, or Port Code..."
-          onSelectionChange={handleSelectionChange}
-          aria-label="BOE Search Field"
-          className={styles.SearchField}
-          groupLabelConfig={GROUP_LABEL_CONFIG}
-        />
-      </div>
+          <AutocompleteSearchField
+            items={MOCK_SUGGESTIONS}
+            placeholder="Enter BE Number, IEC Number, or Port Code..."
+            onSelectionChange={handleSelectionChange}
+            aria-label="BOE Search Field"
+            className={styles.SearchField}
+            groupLabelConfig={GROUP_LABEL_CONFIG}
+          />
+        </div>
+      </Card>
     </div>
   );
 }

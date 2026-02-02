@@ -562,7 +562,7 @@ function DashboardPage({ className }: IDashboardPageProps) {
       </Button>
 
       <div className={styles.ColumnToggleSection}>
-        <Label>Column Visibility:</Label>
+        <Label>Columns:</Label>
         <div className={styles.ColumnToggleButtons}>
           <Button onClick={showCoreColumns} size="sm" variant="secondary">
             Core Columns
@@ -959,8 +959,10 @@ function DashboardPage({ className }: IDashboardPageProps) {
             />
           </div>
         </Card>
-        <Card title="Filters" className={styles.TableCard}>{filtersJsx}</Card>
-        <div className={styles.TableCard}>{tableJsx}</div>
+        <Card title="Filters" className={styles.FiltersCard}>
+          {filtersJsx}
+        </Card>
+        <Card className={styles.TableCard}>{tableJsx}</Card>
       </div>
     </div>
   );
