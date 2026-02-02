@@ -6,7 +6,7 @@ import styles from "./Logo.module.css";
 function Logo({ className }: ILogoProps) {
   return (
     <div className={joinClassNames(className, styles.Container)}>
-      BOE-DASH
+      DASH
     </div>
   );
 }

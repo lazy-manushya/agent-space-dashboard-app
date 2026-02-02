@@ -27,12 +27,12 @@ export function NavMenu({ className, navItems }: INavMenuProps) {
       role: "navigation",
       "aria-label": "Main navigation",
     },
-    navRef
+    navRef,
   );
 
   const activeIndex = useMemo(
     () => navItems.findIndex((item) => isPathActive(item.href || "", pathname)),
-    [navItems, pathname]
+    [navItems, pathname],
   );
 
   // Update indicator position and size based on active item
@@ -72,6 +72,27 @@ export function NavMenu({ className, navItems }: INavMenuProps) {
         )}
         {navItems.map((item, index) => {
           const isActive = isPathActive(item.href || "", pathname);
+          const { disabled } = item;
+
+          if (disabled) {
+            return (
+              <li
+                key={item.href}
+                ref={(el) => {
+                  itemRefs.current[index] = el;
+                }}
+                className={joinClassNames(styles.NavItem, styles.Disabled)}
+              >
+                <div className={styles.NavLink}>
+                  {item.icon && (
+                    <span className={styles.Icon}>{item.icon}</span>
+                  )}
+                  <span className={styles.Title}>{item.title}</span>
+                </div>
+              </li>
+            );
+          }
+
           return (
             <li
               key={item.href}
@@ -80,7 +101,7 @@ export function NavMenu({ className, navItems }: INavMenuProps) {
               }}
               className={joinClassNames(
                 styles.NavItem,
-                isActive ? styles.Active : ""
+                isActive ? styles.Active : "",
               )}
             >
               <Link href={item.href || "#"} className={styles.NavLink}>

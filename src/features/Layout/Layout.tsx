@@ -12,7 +12,7 @@ function Layout({ children, className }: ILayoutProps) {
     <div
       className={joinClassNames(
         className,
-        styles.Container
+        styles.Container,
         // , styles.Debug
       )}
     >
@@ -36,15 +36,17 @@ function Layout({ children, className }: ILayoutProps) {
                 title: "Invoices",
                 href: "/invoices",
                 icon: <i className="las la-receipt" />,
+                disabled: true,
               },
               {
                 title: "Duties",
                 href: "/duties",
                 icon: <i className="las la-file-invoice" />,
+                disabled: true,
               },
             ]}
           />
-          <AlertsButton />
+          {false && <AlertsButton />}
         </header>
       </div>
       <main className={styles.Main}>{children}</main>

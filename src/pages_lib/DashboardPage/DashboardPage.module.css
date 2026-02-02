@@ -93,13 +93,12 @@
   background-color: var(--table-row-even-bg);
   border-radius: 8px;
   overflow: hidden;
-  border: 1px solid var(--table-border);
   table-layout: fixed;
+  font-size: 0.8125rem;
 }
 
 .Table thead {
   background-color: var(--table-header-bg);
-  border-bottom: 1px solid var(--table-border);
 }
 
 .Table thead th {
@@ -163,16 +162,14 @@
 .Cell {
   text-align: left;
   vertical-align: middle;
-  font-size: 0.9375rem;
   color: var(--table-cell-text);
-  padding: 12px 8px;
+  padding: 0.75rem;
   line-height: 1.6;
 }
 
 .PrimaryData {
   color: var(--table-primary-data);
   font-weight: 600;
-  font-size: 0.9375rem;
 }
 
 .SecondaryData {
@@ -244,7 +241,6 @@
   min-width: 110px;
 }
 
-
 .Table thead th:nth-child(4),
 .Table tbody td:nth-child(4) {
   padding-right: 28px;
@@ -253,13 +249,19 @@
 
 .Table thead th:nth-child(4)::after,
 .Table tbody td:nth-child(4)::after {
-  content: '';
+  content: "";
   position: absolute;
   right: 12px;
   top: 20%;
   bottom: 20%;
   width: 1px;
-  background: linear-gradient(to bottom, transparent, var(--details-separator) 20%, var(--details-separator) 80%, transparent);
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--details-separator) 20%,
+    var(--details-separator) 80%,
+    transparent
+  );
 }
 
 .Table thead th:nth-child(6),
@@ -270,13 +272,19 @@
 
 .Table thead th:nth-child(6)::after,
 .Table tbody td:nth-child(6)::after {
-  content: '';
+  content: "";
   position: absolute;
   right: 12px;
   top: 20%;
   bottom: 20%;
   width: 1px;
-  background: linear-gradient(to bottom, transparent, var(--details-separator) 20%, var(--details-separator) 80%, transparent);
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--details-separator) 20%,
+    var(--details-separator) 80%,
+    transparent
+  );
 }
 
 .Table thead th:nth-child(8),
@@ -287,13 +295,19 @@
 
 .Table thead th:nth-child(8)::after,
 .Table tbody td:nth-child(8)::after {
-  content: '';
+  content: "";
   position: absolute;
   right: 12px;
   top: 20%;
   bottom: 20%;
   width: 1px;
-  background: linear-gradient(to bottom, transparent, var(--details-separator) 20%, var(--details-separator) 80%, transparent);
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--details-separator) 20%,
+    var(--details-separator) 80%,
+    transparent
+  );
 }
 
 .Table tbody .Tr:last-child {
@@ -309,12 +323,11 @@
 }
 
 .StatCard {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  grid-area: 'stats';
 }
 
 .TableCard {
+  grid-area: 'table';
   display: flex;
   flex-direction: column;
 
@@ -331,12 +344,18 @@
 
 .TableCard .Content {
   font-size: 1rem;
-  color: #333;
+  color: rgb(var(--clr-primary-rgb));
   overflow: auto;
 }
 
-.Stat {
-  font-size: 96px;
+.StatsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.StatsContainer > * {
+  flex: 1;
 }
 
 .Container {
@@ -352,22 +371,24 @@
 @media screen and (min-width: 768px) {
   .Container {
     gap: 1.5rem;
-    grid-template-columns: 320px 1fr;
-    grid-template-rows: 160px 1fr;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    grid-template-areas:
+      "stats"
+      "table";
   }
 }
 
 .BeNumber {
   color: var(--be-number);
-  font-weight: 500;
+  font-weight: 400;
 }
 
 .PortBadge {
   display: inline-block;
-  padding: 6px 14px;
-  border-radius: 14px;
-  font-size: 0.8125rem;
-  font-weight: 500;
+  padding: 0.25rem 0.875rem;
+  border-radius: 10rem;
+  font-weight: 400;
   text-transform: uppercase;
   letter-spacing: 0.3px;
 }
@@ -510,7 +531,7 @@
 }
 
 .CategoryGroup:has(.CategoryColumns) .CategoryHeader::after {
-  content: '';
+  content: "";
   position: absolute;
   left: 16px;
   bottom: -12px;
@@ -568,7 +589,7 @@
 }
 
 .CategoryColumns::before {
-  content: '';
+  content: "";
   position: absolute;
   left: 17px;
   top: -1px;
@@ -577,8 +598,6 @@
   background: #e5e7eb;
   z-index: 1;
 }
-
-
 
 .CategoryColumns .ColumnToggle,
 .ColumnToggle {
@@ -601,7 +620,7 @@
 }
 
 .CategoryColumns .ColumnToggle::before {
-  content: '';
+  content: "";
   position: absolute;
   left: -16px;
   top: calc(50% - 4px);
@@ -612,8 +631,6 @@
   border-left: 1px solid #e5e7eb;
   border-bottom-left-radius: 8px;
 }
-
-
 
 .ColumnToggle:hover {
   background: #f9fafb;
@@ -672,7 +689,11 @@
 
 .DetailsPanel {
   padding: 24px 32px;
-  background: linear-gradient(135deg, var(--details-bg-start) 0%, var(--details-bg-end) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--details-bg-start) 0%,
+    var(--details-bg-end) 100%
+  );
   border-left: 3px solid var(--details-border);
   animation: slideDown 0.2s ease;
 }

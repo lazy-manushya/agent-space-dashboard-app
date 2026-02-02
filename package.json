@@ -13,6 +13,7 @@
     "class-variance-authority": "^0.7.1",
     "lodash": "^4.17.21",
     "next": "^16.1.1",
+    "nuqs": "^2.8.7",
     "react": "^19.2.3",
     "react-aria-components": "^1.14.0",
     "react-dom": "19.2.3",

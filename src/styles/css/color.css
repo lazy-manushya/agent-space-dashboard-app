@@ -1,5 +1,6 @@
 :root {
-  --clr-primary-rgb: 0, 0, 0;
+  --clr-primary-rgb: 14, 165, 233;
+  --gradient-primary: linear-gradient(135deg, #d1ecfc 0%, #b8e1f1 100%);
   --clr-danger: 255, 87, 87;
   --page-background: #fff;
 
@@ -31,7 +32,7 @@
   --details-bg-end: #f3f4f6;
   --details-border: #fbbf24;
   --details-title: #d97706;
-  --details-label: #8b92a7;
+  --details-label: #a4a7ae;
   --details-value: #374151;
   --details-separator: rgba(139, 146, 167, 0.2);
 
@@ -61,4 +62,9 @@
 .filter-clr-danger {
   filter: brightness(0) invert(53%) sepia(41%) saturate(4024%)
     hue-rotate(327deg) brightness(100%) contrast(103%);
+}
+
+
+.filter-white {
+  filter: brightness(0) invert(100%);
 }

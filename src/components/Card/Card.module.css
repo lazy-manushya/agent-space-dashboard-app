@@ -13,11 +13,12 @@
 }
 
 .Title {
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   margin-bottom: 1.125rem;
   color: #b2b2b2;
   font-weight: 300;
   text-transform: uppercase;
+  color: rgb(var(--clr-primary-rgb));
 }
 
 .Title::first-letter {
@@ -26,6 +27,5 @@
 
 .Content {
   font-size: 1rem;
-  color: #333;
-  overflow: auto;
+  color: #909090;
 }

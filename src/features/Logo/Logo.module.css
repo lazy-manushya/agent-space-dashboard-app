@@ -1,3 +1,5 @@
 .Container {
   font-size: 2rem;
+  color: rgb(var(--clr-primary-rgb));
+  font-weight: 700;
 }

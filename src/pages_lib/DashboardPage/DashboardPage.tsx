@@ -12,8 +12,9 @@ import {
   IoInformationCircleOutline,
   IoBusinessOutline,
   IoCubeOutline,
-  IoStatsChartOutline
+  IoStatsChartOutline,
 } from "react-icons/io5";
+import { parseDate } from "@internationalized/date";
 
 import { joinClassNames } from "@/utils";
 import Card from "@/components/Card";
@@ -40,9 +41,14 @@ import {
 } from "react-aria-components";
 import { useBoeHeaders } from "@/services/boe";
 import { useBoeHeadersMetadata } from "@/services/boe";
+import StatCard from "@/components/StatCard";
+import { useQueryParamState } from "@/services/Routing";
 
 // Number formatting utilities
-const formatNumber = (value: number | undefined, maxDecimals: number = 2): string => {
+const formatNumber = (
+  value: number | undefined,
+  maxDecimals: number = 2,
+): string => {
   if (value === undefined || value === null) return "-";
 
   // For large numbers, use compact notation
@@ -57,32 +63,59 @@ const formatNumber = (value: number | undefined, maxDecimals: number = 2): strin
   return Number(value.toFixed(maxDecimals)).toLocaleString();
 };
 
-const formatDecimal = (value: number | undefined, maxDecimals: number = 2): string => {
+const formatDecimal = (
+  value: number | undefined,
+  maxDecimals: number = 2,
+): string => {
   if (value === undefined || value === null) return "-";
   return Number(value.toFixed(maxDecimals)).toLocaleString();
 };
 
 function DashboardPage({ className }: IDashboardPageProps) {
-  const now = today(getLocalTimeZone());
+  const { values, setValues } = useQueryParamState(
+    {
+      searchTerm: "",
+      minYear: "",
+      maxYear: "",
+      minGWeight: 0,
+      maxGWeight: 0,
+      minExRate: 0,
+      maxExRate: 0,
+      port: "",
+      invoices: "",
+      startDate: "",
+      endDate: "",
+    },
+    {
+      urlKeys: {
+        searchTerm: "search",
+        minYear: "min_year",
+        maxYear: "max_year",
+        minGWeight: "min_g_weight",
+        maxGWeight: "max_g_weight",
+        minExRate: "min_ex_rate",
+        maxExRate: "max_ex_rate",
+        startDate: "start_date",
+        endDate: "end_date",
+      },
+    },
+  );
 
-  // Filter states
-  const [searchTerm, setSearchTerm] = useState<string>("");
-  const [selectedMinYear, setSelectedMinYear] = useState<string>("");
-  const [selectedMaxYear, setSelectedMaxYear] = useState<string>("");
-  const [selectedMinGWeight, setSelectedMinGWeight] = useState<string>("");
-  const [selectedMaxExRate, setSelectedMaxExRate] = useState<string>("");
-  const [selectedMinExRate, setSelectedMinExRate] = useState<string>("");
-  const [selectedMaxGWeight, setSelectedMaxGWeight] = useState<string>("");
-  const [selectedPort, setSelectedPort] = useState<string>("");
-  const [selectedInvoices, setSelectedInvoices] = useState<string>("");
-  const [dateRange, setDateRange] = useState<{
-    start: DateValue | null;
-    end: DateValue | null;
-  }>({
-    start: null,
-    end: null,
-  });
+  const {
+    searchTerm,
+    minYear,
+    maxYear,
+    minGWeight,
+    maxGWeight,
+    minExRate,
+    maxExRate,
+    port,
+    invoices,
+    startDate,
+    endDate,
+  } = values;
 
+  // Remove individual useState hooks for filters
 
   const [visibleColumns, setVisibleColumns] = useState({
     be_no: true,
@@ -129,23 +162,28 @@ function DashboardPage({ className }: IDashboardPageProps) {
   };
 
   const toggleColumn = (columnKey: keyof typeof visibleColumns) => {
-    setVisibleColumns(prev => ({ ...prev, [columnKey]: !prev[columnKey] }));
+    setVisibleColumns((prev) => ({ ...prev, [columnKey]: !prev[columnKey] }));
   };
 
   const toggleCategory = (category: keyof typeof expandedCategories) => {
-    setExpandedCategories(prev => ({ ...prev, [category]: !prev[category] }));
+    setExpandedCategories((prev) => ({ ...prev, [category]: !prev[category] }));
   };
 
-  const toggleCategoryColumns = (categoryKey: keyof typeof columnCategories, checked: boolean) => {
+  const toggleCategoryColumns = (
+    categoryKey: keyof typeof columnCategories,
+    checked: boolean,
+  ) => {
     const category = columnCategories[categoryKey];
     const updates: Partial<typeof visibleColumns> = {};
     category.columns.forEach((col) => {
       updates[col] = checked;
     });
-    setVisibleColumns(prev => ({ ...prev, ...updates }));
+    setVisibleColumns((prev) => ({ ...prev, ...updates }));
   };
 
-  const isCategoryFullyVisible = (categoryKey: keyof typeof columnCategories) => {
+  const isCategoryFullyVisible = (
+    categoryKey: keyof typeof columnCategories,
+  ) => {
     const category = columnCategories[categoryKey];
     return category.columns.every((col) => visibleColumns[col]);
   };
@@ -153,10 +191,19 @@ function DashboardPage({ className }: IDashboardPageProps) {
   // Get the first visible column to use as row header
   const getRowHeaderColumn = (): keyof typeof visibleColumns | null => {
     const columnOrder: (keyof typeof visibleColumns)[] = [
-      'be_no', 'year', 'iec_no', 'gst_no', 'port_code',
-      'be_date', 'pkg', 'g_wt', 'ex_rate', 'no_of_invoices', 'total_items'
+      "be_no",
+      "year",
+      "iec_no",
+      "gst_no",
+      "port_code",
+      "be_date",
+      "pkg",
+      "g_wt",
+      "ex_rate",
+      "no_of_invoices",
+      "total_items",
     ];
-    return columnOrder.find(col => visibleColumns[col]) || null;
+    return columnOrder.find((col) => visibleColumns[col]) || null;
   };
 
   const showAllColumns = () => {
@@ -203,13 +250,11 @@ function DashboardPage({ className }: IDashboardPageProps) {
     });
   };
 
-
   const [expandedRow, setExpandedRow] = useState<string | null>(null);
 
   const toggleRowExpansion = (beNo: string) => {
     setExpandedRow(expandedRow === beNo ? null : beNo);
   };
-
 
   const {
     metadata,
@@ -220,23 +265,16 @@ function DashboardPage({ className }: IDashboardPageProps) {
   // Build filters object with year range handling and date range
   const buildFilters = () => {
     const filters: Record<string, string | number> = {};
-    if (selectedMinYear) filters.min_year = selectedMinYear;
-    if (selectedMaxYear) filters.max_year = selectedMaxYear;
-    if (selectedMinGWeight) filters.min_g_weight = selectedMinGWeight;
-    if (selectedMaxGWeight) filters.max_g_weight = selectedMaxGWeight;
-    if (selectedMinExRate) filters.min_ex_rate = selectedMinExRate;
-    if (selectedMaxExRate) filters.max_ex_rate = selectedMaxExRate;
-    if (selectedPort) filters.port_code = selectedPort;
-    if (selectedInvoices) filters.no_of_invoices = selectedInvoices;
-
-
-    if (dateRange.start) {
-      filters.start_date = dateRange.start.toString(); 
-    }
-    if (dateRange.end) {
-      filters.end_date = dateRange.end.toString(); 
-    }
-
+    if (minYear) filters.min_year = minYear;
+    if (maxYear) filters.max_year = maxYear;
+    if (minGWeight) filters.min_g_weight = minGWeight;
+    if (maxGWeight) filters.max_g_weight = maxGWeight;
+    if (minExRate) filters.min_ex_rate = minExRate;
+    if (maxExRate) filters.max_ex_rate = maxExRate;
+    if (port) filters.port_code = port;
+    if (invoices) filters.no_of_invoices = invoices;
+    if (startDate) filters.start_date = startDate.toString();
+    if (endDate) filters.end_date = endDate.toString();
     return filters;
   };
 
@@ -253,71 +291,66 @@ function DashboardPage({ className }: IDashboardPageProps) {
     filters: Object.keys(filters).length > 0 ? filters : undefined,
   });
 
-
+  // Unified handlers using setValues
   const handleSearch = (value: string) => {
-    setSearchTerm(value);
+    setValues({ searchTerm: value });
   };
 
   const handleMinGWeightChange = (value: string | number) => {
-    const stringValue = String(value);
-    setSelectedMinGWeight(stringValue);
+    setValues({ minGWeight: +value });
   };
 
   const handleMaxGWeightChange = (value: string | number) => {
-    const stringValue = String(value);
-    setSelectedMaxGWeight(stringValue);
+    setValues({ maxGWeight: +value });
   };
 
   const handleMinYearChange = (value: string | number) => {
-    const stringValue = String(value);
-    setSelectedMinYear(stringValue);
+    setValues({ minYear: `${value}` });
   };
 
   const handleMaxYearChange = (value: string | number) => {
-    const stringValue = String(value);
-    setSelectedMaxYear(stringValue);
+    setValues({ maxYear: `${value}` });
   };
 
   const handleMinExRateChange = (value: string | number) => {
-    const stringValue = String(value);
-    setSelectedMinExRate(stringValue);
+    setValues({ minExRate: +value });
   };
 
   const handleMaxExRateChange = (value: string | number) => {
-    const stringValue = String(value);
-    setSelectedMaxExRate(stringValue);
+    setValues({ maxExRate: +value });
   };
 
   const handlePortChange = (value: string | number) => {
-    const stringValue = String(value);
-    setSelectedPort(stringValue);
+    setValues({ port: `${value}` });
   };
 
   const handleInvoicesChange = (value: string | number) => {
-    const stringValue = String(value);
-    setSelectedInvoices(stringValue);
+    setValues({ invoices: `${value}` });
   };
 
-  const handleDateRangeChange = (
-    value: { start: DateValue | null; end: DateValue | null },
-  ) => {
-    setDateRange(value);
+  const handleDateRangeChange = (value: {
+    start: DateValue | null;
+    end: DateValue | null;
+  }) => {
+    setValues({
+      startDate: value.start ? value.start.toString() : "",
+      endDate: value.end ? value.end.toString() : "",
+    });
   };
 
   const handleClearFilters = () => {
-    setSearchTerm("");
-    setSelectedMinYear("");
-    setSelectedMaxYear("");
-    setSelectedMinGWeight("");
-    setSelectedMaxGWeight("");
-    setSelectedMinExRate("");
-    setSelectedMaxExRate("");
-    setSelectedPort("");
-    setSelectedInvoices("");
-
-    setDateRange({
-      start: null,
-      end: null,
+    setValues({
+      searchTerm: "",
+      minYear: "",
+      maxYear: "",
+      minGWeight: 0,
+      maxGWeight: 0,
+      minExRate: 0,
+      maxExRate: 0,
+      port: "",
+      invoices: "",
+      startDate: "",
+      endDate: "",
     });
   };
 
@@ -331,14 +364,17 @@ function DashboardPage({ className }: IDashboardPageProps) {
           type="text"
           placeholder="Search by BE No, IEC No, or GST No..."
           value={searchTerm}
-          onChange={(value) => handleSearch(value)}
+          onChange={handleSearch}
         />
       </FieldGroup>
 
       <FieldGroup className={styles.FilterGroup}>
         <DateRangePicker
           label="Date Range"
-          value={dateRange}
+          value={{
+            start: startDate ? parseDate(startDate) : null,
+            end: endDate ? parseDate(endDate) : null,
+          }}
           onChange={handleDateRangeChange}
           aria-label="Select date range for filtering"
         />
@@ -350,7 +386,7 @@ function DashboardPage({ className }: IDashboardPageProps) {
           label="Min Year"
           aria-label="Select minimum year filter"
           placeholder="All Years"
-          value={selectedMinYear}
+          value={minYear}
           onChange={handleMinYearChange}
           items={[
             { label: "All Years", value: "" },
@@ -371,7 +407,7 @@ function DashboardPage({ className }: IDashboardPageProps) {
           label="Max Year"
           aria-label="Select maximum year filter"
           placeholder="All Years"
-          value={selectedMaxYear}
+          value={maxYear}
           onChange={handleMaxYearChange}
           items={[
             { label: "All Years", value: "" },
@@ -393,7 +429,7 @@ function DashboardPage({ className }: IDashboardPageProps) {
           label="Min Gross Weight"
           aria-label="Select minimum gross weight filter"
           placeholder="All Gross Weights"
-          value={selectedMinGWeight}
+          value={minGWeight}
           onChange={handleMinGWeightChange}
           items={[
             { label: "All Gross Weights", value: "" },
@@ -414,7 +450,7 @@ function DashboardPage({ className }: IDashboardPageProps) {
           label="Max Gross Weight"
           aria-label="Select maximum gross weight filter"
           placeholder="All Gross Weights"
-          value={selectedMaxGWeight}
+          value={maxGWeight}
           onChange={handleMaxGWeightChange}
           items={[
             { label: "All Gross Weights", value: "" },
@@ -436,7 +472,7 @@ function DashboardPage({ className }: IDashboardPageProps) {
           label="Min Exchange Rate"
           aria-label="Select minimum exchange rate filter"
           placeholder="All Exchange Rates"
-          value={selectedMinExRate}
+          value={minExRate}
           onChange={handleMinExRateChange}
           items={[
             { label: "All Exchange Rates", value: "" },
@@ -457,7 +493,7 @@ function DashboardPage({ className }: IDashboardPageProps) {
           label="Max Exchange Rate"
           aria-label="Select maximum exchange rate filter"
           placeholder="All Exchange Rates"
-          value={selectedMaxExRate}
+          value={maxExRate}
           onChange={handleMaxExRateChange}
           items={[
             { label: "All Exchange Rates", value: "" },
@@ -479,7 +515,7 @@ function DashboardPage({ className }: IDashboardPageProps) {
           label="Port Code"
           aria-label="Select port code filter"
           placeholder="All Ports"
-          value={selectedPort}
+          value={port}
           onChange={handlePortChange}
           items={[
             { label: "All Ports", value: "" },
@@ -501,7 +537,7 @@ function DashboardPage({ className }: IDashboardPageProps) {
           label="Invoices"
           aria-label="Select invoices filter"
           placeholder="All Invoices"
-          value={selectedInvoices}
+          value={invoices}
           onChange={handleInvoicesChange}
           items={[
             { label: "All Invoices", value: "" },
@@ -540,10 +576,14 @@ function DashboardPage({ className }: IDashboardPageProps) {
             <div key={categoryKey} className={styles.CategoryGroup}>
               <div
                 className={styles.CategoryHeader}
-                onClick={() => toggleCategory(categoryKey as keyof typeof expandedCategories)}
+                onClick={() =>
+                  toggleCategory(categoryKey as keyof typeof expandedCategories)
+                }
               >
                 <span className={styles.CategoryIcon}>
-                  {expandedCategories[categoryKey as keyof typeof expandedCategories] ? (
+                  {expandedCategories[
+                    categoryKey as keyof typeof expandedCategories
+                  ] ? (
                     <IoChevronDown />
                   ) : (
                     <IoChevronForward />
@@ -553,16 +593,23 @@ function DashboardPage({ className }: IDashboardPageProps) {
                 <span className={styles.CategoryLabel}>{category.label}</span>
                 <input
                   type="checkbox"
-                  checked={isCategoryFullyVisible(categoryKey as keyof typeof columnCategories)}
+                  checked={isCategoryFullyVisible(
+                    categoryKey as keyof typeof columnCategories,
+                  )}
                   onChange={(e) => {
                     e.stopPropagation();
-                    toggleCategoryColumns(categoryKey as keyof typeof columnCategories, e.target.checked);
+                    toggleCategoryColumns(
+                      categoryKey as keyof typeof columnCategories,
+                      e.target.checked,
+                    );
                   }}
                   className={styles.CategoryCheckbox}
                 />
               </div>
 
-              {expandedCategories[categoryKey as keyof typeof expandedCategories] && (
+              {expandedCategories[
+                categoryKey as keyof typeof expandedCategories
+              ] && (
                 <div className={styles.CategoryColumns}>
                   {category.columns.map((columnKey) => (
                     <label key={columnKey} className={styles.ColumnToggle}>
@@ -571,7 +618,7 @@ function DashboardPage({ className }: IDashboardPageProps) {
                         checked={visibleColumns[columnKey]}
                         onChange={() => toggleColumn(columnKey)}
                       />
-                      <span>{columnKey.replace(/_/g, ' ').toUpperCase()}</span>
+                      <span>{columnKey.replace(/_/g, " ").toUpperCase()}</span>
                     </label>
                   ))}
                 </div>
@@ -590,17 +637,61 @@ function DashboardPage({ className }: IDashboardPageProps) {
       {!loading && !error && boeHeaders.length > 0 && (
         <Table className={styles.Table}>
           <TableHeader>
-            {visibleColumns.be_no && <Column isRowHeader={getRowHeaderColumn() === 'be_no'}><span>BE No</span></Column>}
-            {visibleColumns.year && <Column isRowHeader={getRowHeaderColumn() === 'year'}><span>Year</span></Column>}
-            {visibleColumns.iec_no && <Column isRowHeader={getRowHeaderColumn() === 'iec_no'}><span>IEC No</span></Column>}
-            {visibleColumns.gst_no && <Column isRowHeader={getRowHeaderColumn() === 'gst_no'}><span>GST No</span></Column>}
-            {visibleColumns.port_code && <Column isRowHeader={getRowHeaderColumn() === 'port_code'}><span>Port Code</span></Column>}
-            {visibleColumns.be_date && <Column isRowHeader={getRowHeaderColumn() === 'be_date'}><span>BE Date</span></Column>}
-            {visibleColumns.pkg && <Column isRowHeader={getRowHeaderColumn() === 'pkg'}><span>Packages</span></Column>}
-            {visibleColumns.g_wt && <Column isRowHeader={getRowHeaderColumn() === 'g_wt'}><span>Gross Weight</span></Column>}
-            {visibleColumns.ex_rate && <Column isRowHeader={getRowHeaderColumn() === 'ex_rate'}><span>Exchange Rate</span></Column>}
-            {visibleColumns.no_of_invoices && <Column isRowHeader={getRowHeaderColumn() === 'no_of_invoices'}><span>Invoices</span></Column>}
-            {visibleColumns.total_items && <Column isRowHeader={getRowHeaderColumn() === 'total_items'}><span>Items</span></Column>}
+            {visibleColumns.be_no && (
+              <Column isRowHeader={getRowHeaderColumn() === "be_no"}>
+                <span>BE No</span>
+              </Column>
+            )}
+            {visibleColumns.year && (
+              <Column isRowHeader={getRowHeaderColumn() === "year"}>
+                <span>Year</span>
+              </Column>
+            )}
+            {visibleColumns.iec_no && (
+              <Column isRowHeader={getRowHeaderColumn() === "iec_no"}>
+                <span>IEC No</span>
+              </Column>
+            )}
+            {visibleColumns.gst_no && (
+              <Column isRowHeader={getRowHeaderColumn() === "gst_no"}>
+                <span>GST No</span>
+              </Column>
+            )}
+            {visibleColumns.port_code && (
+              <Column isRowHeader={getRowHeaderColumn() === "port_code"}>
+                <span>Port Code</span>
+              </Column>
+            )}
+            {visibleColumns.be_date && (
+              <Column isRowHeader={getRowHeaderColumn() === "be_date"}>
+                <span>BE Date</span>
+              </Column>
+            )}
+            {visibleColumns.pkg && (
+              <Column isRowHeader={getRowHeaderColumn() === "pkg"}>
+                <span>Packages</span>
+              </Column>
+            )}
+            {visibleColumns.g_wt && (
+              <Column isRowHeader={getRowHeaderColumn() === "g_wt"}>
+                <span>Gross Weight</span>
+              </Column>
+            )}
+            {visibleColumns.ex_rate && (
+              <Column isRowHeader={getRowHeaderColumn() === "ex_rate"}>
+                <span>Exchange Rate</span>
+              </Column>
+            )}
+            {visibleColumns.no_of_invoices && (
+              <Column isRowHeader={getRowHeaderColumn() === "no_of_invoices"}>
+                <span>Invoices</span>
+              </Column>
+            )}
+            {visibleColumns.total_items && (
+              <Column isRowHeader={getRowHeaderColumn() === "total_items"}>
+                <span>Items</span>
+              </Column>
+            )}
           </TableHeader>
           <TableBody>
             {boeHeaders.map((header) => {
@@ -613,97 +704,218 @@ function DashboardPage({ className }: IDashboardPageProps) {
                   >
                     {visibleColumns.be_no && (
                       <Cell className={styles.Cell}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                          <span className={styles.ExpandIcon}>{isExpanded ? '▼' : '▶'}</span>
-                          <span className={`${styles.BeNumber} ${styles.PrimaryData}`}>{header.be_no}</span>
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "8px",
+                          }}
+                        >
+                          <span className={styles.ExpandIcon}>
+                            {isExpanded ? "▼" : "▶"}
+                          </span>
+                          <span
+                            className={`${styles.BeNumber} ${styles.PrimaryData}`}
+                          >
+                            {header.be_no}
+                          </span>
                         </div>
                       </Cell>
                     )}
-                    {visibleColumns.year && <Cell className={styles.Cell}><span className={styles.MetaInfo}>{header.year}</span></Cell>}
-                    {visibleColumns.iec_no && <Cell className={styles.Cell}><span className={styles.MetaInfo}>{header.iec_no}</span></Cell>}
-                    {visibleColumns.gst_no && <Cell className={styles.Cell}><span className={styles.MetaInfo}>{header.gst_no}</span></Cell>}
+                    {visibleColumns.year && (
+                      <Cell className={styles.Cell}>
+                        <span className={styles.MetaInfo}>{header.year}</span>
+                      </Cell>
+                    )}
+                    {visibleColumns.iec_no && (
+                      <Cell className={styles.Cell}>
+                        <span className={styles.MetaInfo}>{header.iec_no}</span>
+                      </Cell>
+                    )}
+                    {visibleColumns.gst_no && (
+                      <Cell className={styles.Cell}>
+                        <span className={styles.MetaInfo}>{header.gst_no}</span>
+                      </Cell>
+                    )}
                     {visibleColumns.port_code && (
                       <Cell className={styles.Cell}>
-                        <span className={`${styles.PortBadge} ${styles[header.port_code?.toLowerCase()]} ${styles.PrimaryData}`}>
+                        <span
+                          className={`${styles.PortBadge} ${styles[header.port_code?.toLowerCase()]} ${styles.PrimaryData}`}
+                        >
                           {header.port_code}
                         </span>
                       </Cell>
                     )}
-                    {visibleColumns.be_date && <Cell className={styles.Cell}><span className={styles.SecondaryData}>{header.be_date}</span></Cell>}
-                    {visibleColumns.pkg && <Cell className={`${styles.Cell} ${styles.NumberCell}`}><span className={styles.PrimaryData}>{formatNumber(header.pkg, 0)}</span></Cell>}
-                    {visibleColumns.g_wt && <Cell className={`${styles.Cell} ${styles.NumberCell}`}><span className={styles.PrimaryData}>{formatNumber(header.g_wt, 2)}</span></Cell>}
-                    {visibleColumns.ex_rate && <Cell className={`${styles.Cell} ${styles.NumberCell}`}><span className={styles.MetaInfo}>{formatDecimal(header.ex_rate, 2)}</span></Cell>}
-                    {visibleColumns.no_of_invoices && <Cell className={`${styles.Cell} ${styles.NumberCell}`}><span className={styles.MetaInfo}>{formatNumber(header.no_of_invoices, 0)}</span></Cell>}
-                    {visibleColumns.total_items && <Cell className={`${styles.Cell} ${styles.NumberCell}`}><span className={styles.MetaInfo}>{formatNumber(header.total_items, 0)}</span></Cell>}
+                    {visibleColumns.be_date && (
+                      <Cell className={styles.Cell}>
+                        <span className={styles.SecondaryData}>
+                          {header.be_date}
+                        </span>
+                      </Cell>
+                    )}
+                    {visibleColumns.pkg && (
+                      <Cell className={`${styles.Cell} ${styles.NumberCell}`}>
+                        <span className={styles.PrimaryData}>
+                          {formatNumber(header.pkg, 0)}
+                        </span>
+                      </Cell>
+                    )}
+                    {visibleColumns.g_wt && (
+                      <Cell className={`${styles.Cell} ${styles.NumberCell}`}>
+                        <span className={styles.PrimaryData}>
+                          {formatNumber(header.g_wt, 2)}
+                        </span>
+                      </Cell>
+                    )}
+                    {visibleColumns.ex_rate && (
+                      <Cell className={`${styles.Cell} ${styles.NumberCell}`}>
+                        <span className={styles.MetaInfo}>
+                          {formatDecimal(header.ex_rate, 2)}
+                        </span>
+                      </Cell>
+                    )}
+                    {visibleColumns.no_of_invoices && (
+                      <Cell className={`${styles.Cell} ${styles.NumberCell}`}>
+                        <span className={styles.MetaInfo}>
+                          {formatNumber(header.no_of_invoices, 0)}
+                        </span>
+                      </Cell>
+                    )}
+                    {visibleColumns.total_items && (
+                      <Cell className={`${styles.Cell} ${styles.NumberCell}`}>
+                        <span className={styles.MetaInfo}>
+                          {formatNumber(header.total_items, 0)}
+                        </span>
+                      </Cell>
+                    )}
                   </Row>
                   {isExpanded && (
                     <Row key={`${header.be_no}-details`}>
-                      <Cell colSpan={Object.values(visibleColumns).filter(Boolean).length} className={styles.DetailsCell}>
+                      <Cell
+                        colSpan={
+                          Object.values(visibleColumns).filter(Boolean).length
+                        }
+                        className={styles.DetailsCell}
+                      >
                         <div className={styles.DetailsPanel}>
-                          <h4 className={styles.DetailsTitle}>Full Details for {header.be_no}</h4>
+                          <h4 className={styles.DetailsTitle}>Details</h4>
                           <div className={styles.DetailsGrid}>
                             <div className={styles.DetailItem}>
                               <span className={styles.DetailLabel}>Year:</span>
-                              <span className={styles.DetailValue}>{header.year}</span>
+                              <span className={styles.DetailValue}>
+                                {header.year}
+                              </span>
                             </div>
                             <div className={styles.DetailItem}>
-                              <span className={styles.DetailLabel}>IEC Number:</span>
-                              <span className={styles.DetailValue}>{header.iec_no}</span>
+                              <span className={styles.DetailLabel}>
+                                IEC Number:
+                              </span>
+                              <span className={styles.DetailValue}>
+                                {header.iec_no}
+                              </span>
                             </div>
                             <div className={styles.DetailItem}>
-                              <span className={styles.DetailLabel}>GST Number:</span>
-                              <span className={styles.DetailValue}>{header.gst_no}</span>
+                              <span className={styles.DetailLabel}>
+                                GST Number:
+                              </span>
+                              <span className={styles.DetailValue}>
+                                {header.gst_no}
+                              </span>
                             </div>
                             <div className={styles.DetailItem}>
-                              <span className={styles.DetailLabel}>Port Code:</span>
-                              <span className={styles.DetailValue}>{header.port_code}</span>
+                              <span className={styles.DetailLabel}>
+                                Port Code:
+                              </span>
+                              <span className={styles.DetailValue}>
+                                {header.port_code}
+                              </span>
                             </div>
                             <div className={styles.DetailItem}>
-                              <span className={styles.DetailLabel}>BE Date:</span>
-                              <span className={styles.DetailValue}>{header.be_date}</span>
+                              <span className={styles.DetailLabel}>
+                                BE Date:
+                              </span>
+                              <span className={styles.DetailValue}>
+                                {header.be_date}
+                              </span>
                             </div>
                             <div className={styles.DetailItem}>
-                              <span className={styles.DetailLabel}>Packages:</span>
-                              <span className={styles.DetailValue}>{header.pkg?.toLocaleString()}</span>
+                              <span className={styles.DetailLabel}>
+                                Packages:
+                              </span>
+                              <span className={styles.DetailValue}>
+                                {header.pkg?.toLocaleString()}
+                              </span>
                             </div>
                             <div className={styles.DetailItem}>
-                              <span className={styles.DetailLabel}>Gross Weight:</span>
-                              <span className={styles.DetailValue}>{header.g_wt?.toLocaleString(undefined, { maximumFractionDigits: 2 })}</span>
+                              <span className={styles.DetailLabel}>
+                                Gross Weight:
+                              </span>
+                              <span className={styles.DetailValue}>
+                                {header.g_wt?.toLocaleString(undefined, {
+                                  maximumFractionDigits: 2,
+                                })}
+                              </span>
                             </div>
                             <div className={styles.DetailItem}>
-                              <span className={styles.DetailLabel}>Exchange Rate (Exact):</span>
-                              <span className={styles.DetailValue}>{header.ex_rate}</span>
+                              <span className={styles.DetailLabel}>
+                                Exchange Rate (Exact):
+                              </span>
+                              <span className={styles.DetailValue}>
+                                {header.ex_rate}
+                              </span>
                             </div>
                             <div className={styles.DetailItem}>
-                              <span className={styles.DetailLabel}>Number of Invoices:</span>
-                              <span className={styles.DetailValue}>{header.no_of_invoices}</span>
+                              <span className={styles.DetailLabel}>
+                                Number of Invoices:
+                              </span>
+                              <span className={styles.DetailValue}>
+                                {header.no_of_invoices}
+                              </span>
                             </div>
                             <div className={styles.DetailItem}>
-                              <span className={styles.DetailLabel}>Total Items:</span>
-                              <span className={styles.DetailValue}>{header.total_items}</span>
+                              <span className={styles.DetailLabel}>
+                                Total Items:
+                              </span>
+                              <span className={styles.DetailValue}>
+                                {header.total_items}
+                              </span>
                             </div>
                             {header.submission && (
                               <div className={styles.DetailItem}>
-                                <span className={styles.DetailLabel}>Submission:</span>
-                                <span className={styles.DetailValue}>{header.submission}</span>
+                                <span className={styles.DetailLabel}>
+                                  Submission:
+                                </span>
+                                <span className={styles.DetailValue}>
+                                  {header.submission}
+                                </span>
                               </div>
                             )}
                             {header.assessment && (
                               <div className={styles.DetailItem}>
-                                <span className={styles.DetailLabel}>Assessment:</span>
-                                <span className={styles.DetailValue}>{header.assessment}</span>
+                                <span className={styles.DetailLabel}>
+                                  Assessment:
+                                </span>
+                                <span className={styles.DetailValue}>
+                                  {header.assessment}
+                                </span>
                               </div>
                             )}
                             {header.examination && (
                               <div className={styles.DetailItem}>
-                                <span className={styles.DetailLabel}>Examination:</span>
-                                <span className={styles.DetailValue}>{header.examination}</span>
+                                <span className={styles.DetailLabel}>
+                                  Examination:
+                                </span>
+                                <span className={styles.DetailValue}>
+                                  {header.examination}
+                                </span>
                               </div>
                             )}
                             {header.ooc && (
                               <div className={styles.DetailItem}>
                                 <span className={styles.DetailLabel}>OOC:</span>
-                                <span className={styles.DetailValue}>{header.ooc}</span>
+                                <span className={styles.DetailValue}>
+                                  {header.ooc}
+                                </span>
                               </div>
                             )}
                           </div>
@@ -724,21 +936,31 @@ function DashboardPage({ className }: IDashboardPageProps) {
     <div className="container h-100">
       <div className={joinClassNames(className, styles.Container)}>
         <Card className={styles.StatCard}>
-          {loading ? (
-            <ShimmerLoader.Default style={{ height: "96px", width: "200px" }} />
-          ) : (
-            <>
-              <span className={styles.Stat}>240</span>&nbsp;&nbsp;units
-            </>
-          )}
+          <div className={styles.StatsContainer}>
+            <StatCard
+              secondaryContent="Total BOEs Filed"
+              primaryContent={2450}
+              isLoading={loading}
+            />
+            <StatCard
+              secondaryContent="Provisional BOEs"
+              primaryContent={728}
+              isLoading={loading}
+            />
+            <StatCard
+              secondaryContent="BOEs with Licences"
+              primaryContent={193}
+              isLoading={loading}
+            />
+            <StatCard
+              secondaryContent="BOEs with SVB"
+              primaryContent={112}
+              isLoading={loading}
+            />
+          </div>
         </Card>
-        <Card title="Stats">
-          {loading ? <CardShimmer count={1} /> : "-"}
-        </Card>
-        <Card title="Filters">{filtersJsx}</Card>
-        <div className={styles.TableCard}>
-          {tableJsx}
-        </div>
+        <Card title="Filters" className={styles.TableCard}>{filtersJsx}</Card>
+        <div className={styles.TableCard}>{tableJsx}</div>
       </div>
     </div>
   );

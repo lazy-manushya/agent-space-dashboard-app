@@ -1,0 +1,21 @@
+.Stat {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column-reverse;
+  gap: 0.5rem;
+}
+
+.PrimaryContent {
+  font-size: 5rem;
+  font-weight: 600;
+  color: rgba(var(--clr-primary-rgb), 0.75);
+  line-height: 1em;
+}
+
+.SecondaryContent {
+  color: #979797;
+  font-size: 1rem;
+  font-weight: 400;
+  overflow: auto;
+}
