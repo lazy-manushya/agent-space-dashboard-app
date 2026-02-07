@@ -6,56 +6,56 @@ import React, { useCallback, useEffect, useState } from "react";
 const FLOAT_CARDS = [
   // top-left (spread out, centered)
   {
-    top: "15%",
-    left: "28%",
+    top: "25%",
+    left: "38%",
     floatY: 1,
     duration: 10,
     delay: 0,
     emoji: "🔍",
     label: "Search",
-    size: 72,
+    size: 80,
     fontSize: 36,
   },
   // top-right (spread out, centered)
   {
-    top: "15%",
+    top: "25%",
     left: "62%",
     floatY: -1,
     duration: 12,
     delay: 0.5,
     emoji: "⚓",
     label: "Port",
-    size: 90,
+    size: 110,
     fontSize: 44,
   },
   // left-middle (spread out, centered)
   {
-    top: "38%",
+    top: "58%",
     left: "18%",
     floatY: 1,
     duration: 11,
     delay: 0.2,
     emoji: "📄",
     label: "Document",
-    size: 60,
+    size: 70,
     fontSize: 32,
   },
   // right-middle (spread out, centered)
   {
-    top: "38%",
+    top: "48%",
     left: "72%",
     floatY: -1,
     duration: 13,
     delay: 0.7,
     emoji: "📦",
     label: "Package",
-    size: 80,
+    size: 70,
     fontSize: 40,
   },
   // bottom-center (spread out, centered)
   {
-    top: "68%",
-    left: "45%",
+    top: "78%",
+    left: "55%",
     floatY: 1,
     duration: 9,
     delay: 0.3,
@@ -231,8 +231,11 @@ function BoeSearchPage({ className }: IBoeSearchPageProps) {
   const floatCards = useFloatCards();
 
   useEffect(() => {
-    setShowFloat(true);
-    return () => setShowFloat(false);
+    const timeout = setTimeout(() => setShowFloat(true), 0);
+    return () => {
+      clearTimeout(timeout);
+      setShowFloat(false);
+    };
   }, []);
 
   const handleSelectionChange = useCallback(
@@ -250,13 +253,13 @@ function BoeSearchPage({ className }: IBoeSearchPageProps) {
       {floatCards.map((card, idx) => (
         <Card
           key={idx}
-          className="p-5"
+          className="p-1"
           style={{
             position: "absolute",
             top: card.top,
             left: card.left,
-            width: card.size,
-            height: card.size,
+            width: `${card.size}px`,
+            height: `${card.size}px`,
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -271,7 +274,7 @@ function BoeSearchPage({ className }: IBoeSearchPageProps) {
           }}
           aria-label={card.label}
         >
-          <span role="img" aria-label={card.label}>
+          <span className="filter-clr-primary" role="img" aria-label={card.label}>
             {card.emoji}
           </span>
         </Card>
@@ -279,11 +282,11 @@ function BoeSearchPage({ className }: IBoeSearchPageProps) {
       <style>{`
         @keyframes floatY1 {
           0% { transform: translateY(0); }
-          100% { transform: translateY(-30px); }
+          100% { transform: translate(20px, -40px); }
         }
         @keyframes floatY-1 {
           0% { transform: translateY(0); }
-          100% { transform: translateY(30px); }
+          100% { transform: translate(-25px, 40px); }
         }
       `}</style>
       <Card className="p-5">
