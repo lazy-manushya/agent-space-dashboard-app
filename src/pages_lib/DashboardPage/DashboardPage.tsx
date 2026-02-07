@@ -1,11 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import {
-  today,
-  getLocalTimeZone,
-  type DateValue,
-} from "@internationalized/date";
+import { type DateValue } from "@internationalized/date";
 import {
   IoChevronDown,
   IoChevronForward,
@@ -25,9 +21,9 @@ import Label from "@/components/Label";
 import FieldGroup from "@/components/FieldGroup";
 import Text from "@/components/Text";
 import DateRangePicker from "@/components/DateRangePicker";
-import ShimmerLoader from "@/components/ShimmerLoader";
-import CardShimmer from "@/components/CardShimmer";
 import TableShimmer from "@/components/TableShimmer";
+import BoeHeaderBarChart from "@/features/BoeHeaderBarChart";
+import BoeHeaderPieChart from "@/features/BoeHeaderPieChart";
 
 import { IDashboardPageProps } from "./DashboardPage.types";
 import styles from "./DashboardPage.module.css";
@@ -43,6 +39,7 @@ import { useBoeHeaders } from "@/services/boe";
 import { useBoeHeadersMetadata } from "@/services/boe";
 import StatCard from "@/components/StatCard";
 import { useQueryParamState } from "@/services/Routing";
+import BoeTable from "@/features/BoeTable";
 
 // Number formatting utilities
 const formatNumber = (
@@ -935,34 +932,51 @@ function DashboardPage({ className }: IDashboardPageProps) {
   return (
     <div className="container h-100">
       <div className={joinClassNames(className, styles.Container)}>
-        <Card className={styles.StatCard}>
+        <div className={styles.StatCard}>
           <div className={styles.StatsContainer}>
-            <StatCard
-              secondaryContent="Total BOEs Filed"
-              primaryContent={2450}
-              isLoading={loading}
-            />
-            <StatCard
-              secondaryContent="Provisional BOEs"
-              primaryContent={728}
-              isLoading={loading}
-            />
-            <StatCard
-              secondaryContent="BOEs with Licences"
-              primaryContent={193}
-              isLoading={loading}
-            />
-            <StatCard
-              secondaryContent="BOEs with SVB"
-              primaryContent={112}
-              isLoading={loading}
-            />
+            <Card className={styles.StatCard}>
+              <StatCard
+                secondaryContent="Total BOEs Filed"
+                primaryContent={2450}
+                isLoading={loading}
+              />
+            </Card>
+            <Card className={styles.StatCard}>
+              <StatCard
+                secondaryContent="Provisional BOEs"
+                primaryContent={728}
+                isLoading={loading}
+              />
+            </Card>
+            <Card className={styles.StatCard}>
+              <StatCard
+                secondaryContent="BOEs with Licences"
+                primaryContent={193}
+                isLoading={loading}
+              />
+            </Card>
+            <Card className={styles.StatCard}>
+              <StatCard
+                secondaryContent="BOEs with SVB"
+                primaryContent={112}
+                isLoading={loading}
+              />
+            </Card>
           </div>
-        </Card>
+        </div>
         <Card title="Filters" className={styles.FiltersCard}>
           {filtersJsx}
         </Card>
-        <Card className={styles.TableCard}>{tableJsx}</Card>
+        <Card title="Duty Trend" className={styles.GraphCard}>
+          <BoeHeaderBarChart />
+        </Card>
+        <Card title="Duty Split" className={styles.ChartCard}>
+          <BoeHeaderPieChart />
+        </Card>
+        <Card className={styles.TableCard}>
+          <BoeTable />
+        </Card>
+        {/* <Card className={styles.TableCard}>{tableJsx}</Card> */}
       </div>
     </div>
   );
