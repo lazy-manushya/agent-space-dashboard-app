@@ -95,38 +95,38 @@ function DutiesPage({ className }: IDutiesPageProps) {
           <div className={styles.StatsContainer}>
             <Card className={styles.StatCard}>
               <StatCard
-                secondaryContent="Total Duties"
+                secondaryContent="Total Number of Boe"
                 primaryContent={<Count value={1247} />}
                 color="#667eea"
               />
             </Card>
-            <Card className={styles.StatCard}>
+            {/* <Card className={styles.StatCard}>
               <StatCard
                 secondaryContent="Total BCD Amount"
                 primaryContent={<Count value={45680000} decimals={0} />}
                 color="#4facfe"
               />
-            </Card>
+            </Card> */}
             <Card className={styles.StatCard}>
               <StatCard
-                secondaryContent="Total IGST Amount"
+                secondaryContent=" Total Assessable Value"
                 primaryContent={<Count value={128500000} decimals={0} />}
                 color="#43e97b"
               />
             </Card>
             <Card className={styles.StatCard}>
               <StatCard
-                secondaryContent="Avg Duty %"
+                secondaryContent="Total Duty %"
                 primaryContent={<Count value={18.5} decimals={1} />}
                 color="#fa709a"
               />
             </Card>
           </div>
         </div>
-        <Card title="Duty Trend" className={styles.GraphCard}>
+        <Card title="Duty by Port" className={styles.GraphCard}>
           <DutyBarChart />
         </Card>
-        <Card title="Duty Split" className={styles.ChartCard}>
+        <Card title="Duty by CHA" className={styles.ChartCard}>
           <DutyPieChart />
         </Card>
         <Card title="Filters" className={styles.FiltersCard}>

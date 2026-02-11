@@ -93,28 +93,28 @@ function InvoicesPage({ className }: IInvoicesPageProps) {
           <div className={styles.StatsContainer}>
             <Card className={styles.StatCard}>
               <StatCard
-                secondaryContent="Total Invoices"
+                secondaryContent="Total number of BOE"
                 primaryContent={<Count value={845} />}
                 color="#667eea"
               />
             </Card>
             <Card className={styles.StatCard}>
               <StatCard
-                secondaryContent="Total Invoice Amount"
+                secondaryContent="BOE with Licence"
                 primaryContent={<Count value={19200000} decimals={0} />}
                 color="#4facfe"
               />
             </Card>
             <Card className={styles.StatCard}>
               <StatCard
-                secondaryContent="Total Items"
+                secondaryContent="BOE with SVB"
                 primaryContent={<Count value={2843} />}
                 color="#43e97b"
               />
             </Card>
             <Card className={styles.StatCard}>
               <StatCard
-                secondaryContent="Active Currencies"
+                secondaryContent="BOE with Bond"
                 primaryContent={<Count value={5} />}
                 color="#fa709a"
               />

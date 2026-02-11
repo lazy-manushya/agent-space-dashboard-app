@@ -1,4 +1,4 @@
-export interface BoeHeaderPieChartProps {
+export interface BoeAirSeaPieChartProps {
   className?: string;
   showAsDonut?: boolean;
   hideTitle?: boolean;
