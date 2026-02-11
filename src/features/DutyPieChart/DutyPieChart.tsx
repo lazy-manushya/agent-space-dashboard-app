@@ -20,9 +20,6 @@ const DutyPieChart: React.FC<IDutyPieChartProps> = ({ className }) => {
     <div className={`${styles.Container} ${className || ""}`}>
       <PieChart
         data={DUMMY_DUTY_TYPE_DATA}
-        getLabel={(d) => d.label}
-        getValue={(d) => d.value}
-        getColor={(d) => d.color}
         innerRadius={60}
       />
       <div className={styles.Stats}>

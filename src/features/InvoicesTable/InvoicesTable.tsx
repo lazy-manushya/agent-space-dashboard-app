@@ -26,7 +26,7 @@ const formatDate = (date: string | undefined): string => {
   if (!date) return "-";
   return new Date(date).toLocaleDateString();
 };
-
+ 
 // Dummy data generator for duties
 const generateDummyDuties = (beNo: string, items: IInvoiceItem[]): IBoeDuty[] => {
   return items.map((item, index) => {
@@ -117,12 +117,7 @@ const generateDummyInvoices = (): IBoeInvoice[] => {
 };
 
 const InvoicesTable = () => {
-  const [expandedRow, setExpandedRow] = useState<number | null>(null);
   const [invoices] = useState<IBoeInvoice[]>(generateDummyInvoices());
-
-  const toggleRowExpansion = (invoiceId: number) => {
-    setExpandedRow(expandedRow === invoiceId ? null : invoiceId);
-  };
 
   const COLUMNS: Column<IBoeInvoice>[] = [
     {
@@ -132,25 +127,11 @@ const InvoicesTable = () => {
       size: 140,
       minSize: 140,
       fixed: true,
-      cell: ({ getValue, row }) => {
-        const invoiceItemId = (row.original as IBoeInvoice).invoice_item_id;
-        const isExpanded = expandedRow === invoiceItemId;
-
+      cell: ({ getValue }) => {
         return (
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "8px",
-              cursor: "pointer",
-            }}
-            onClick={() => toggleRowExpansion(invoiceItemId)}
-          >
-            <span className={styles.ExpandIcon}>{isExpanded ? "▼" : "▶"}</span>
-            <span className={styles.BeNumber}>
-              {getValue() || "-"}
-            </span>
-          </div>
+          <span className={styles.BeNumber}>
+            {getValue() || "-"}
+          </span>
         );
       },
     },
@@ -224,123 +205,11 @@ const InvoicesTable = () => {
     },
   ];
 
-  const renderExpandedRow = (invoice: IBoeInvoice) => (
-    <tr className={styles.DetailRow}>
-      <td colSpan={COLUMNS.length}>
-        <div className={styles.DetailContent}>
-          <div className={styles.DetailGrid}>
-            <div className={styles.DetailItem}>
-              <div className={styles.DetailLabel}>BE No</div>
-              <div className={styles.DetailValue}>{invoice.be_no || "-"}</div>
-            </div>
-            <div className={styles.DetailItem}>
-              <div className={styles.DetailLabel}>Invoice SNo</div>
-              <div className={styles.DetailValue}>{invoice.invoice_sno || "-"}</div>
-            </div>
-            <div className={styles.DetailItem}>
-              <div className={styles.DetailLabel}>INCO Term</div>
-              <div className={styles.DetailValue}>{invoice.inco_term || "-"}</div>
-            </div>
-            <div className={styles.DetailItem}>
-              <div className={styles.DetailLabel}>Freight</div>
-              <div className={styles.DetailValue}>
-                {formatNumber(invoice.freight)} {invoice.freight_currency}
-              </div>
-            </div>
-            <div className={styles.DetailItem}>
-              <div className={styles.DetailLabel}>Insurance</div>
-              <div className={styles.DetailValue}>
-                {formatNumber(invoice.insurance)}
-              </div>
-            </div>
-            <div className={styles.DetailItem}>
-              <div className={styles.DetailLabel}>Misc Charges</div>
-              <div className={styles.DetailValue}>
-                {formatNumber(invoice.misc_charges)}
-              </div>
-            </div>
-          </div>
-
-          {invoice.items && invoice.items.length > 0 && (
-            <div className={styles.Section}>
-              <div className={styles.SectionTitle}>Invoice Items</div>
-              <table className={styles.ItemsTable}>
-                <thead>
-                  <tr>
-                    <th>Sr No</th>
-                    <th>CTH</th>
-                    <th>Description</th>
-                    <th>Quantity</th>
-                    <th>Unit Price</th>
-                    <th>Amount</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {invoice.items.map((item, idx) => (
-                    <tr key={idx}>
-                      <td>{item.mat_sr_no}</td>
-                      <td>{item.cth || "-"}</td>
-                      <td>{item.description || "-"}</td>
-                      <td>
-                        {item.quantity} {item.uqc}
-                      </td>
-                      <td>{formatNumber(item.unit_price)}</td>
-                      <td>{formatNumber(item.mat_amount)}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
-
-          {invoice.duties && invoice.duties.length > 0 && (
-            <div className={styles.Section}>
-              <div className={styles.SectionTitle}>Duties</div>
-              <table className={styles.ItemsTable}>
-                <thead>
-                  <tr>
-                    <th>BE NO</th>
-                    <th>HS Code</th>
-                    <th>Accessible Value</th>
-                    <th>Total Duty</th>
-                    <th>Duty %</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {invoice.duties.map((duty, idx) => {
-                    const totalDutyPct = (duty.bcd_pct || 0) + (duty.igst_pct || 0) + (duty.h_cess_pct || 0) + (duty.sws_pct || 0);
-
-                    return (
-                      <tr key={idx}>
-                        <td>{duty.be_no || "-"}</td>
-                        <td>{duty.hs_code || "-"}</td>
-                        <td>{formatNumber(duty.mat_assess_value)}</td>
-                        <td>{formatNumber(duty.mat_duty)}</td>
-                        <td>{totalDutyPct.toFixed(2)}%</td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
-          )}
-        </div>
-      </td>
-    </tr>
-  );
-
   return (
     <div className={styles.Container}>
       <Table
         data={invoices}
         columns={COLUMNS}
-        enableRowSelection={false}
-        enableSorting={true}
-        enableColumnResizing={true}
-        stickyHeader={true}
-        renderExpandedRow={renderExpandedRow}
-        expandedRows={expandedRow ? [expandedRow] : []}
-        getRowId={(row) => row.invoice_item_id}
       />
     </div>
   );

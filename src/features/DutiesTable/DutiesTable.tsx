@@ -87,12 +87,7 @@ const generateDummyDuties = (): IBoeDuty[] => {
 };
 
 const DutiesTable = () => {
-  const [expandedRow, setExpandedRow] = useState<number | null>(null);
   const [duties] = useState<IBoeDuty[]>(generateDummyDuties());
-
-  const toggleRowExpansion = (dutyId: number) => {
-    setExpandedRow(expandedRow === dutyId ? null : dutyId);
-  };
 
   const COLUMNS: Column<IBoeDuty>[] = [
     {
@@ -102,25 +97,11 @@ const DutiesTable = () => {
       size: 140,
       minSize: 140,
       fixed: true,
-      cell: ({ getValue, row }) => {
-        const dutyId = (row.original as IBoeDuty).duty_id;
-        const isExpanded = expandedRow === dutyId;
-
+      cell: ({ getValue }) => {
         return (
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "8px",
-              cursor: "pointer",
-            }}
-            onClick={() => toggleRowExpansion(dutyId)}
-          >
-            <span className={styles.ExpandIcon}>{isExpanded ? "▼" : "▶"}</span>
-            <span className={styles.PrimaryData}>
-              {getValue() || "-"}
-            </span>
-          </div>
+          <span className={styles.PrimaryData}>
+            {getValue() || "-"}
+          </span>
         );
       },
     },
@@ -162,85 +143,24 @@ const DutiesTable = () => {
         const igstPct = row.igst_pct || 0;
         const hCessPct = row.h_cess_pct || 0;
         const swsPct = row.sws_pct || 0;
-        return bcdPct + igstPct + hCessPct + swsPct;
+        const total = bcdPct + igstPct + hCessPct + swsPct;
+        return total.toFixed(2);
       },
       size: 120,
       minSize: 120,
       cell: ({ getValue }) => (
         <span className={styles.Percentage}>
-          {formatPercentage(getValue())}
+          {getValue()}%
         </span>
       ),
     },
   ];
-
-  const renderExpandedRow = (duty: IBoeDuty) => (
-    <tr className={styles.DetailRow}>
-      <td colSpan={COLUMNS.length}>
-        <div className={styles.DetailContent}>
-          <div className={styles.DetailGrid}>
-            <div className={styles.DetailItem}>
-              <div className={styles.DetailLabel}>BCD Duty Flag</div>
-              <div className={styles.DetailValue}>{duty.bcd_duty_fg || "-"}</div>
-            </div>
-            <div className={styles.DetailItem}>
-              <div className={styles.DetailLabel}>BCD Notification No</div>
-              <div className={styles.DetailValue}>{duty.bcd_notn_no || "-"}</div>
-            </div>
-            <div className={styles.DetailItem}>
-              <div className={styles.DetailLabel}>BCD Notification SNo</div>
-              <div className={styles.DetailValue}>{duty.bcd_notn_sno || "-"}</div>
-            </div>
-            <div className={styles.DetailItem}>
-              <div className={styles.DetailLabel}>Health Cess %</div>
-              <div className={styles.DetailValue}>
-                {formatPercentage(duty.h_cess_pct)}
-              </div>
-            </div>
-            <div className={styles.DetailItem}>
-              <div className={styles.DetailLabel}>Health Cess Amount</div>
-              <div className={styles.DetailValue}>
-                ₹{formatNumber(duty.h_cess_amount)}
-              </div>
-            </div>
-            <div className={styles.DetailItem}>
-              <div className={styles.DetailLabel}>SWS %</div>
-              <div className={styles.DetailValue}>
-                {formatPercentage(duty.sws_pct)}
-              </div>
-            </div>
-            <div className={styles.DetailItem}>
-              <div className={styles.DetailLabel}>SWS Amount</div>
-              <div className={styles.DetailValue}>
-                ₹{formatNumber(duty.sws_amount)}
-              </div>
-            </div>
-            <div className={styles.DetailItem}>
-              <div className={styles.DetailLabel}>IGST Notification No</div>
-              <div className={styles.DetailValue}>{duty.igst_notn_no || "-"}</div>
-            </div>
-            <div className={styles.DetailItem}>
-              <div className={styles.DetailLabel}>IGST Notification SNo</div>
-              <div className={styles.DetailValue}>{duty.igst_notn_sno || "-"}</div>
-            </div>
-          </div>
-        </div>
-      </td>
-    </tr>
-  );
 
   return (
     <div className={styles.Container}>
       <Table
         data={duties}
         columns={COLUMNS}
-        enableRowSelection={false}
-        enableSorting={true}
-        enableColumnResizing={true}
-        stickyHeader={true}
-        renderExpandedRow={renderExpandedRow}
-        expandedRows={expandedRow ? [expandedRow] : []}
-        getRowId={(row) => row.duty_id}
       />
     </div>
   );

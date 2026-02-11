@@ -19,9 +19,6 @@ const InvoicePieChart: React.FC<IInvoicePieChartProps> = ({ className }) => {
     <div className={`${styles.Container} ${className || ""}`}>
       <PieChart
         data={DUMMY_CURRENCY_DATA}
-        getLabel={(d) => d.label}
-        getValue={(d) => d.value}
-        getColor={(d) => d.color}
         innerRadius={60}
       />
       <div className={styles.Stats}>

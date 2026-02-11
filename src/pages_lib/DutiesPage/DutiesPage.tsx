@@ -133,7 +133,7 @@ function DutiesPage({ className }: IDutiesPageProps) {
           {filtersJsx}
         </Card>
         <Card className={styles.TableCard}>
-          <DutiesTable searchTerm={searchTerm} />
+          <DutiesTable />
         </Card>
       </div>
     </div>

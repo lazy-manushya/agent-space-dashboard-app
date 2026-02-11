@@ -50,7 +50,7 @@ function InvoicesPage({ className }: IInvoicesPageProps) {
           aria-label="Select currency filter"
           placeholder="All Currencies"
           value={selectedCurrency}
-          onChange={setSelectedCurrency}
+          onChange={(value) => setSelectedCurrency(String(value))}
           items={[
             { label: "All Currencies", value: "" },
             ...currencies.map((currency) => ({
@@ -131,7 +131,7 @@ function InvoicesPage({ className }: IInvoicesPageProps) {
           {filtersJsx}
         </Card>
         <Card className={styles.TableCard}>
-          <InvoicesTable searchTerm={searchTerm} />
+          <InvoicesTable />
         </Card>
       </div>
     </div>
