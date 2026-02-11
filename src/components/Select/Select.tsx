@@ -21,7 +21,7 @@ function Select({
   onChange,
   placeholder,
   value,
-  items,
+  items= [],
 }: ISelectProps) {
   return (
     <InputField

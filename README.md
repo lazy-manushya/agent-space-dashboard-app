@@ -6,4 +6,5 @@
 - [G meet](https://meet.google.com/bny-szxx-oen)
 
 ## Inspirations
-- [Dashboard UI](https://dribbble.com/shots/26026655-Healthcare-Dashboard-UI-UX-Design)
+- [Dashboard UI 1](https://dribbble.com/shots/26026655-Healthcare-Dashboard-UI-UX-Design)
+- [Dashboard UI 2](https://dribbble.com/shots/25121521-HR-Management-Dashboard-Design)

@@ -24,6 +24,7 @@ import DateRangePicker from "@/components/DateRangePicker";
 import TableShimmer from "@/components/TableShimmer";
 import BoeHeaderBarChart from "@/features/BoeHeaderBarChart";
 import BoeHeaderPieChart from "@/features/BoeHeaderPieChart";
+import Count from "@/components/Count";
 
 import { IDashboardPageProps } from "./DashboardPage.types";
 import styles from "./DashboardPage.module.css";
@@ -937,29 +938,33 @@ function DashboardPage({ className }: IDashboardPageProps) {
             <Card className={styles.StatCard}>
               <StatCard
                 secondaryContent="Total BOEs Filed"
-                primaryContent={2450}
+                primaryContent={<Count value={2450} />}
                 isLoading={loading}
+                color="#667eea"
               />
             </Card>
             <Card className={styles.StatCard}>
               <StatCard
                 secondaryContent="Provisional BOEs"
-                primaryContent={728}
+                primaryContent={<Count value={728} />}
                 isLoading={loading}
+                color="#4facfe"
               />
             </Card>
             <Card className={styles.StatCard}>
               <StatCard
                 secondaryContent="BOEs with Licences"
-                primaryContent={193}
+                primaryContent={<Count value={193} />}
                 isLoading={loading}
+                color="#43e97b"
               />
             </Card>
             <Card className={styles.StatCard}>
               <StatCard
                 secondaryContent="BOEs with SVB"
-                primaryContent={112}
+                primaryContent={<Count value={112} />}
                 isLoading={loading}
+                color="#fa709a"
               />
             </Card>
           </div>

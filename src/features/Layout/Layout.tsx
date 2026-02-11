@@ -37,13 +37,13 @@ function Layout({ children, className }: ILayoutProps) {
                   title: "Invoices",
                   href: "/invoices",
                   icon: <i className="las la-receipt" />,
-                  disabled: true,
+                  // disabled: true,
                 },
                 {
                   title: "Duties",
                   href: "/duties",
                   icon: <i className="las la-file-invoice" />,
-                  disabled: true,
+                  // disabled: true,
                 },
               ]}
             />

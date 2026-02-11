@@ -1,27 +1,56 @@
-import React, { useState, useMemo } from 'react';
-import { Group } from '@visx/group';
-import { Pie } from '@visx/shape';
-import { scaleOrdinal } from '@visx/scale';
-import { PieChartProps, PieChartData } from './PieChart.types';
-import styles from './PieChart.module.css';
+import React, { useState, useMemo } from "react";
+import { Group } from "@visx/group";
+import { Pie } from "@visx/shape";
+import { scaleOrdinal } from "@visx/scale";
+import { ParentSize } from "@visx/responsive";
+
+import { PieChartProps, PieChartData } from "./PieChart.types";
+import styles from "./PieChart.module.css";
 
 const defaultMargin = { top: 20, right: 30, bottom: 40, left: 30 };
 
-const PieChart: React.FC<PieChartProps> = ({
+// Modern vibrant color palette
+const MODERN_PIE_COLORS = [
+  '#667eea', // Vibrant Purple
+  '#4facfe', // Bright Blue
+  '#43e97b', // Fresh Green
+  '#fa709a', // Coral Pink
+  '#fee140', // Sunny Yellow
+  '#30cfd0', // Turquoise
+  '#a8edea', // Mint
+  '#ff6b6b', // Warm Red
+  '#c44569', // Berry
+];
+
+interface PieChartInnerProps extends Omit<PieChartProps, "width" | "height"> {
+  width: number;
+  height: number;
+}
+
+const PieChartInner: React.FC<PieChartInnerProps> = ({
   data,
-  width = 400,
-  height = 300,
+  width,
+  height,
   margin = defaultMargin,
-  className = '',
+  className = "",
   animate = true,
   showLabels = true,
   innerRadius = 0,
 }) => {
   const [hoveredSlice, setHoveredSlice] = useState<PieChartData | null>(null);
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
+  const [mounted, setMounted] = useState(false);
+
+  React.useEffect(() => {
+    const timer = setTimeout(() => setMounted(true), 100);
+    return () => clearTimeout(timer);
+  }, []);
 
   // Calculate total for percentage calculation
-  const total = useMemo(() => data.reduce((sum, d) => sum + d.value, 0), [data]);
+  const total = useMemo(
+    () => data.reduce((sum, d) => sum + d.value, 0),
+    [data],
+  );
 
   // Bounds
   const innerWidth = width - margin.left - margin.right;
@@ -30,10 +59,10 @@ const PieChart: React.FC<PieChartProps> = ({
   const centerY = innerHeight / 2;
   const centerX = innerWidth / 2;
 
-  // Color scale
+  // Color scale with modern palette
   const colorScale = scaleOrdinal<string, string>({
     domain: data.map((d) => d.label),
-    range: data.map((d, i) => d.color || `hsl(${(i * 137.5) % 360}, 70%, 50%)`),
+    range: data.map((d, i) => d.color || MODERN_PIE_COLORS[i % MODERN_PIE_COLORS.length]),
   });
 
   // Accessor functions
@@ -53,38 +82,79 @@ const PieChart: React.FC<PieChartProps> = ({
     return ((value / total) * 100).toFixed(1);
   };
 
+  // Calculate chart area dimensions (excluding legend)
+  const chartHeight = height - 80; // Reserve space for legend at bottom
+
+  // Recalculate bounds with adjusted height
+  const chartInnerWidth = width - margin.left - margin.right;
+  const chartInnerHeight = chartHeight - margin.top - margin.bottom;
+  const chartRadius = Math.min(chartInnerWidth, chartInnerHeight) / 2;
+  const chartCenterY = chartInnerHeight / 2;
+  const chartCenterX = chartInnerWidth / 2;
+
   return (
     <div className={`${styles.pieChart} ${className}`}>
       <div className={styles.chartContainer}>
-        <svg width={width} height={height} className={styles.chartSvg}>
-          <Group top={centerY + margin.top} left={centerX + margin.left}>
+        <svg width="100%" height="100%" viewBox={`0 0 ${width} ${chartHeight}`} className={styles.chartSvg}>
+          {/* Gradient definitions for slices */}
+          <defs>
+            {data.map((d, i) => {
+              const color = d.color || MODERN_PIE_COLORS[i % MODERN_PIE_COLORS.length];
+              return (
+                <radialGradient
+                  key={`pie-gradient-${d.label}`}
+                  id={`pie-gradient-${i}`}
+                  cx="30%"
+                  cy="30%"
+                >
+                  <stop offset="0%" stopColor={color} stopOpacity={1} />
+                  <stop offset="100%" stopColor={color} stopOpacity={0.8} />
+                </radialGradient>
+              );
+            })}
+          </defs>
+          <Group top={chartCenterY + margin.top} left={chartCenterX + margin.left}>
             <Pie
               data={data}
               pieValue={getValue}
-              outerRadius={radius}
-              innerRadius={innerRadius}
+              outerRadius={mounted && animate ? chartRadius : 0}
+              innerRadius={mounted && animate ? innerRadius : 0}
             >
               {(pie) => {
-                return pie.arcs.map((arc, index) => {
+                return pie.arcs.map((arc, i) => {
                   const [centroidX, centroidY] = pie.path.centroid(arc);
                   const hasSpaceForLabel = arc.endAngle - arc.startAngle >= 0.1;
-                  const arcPath = pie.path(arc) || '';
-                  
+                  const arcPath = pie.path(arc) || "";
+
                   return (
-                    <g key={`arc-${getLabel(arc.data)}`}>
+                    <g
+                      key={`arc-${getLabel(arc.data)}`}
+                      style={{
+                        opacity: mounted ? 1 : 0,
+                        transition: `opacity 0.5s ease ${i * 0.1}s, transform 0.3s ease`,
+                      }}
+                    >
                       <path
                         d={arcPath}
-                        fill={colorScale(getLabel(arc.data))}
+                        fill={`url(#pie-gradient-${i})`}
                         className={styles.pieSlice}
-                        onMouseEnter={(event) => handleSliceHover(event, arc.data)}
+                        onMouseEnter={(event) =>
+                          handleSliceHover(event, arc.data)
+                        }
                         onMouseLeave={handleSliceLeave}
+                        style={{
+                          transition: 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)',
+                        }}
                       />
                       {hasSpaceForLabel && showLabels && (
                         <text
-                          x={centroidX}
-                          y={centroidY}
+                          x={centroidX * 1.8}
+                          y={centroidY * 1.8}
                           dy=".33em"
                           className={styles.pieLabel}
+                          style={{
+                            fill: colorScale(getLabel(arc.data)),
+                          }}
                         >
                           {calculatePercentage(arc.data.value)}%
                         </text>
@@ -104,7 +174,10 @@ const PieChart: React.FC<PieChartProps> = ({
           <div key={`legend-${d.label}`} className={styles.legendItem}>
             <div
               className={styles.legendColor}
-              style={{ backgroundColor: d.color || `hsl(${(i * 137.5) % 360}, 70%, 50%)` }}
+              style={{
+                backgroundColor:
+                  d.color || `hsl(${(i * 137.5) % 360}, 70%, 50%)`,
+              }}
             />
             <span>{d.label}</span>
           </div>
@@ -116,16 +189,38 @@ const PieChart: React.FC<PieChartProps> = ({
         <div
           className={styles.tooltip}
           style={{
-            position: 'fixed',
+            position: "fixed",
             left: tooltipPosition.x + 10,
             top: tooltipPosition.y - 10,
           }}
         >
-          <div><strong>{hoveredSlice.label}</strong></div>
+          <div>
+            <strong>{hoveredSlice.label}</strong>
+          </div>
           <div>Value: {hoveredSlice.value.toLocaleString()}</div>
           <div>Percentage: {calculatePercentage(hoveredSlice.value)}%</div>
         </div>
       )}
+    </div>
+  );
+};
+
+const PieChart: React.FC<PieChartProps> = (props) => {
+  const { width, height, ...rest } = props;
+
+  // If width and height are provided, use them directly
+  if (width && height) {
+    return <PieChartInner width={width} height={height} {...rest} />;
+  }
+
+  // Otherwise, make it responsive
+  return (
+    <div style={{ width: "100%", height: "100%", minHeight: "300px" }}>
+      <ParentSize>
+        {({ width: parentWidth, height: parentHeight }) => (
+          <PieChartInner width={parentWidth} height={parentHeight} {...rest} />
+        )}
+      </ParentSize>
     </div>
   );
 };

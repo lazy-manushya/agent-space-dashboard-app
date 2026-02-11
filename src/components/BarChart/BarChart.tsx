@@ -4,15 +4,34 @@ import { Bar } from '@visx/shape';
 import { scaleLinear, scaleBand } from '@visx/scale';
 import { AxisBottom, AxisLeft } from '@visx/axis';
 import { GridRows } from '@visx/grid';
+import { ParentSize } from '@visx/responsive';
 import { BarChartProps, BarChartData } from './BarChart.types';
 import styles from './BarChart.module.css';
 
 const defaultMargin = { top: 20, right: 30, bottom: 40, left: 50 };
 
-const BarChart: React.FC<BarChartProps> = ({
+interface BarChartInnerProps extends Omit<BarChartProps, 'width' | 'height'> {
+  width: number;
+  height: number;
+}
+
+// Modern color palette with gradients
+const MODERN_COLORS = [
+  '#667eea', // Purple
+  '#764ba2', // Deep Purple
+  '#f093fb', // Pink
+  '#4facfe', // Blue
+  '#00f2fe', // Cyan
+  '#43e97b', // Green
+  '#38f9d7', // Teal
+  '#fa709a', // Rose
+  '#fee140', // Yellow
+];
+
+const BarChartInner: React.FC<BarChartInnerProps> = ({
   data,
-  width = 400,
-  height = 300,
+  width,
+  height,
   margin = defaultMargin,
   className = '',
   animate = true,
@@ -20,6 +39,11 @@ const BarChart: React.FC<BarChartProps> = ({
 }) => {
   const [hoveredBar, setHoveredBar] = useState<BarChartData | null>(null);
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
+  const [mounted, setMounted] = useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Bounds
   const xMax = width - margin.left - margin.right;
@@ -71,10 +95,31 @@ const BarChart: React.FC<BarChartProps> = ({
               strokeWidth={0.5}
             />
             
+            {/* Gradient definitions */}
+            <defs>
+              {data.map((d, i) => {
+                const color = d.color || MODERN_COLORS[i % MODERN_COLORS.length];
+                return (
+                  <linearGradient
+                    key={`gradient-${d.label}`}
+                    id={`bar-gradient-${i}`}
+                    x1="0"
+                    y1="0"
+                    x2="0"
+                    y2="1"
+                  >
+                    <stop offset="0%" stopColor={color} stopOpacity={0.9} />
+                    <stop offset="100%" stopColor={color} stopOpacity={0.6} />
+                  </linearGradient>
+                );
+              })}
+            </defs>
+
             {/* Bars */}
             {data.map((d, i) => {
               const barWidth = xScale.bandwidth();
-              const barHeight = yMax - (yScale(d.value) ?? 0);
+              const targetHeight = yMax - (yScale(d.value) ?? 0);
+              const barHeight = animate && mounted ? targetHeight : 0;
               const barX = xScale(d.label);
               const barY = yMax - barHeight;
               
@@ -85,10 +130,14 @@ const BarChart: React.FC<BarChartProps> = ({
                   y={barY}
                   width={barWidth}
                   height={barHeight}
-                  fill={d.color || `hsl(${(i * 137.5) % 360}, 70%, 50%)`}
+                  fill={`url(#bar-gradient-${i})`}
                   className={styles.bar}
                   onMouseEnter={(event) => handleBarHover(event, d)}
                   onMouseLeave={handleBarLeave}
+                  rx={4}
+                  style={{
+                    transition: 'height 0.6s cubic-bezier(0.4, 0, 0.2, 1), y 0.6s cubic-bezier(0.4, 0, 0.2, 1)',
+                  }}
                 />
               );
             })}
@@ -152,6 +201,30 @@ const BarChart: React.FC<BarChartProps> = ({
           <div>Value: {hoveredBar.value.toLocaleString()}</div>
         </div>
       )}
+    </div>
+  );
+};
+
+const BarChart: React.FC<BarChartProps> = (props) => {
+  const { width, height, ...rest } = props;
+  
+  // If width and height are provided, use them directly
+  if (width && height) {
+    return <BarChartInner width={width} height={height} {...rest} />;
+  }
+  
+  // Otherwise, make it responsive
+  return (
+    <div style={{ width: '100%', height: '100%', minHeight: '300px' }}>
+      <ParentSize>
+        {({ width: parentWidth, height: parentHeight }) => (
+          <BarChartInner
+            width={parentWidth}
+            height={parentHeight}
+            {...rest}
+          />
+        )}
+      </ParentSize>
     </div>
   );
 };

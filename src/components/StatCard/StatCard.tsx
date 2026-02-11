@@ -9,6 +9,7 @@ export interface StatCardProps {
   primaryContent: React.ReactNode;
   secondaryContent?: React.ReactNode;
   isLoading?: boolean;
+  color?: string;
 }
 
 const StatCard: React.FC<StatCardProps> = ({
@@ -16,6 +17,7 @@ const StatCard: React.FC<StatCardProps> = ({
   primaryContent,
   secondaryContent,
   isLoading,
+  color,
 }) => {
   if (isLoading) {
     return <StatCardLoading />;
@@ -23,7 +25,12 @@ const StatCard: React.FC<StatCardProps> = ({
 
   return (
     <div className={`${styles.Stat} ${className || ""}`.trim()}>
-      <span className={styles.PrimaryContent}>{primaryContent}</span>
+      <span 
+        className={styles.PrimaryContent}
+        style={color ? { color } : {}}
+      >
+        {primaryContent}
+      </span>
       {secondaryContent && (
         <span className={styles.SecondaryContent}>{secondaryContent}</span>
       )}
