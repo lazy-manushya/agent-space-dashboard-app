@@ -14,6 +14,8 @@ const DUMMY_STATUS_DATA = [
 const BoeHeaderPieChart: React.FC<BoeHeaderPieChartProps> = ({
   className = "",
   showAsDonut = true,
+  hideTitle = false,
+  chartMargin = 30,
 }) => {
   // Calculate statistics from duty data
   const stats = useMemo(() => {
@@ -38,15 +40,19 @@ const BoeHeaderPieChart: React.FC<BoeHeaderPieChartProps> = ({
 
   return (
     <div className={`${styles.boeHeaderPieChart} ${className}`}>
-      <h3 className={styles.chartTitle}>Duty Split</h3>
-      <p className={styles.chartSubtitle}>
-        Breakdown of duty components across all Bill of Entry submissions
-      </p>
+      {!hideTitle && (
+        <>
+          <h3 className={styles.chartTitle}>Duty Split</h3>
+          <p className={styles.chartSubtitle}>
+            Breakdown of duty components across all Bill of Entry submissions
+          </p>
+        </>
+      )}
       <div className={styles.chartContainer}>
         <PieChart
           data={DUMMY_STATUS_DATA}
-          margin={{ top: 20, right: 30, bottom: 20, left: 30 }}
-          showLabels={true}
+          margin={{ top: chartMargin, right: chartMargin, bottom: chartMargin, left: chartMargin }}
+          showLabels={false}
           animate={true}
           innerRadius={showAsDonut ? 60 : 0}
         />

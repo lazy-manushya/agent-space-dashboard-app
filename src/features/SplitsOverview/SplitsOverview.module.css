@@ -1,0 +1,304 @@
+.splitsOverview {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 0.5rem;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.headerText {
+  flex: 1;
+  min-width: 200px;
+}
+
+.title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary, #1f2937);
+  margin: 0;
+}
+
+.subtitle {
+  display: none;
+}
+
+.expandButton {
+  display: none;
+}
+
+.chartsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+  flex: 1;
+  min-height: 0;
+}
+
+/* Third chart spans full width and is centered */
+.chartsGrid > :nth-child(3) {
+  grid-column: 1 / -1;
+  max-width: 50%;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.miniChart {
+  position: relative;
+  background: #ffffff;
+  border: 2px solid var(--border-color, #e5e7eb);
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+}
+
+.miniChart:hover {
+  border-color: #3b82f6;
+  box-shadow: 0 8px 16px rgba(59, 130, 246, 0.15);
+  transform: translateY(-2px);
+}
+
+.miniChart:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+.miniChartContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 0.25rem;
+  min-height: 0;
+  position: relative;
+  justify-content: center;
+}
+
+/* Text overlay on top of chart - always visible */
+.miniChartTextOverlay {
+  position: absolute;
+  bottom: 0.375rem;
+  left: 0.5rem;
+  right: 0.5rem;
+  text-align: center;
+  padding: 0.25rem 0.5rem;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  pointer-events: none;
+}
+
+.miniChartTitle {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0;
+}
+
+.miniChartSubtitle {
+  display: none;
+}
+
+/* Hover overlay - only shows on hover */
+.miniChartHoverOverlay {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  right: 1rem;
+  background: rgba(59, 130, 246, 0.95);
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  text-align: center;
+}
+
+.miniChart:hover .miniChartHoverOverlay {
+  opacity: 1;
+}
+
+.clickHint {
+  color: #ffffff;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.clickHint::before {
+  content: "🔍";
+  font-size: 1rem;
+}
+
+/* Modal Styles */
+.chartModal {
+  max-width: 900px;
+  width: 90vw;
+  max-height: 90vh;
+  overflow: hidden;
+}
+
+.modalContent {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 1.5rem;
+}
+
+.modalHeader {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid var(--border-color, #e5e7eb);
+}
+
+.modalTitle {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--text-primary, #1f2937);
+  margin: 0;
+}
+
+.modalChartContainer {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  padding: 1rem 0;
+}
+
+.modalNavigation {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-top: 1.5rem;
+  border-top: 2px solid var(--border-color, #e5e7eb);
+  margin-top: 1.5rem;
+}
+
+.navButton {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 120px;
+}
+
+.navIndicators {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.navDot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid #d1d5db;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0;
+}
+
+.navDot:hover {
+  border-color: #3b82f6;
+  transform: scale(1.2);
+}
+
+.navDotActive {
+  background: #3b82f6;
+  border-color: #3b82f6;
+  width: 14px;
+  height: 14px;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 1024px) {
+  /* Keep 2-1 layout on tablet */
+  .chartsGrid > :nth-child(3) {
+    max-width: 60%;
+  }
+}
+
+@media screen and (max-width: 640px) {
+  /* Stack all charts on mobile */
+  .chartsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .chartsGrid > :nth-child(3) {
+    max-width: 100%;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .expandButton {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .miniChart {
+    min-height: 320px;
+  }
+
+  .modalContent {
+    padding: 1rem;
+  }
+
+  .modalTitle {
+    font-size: 1.5rem;
+  }
+
+  .modalNavigation {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .navButton {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .navIndicators {
+    order: -1;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .miniChart {
+    background: var(--card-bg-dark, #1f2937);
+    border-color: var(--border-color-dark, #374151);
+  }
+
+  .miniChart:hover {
+    border-color: #60a5fa;
+    box-shadow: 0 8px 16px rgba(96, 165, 250, 0.25);
+  }
+
+  .title,
+  .modalTitle {
+    color: var(--text-primary-dark, #f9fafb);
+  }
+
+  .subtitle {
+    color: var(--text-secondary-dark, #d1d5db);
+  }
+}
