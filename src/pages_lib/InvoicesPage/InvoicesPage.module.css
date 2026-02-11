@@ -76,7 +76,7 @@
     gap: 1.5rem;
     display: grid;
     grid-template-rows: 148px auto 1fr;
-    grid-template-columns: auto 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
     grid-template-areas:
       "stats stats stats stats stats"
       "graph graph graph chart chart"

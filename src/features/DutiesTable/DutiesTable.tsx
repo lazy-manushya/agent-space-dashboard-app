@@ -42,21 +42,39 @@ const generateDummyDuties = (): IBoeDuty[] => {
     "BE2024009",
     "BE2024010",
   ];
+  const hsCodes = [
+    "8471.30.00",
+    "8517.12.00",
+    "9403.60.00",
+    "6204.62.00",
+    "7326.90.99",
+    "3926.90.99",
+    "8528.72.00",
+    "6109.10.00",
+    "8443.32.10",
+    "4202.92.00",
+  ];
 
   beNos.forEach((beNo, idx) => {
+    const bcdPct = Math.random() * 20;
+    const igstPct = Math.random() * 18 + 12;
+    const hCessPct = Math.random() * 5;
+    const swsPct = Math.random() * 10;
+
     duties.push({
       duty_id: idx + 1,
       be_no: beNo,
-      bcd_pct: Math.random() * 20,
+      hs_code: hsCodes[idx],
+      bcd_pct: bcdPct,
       bcd_amount: Math.random() * 50000 + 10000,
       bcd_duty_fg: Math.random() > 0.5 ? "Y" : "N",
       bcd_notn_no: `BCN${Math.floor(Math.random() * 1000)}`,
       bcd_notn_sno: `${Math.floor(Math.random() * 100)}`,
-      h_cess_pct: Math.random() * 5,
+      h_cess_pct: hCessPct,
       h_cess_amount: Math.random() * 5000 + 500,
-      sws_pct: Math.random() * 10,
+      sws_pct: swsPct,
       sws_amount: Math.random() * 10000 + 1000,
-      igst_pct: Math.random() * 18 + 12,
+      igst_pct: igstPct,
       igst_amount: Math.random() * 100000 + 20000,
       igst_notn_no: `IGN${Math.floor(Math.random() * 1000)}`,
       igst_notn_sno: `${Math.floor(Math.random() * 100)}`,
@@ -78,15 +96,15 @@ const DutiesTable = () => {
 
   const COLUMNS: Column<IBoeDuty>[] = [
     {
-      id: "duty_id",
-      header: "Duty ID",
-      accessor: "duty_id",
-      size: 120,
-      minSize: 120,
+      id: "be_no",
+      header: "BE NO",
+      accessor: "be_no",
+      size: 140,
+      minSize: 140,
       fixed: true,
-      cell: ({ getValue }) => {
-        const value = getValue();
-        const isExpanded = expandedRow === value;
+      cell: ({ getValue, row }) => {
+        const dutyId = (row.original as IBoeDuty).duty_id;
+        const isExpanded = expandedRow === dutyId;
 
         return (
           <div
@@ -96,73 +114,29 @@ const DutiesTable = () => {
               gap: "8px",
               cursor: "pointer",
             }}
-            onClick={() => toggleRowExpansion(value)}
+            onClick={() => toggleRowExpansion(dutyId)}
           >
             <span className={styles.ExpandIcon}>{isExpanded ? "▼" : "▶"}</span>
-            <span className={`${styles.DutyId} ${styles.PrimaryData}`}>
-              {value}
+            <span className={styles.PrimaryData}>
+              {getValue() || "-"}
             </span>
           </div>
         );
       },
     },
     {
-      id: "be_no",
-      header: "BE No",
-      accessor: "be_no",
-      size: 140,
-      minSize: 140,
+      id: "hs_code",
+      header: "HS Code",
+      accessor: "hs_code",
+      size: 120,
+      minSize: 120,
       cell: ({ getValue }) => (
-        <span className={styles.PrimaryData}>{getValue()}</span>
-      ),
-    },
-    {
-      id: "bcd_pct",
-      header: "BCD %",
-      accessor: "bcd_pct",
-      size: 100,
-      minSize: 100,
-      cell: ({ getValue }) => (
-        <span className={styles.Percentage}>
-          {formatPercentage(getValue())}
-        </span>
-      ),
-    },
-    {
-      id: "bcd_amount",
-      header: "BCD Amount",
-      accessor: "bcd_amount",
-      size: 130,
-      minSize: 130,
-      cell: ({ getValue }) => (
-        <span className={styles.Amount}>₹{formatNumber(getValue())}</span>
-      ),
-    },
-    {
-      id: "igst_pct",
-      header: "IGST %",
-      accessor: "igst_pct",
-      size: 100,
-      minSize: 100,
-      cell: ({ getValue }) => (
-        <span className={styles.Percentage}>
-          {formatPercentage(getValue())}
-        </span>
-      ),
-    },
-    {
-      id: "igst_amount",
-      header: "IGST Amount",
-      accessor: "igst_amount",
-      size: 140,
-      minSize: 140,
-      cell: ({ getValue }) => (
-        <span className={styles.Amount}>₹{formatNumber(getValue())}</span>
+        <span className={styles.PrimaryData}>{getValue() || "-"}</span>
       ),
     },
     {
       id: "mat_assess_value",
-      header: "Assessment Value",
+      header: "Accessible Value",
       accessor: "mat_assess_value",
       size: 160,
       minSize: 160,
@@ -178,6 +152,24 @@ const DutiesTable = () => {
       minSize: 140,
       cell: ({ getValue }) => (
         <span className={styles.Amount}>₹{formatNumber(getValue())}</span>
+      ),
+    },
+    {
+      id: "duty_pct",
+      header: "Duty %",
+      accessor: (row) => {
+        const bcdPct = row.bcd_pct || 0;
+        const igstPct = row.igst_pct || 0;
+        const hCessPct = row.h_cess_pct || 0;
+        const swsPct = row.sws_pct || 0;
+        return bcdPct + igstPct + hCessPct + swsPct;
+      },
+      size: 120,
+      minSize: 120,
+      cell: ({ getValue }) => (
+        <span className={styles.Percentage}>
+          {formatPercentage(getValue())}
+        </span>
       ),
     },
   ];

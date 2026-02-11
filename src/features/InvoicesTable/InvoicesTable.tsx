@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Table, { Column } from "@/components/Table";
-import { IBoeInvoice, IInvoiceItem } from "@/types/data";
+import { IBoeInvoice, IInvoiceItem, IBoeDuty } from "@/types/data";
 import styles from "./InvoicesTable.module.css";
 
 // Number formatting utilities
@@ -27,10 +27,34 @@ const formatDate = (date: string | undefined): string => {
   return new Date(date).toLocaleDateString();
 };
 
+// Dummy data generator for duties
+const generateDummyDuties = (beNo: string, items: IInvoiceItem[]): IBoeDuty[] => {
+  return items.map((item, index) => {
+    const assessValue = item.mat_amount || 10000;
+    const bcdPct = [0, 5, 7.5, 10, 15][Math.floor(Math.random() * 5)];
+    const bcdAmount = (assessValue * bcdPct) / 100;
+    const igstPct = [0, 5, 12, 18, 28][Math.floor(Math.random() * 5)];
+    const igstAmount = (assessValue * igstPct) / 100;
+    const totalDuty = bcdAmount + igstAmount;
+
+    return {
+      duty_id: index + 1,
+      be_no: beNo,
+      hs_code: item.cth,
+      bcd_pct: bcdPct,
+      bcd_amount: bcdAmount,
+      igst_pct: igstPct,
+      igst_amount: igstAmount,
+      mat_assess_value: assessValue,
+      mat_duty: totalDuty,
+    };
+  });
+};
+
 // Dummy data generator for invoices
 const generateDummyInvoices = (): IBoeInvoice[] => {
   const invoices: IBoeInvoice[] = [];
-  const suppliers = [
+  const importers = [
     "ABC Trading Co.",
     "Global Imports Ltd.",
     "XYZ Corporation",
@@ -39,10 +63,14 @@ const generateDummyInvoices = (): IBoeInvoice[] => {
   ];
   const currencies = ["USD", "EUR", "GBP", "JPY", "INR"];
   const beNos = ["BE2024001", "BE2024002", "BE2024003", "BE2024004", "BE2024005"];
+  const riskIndicators = ["Low", "Medium", "High"];
+  const portCodes = ["JNPT", "FSPL", "ICCT", "NSICT", "IICCT"];
+  const statuses = ["Pending", "Cleared", "In Progress", "Approved", "Rejected"];
 
   for (let i = 1; i <= 10; i++) {
     const items: IInvoiceItem[] = [];
     const numItems = Math.floor(Math.random() * 3) + 1;
+    const beNo = beNos[Math.floor(Math.random() * beNos.length)];
 
     for (let j = 1; j <= numItems; j++) {
       items.push({
@@ -58,10 +86,12 @@ const generateDummyInvoices = (): IBoeInvoice[] => {
       });
     }
 
+    const duties = generateDummyDuties(beNo, items);
+
     invoices.push({
       invoice_item_id: i,
-      be_no: beNos[Math.floor(Math.random() * beNos.length)],
-      supplier: suppliers[Math.floor(Math.random() * suppliers.length)],
+      be_no: beNo,
+      supplier: importers[Math.floor(Math.random() * importers.length)],
       invoice_sno: i,
       invoice_no: `INV${2024}${String(i).padStart(4, "0")}`,
       invoice_dt: `2024-${String(Math.floor(Math.random() * 12) + 1).padStart(2, "0")}-${String(Math.floor(Math.random() * 28) + 1).padStart(2, "0")}`,
@@ -74,6 +104,12 @@ const generateDummyInvoices = (): IBoeInvoice[] => {
       insurance: Math.random() * 5000,
       inv_ass_value: Math.random() * 600000 + 60000,
       items,
+      duties,
+      // New fields
+      importer_name: importers[Math.floor(Math.random() * importers.length)],
+      risk_indicator: riskIndicators[Math.floor(Math.random() * riskIndicators.length)],
+      port_code: portCodes[Math.floor(Math.random() * portCodes.length)],
+      status: statuses[Math.floor(Math.random() * statuses.length)],
     });
   }
 
@@ -90,15 +126,15 @@ const InvoicesTable = () => {
 
   const COLUMNS: Column<IBoeInvoice>[] = [
     {
-      id: "invoice_item_id",
-      header: "Invoice ID",
-      accessor: "invoice_item_id",
-      size: 120,
-      minSize: 120,
+      id: "be_no",
+      header: "BE NO",
+      accessor: "be_no",
+      size: 140,
+      minSize: 140,
       fixed: true,
-      cell: ({ getValue }) => {
-        const value = getValue();
-        const isExpanded = expandedRow === value;
+      cell: ({ getValue, row }) => {
+        const invoiceItemId = (row.original as IBoeInvoice).invoice_item_id;
+        const isExpanded = expandedRow === invoiceItemId;
 
         return (
           <div
@@ -108,75 +144,83 @@ const InvoicesTable = () => {
               gap: "8px",
               cursor: "pointer",
             }}
-            onClick={() => toggleRowExpansion(value)}
+            onClick={() => toggleRowExpansion(invoiceItemId)}
           >
             <span className={styles.ExpandIcon}>{isExpanded ? "▼" : "▶"}</span>
-            <span className={`${styles.InvoiceId} ${styles.PrimaryData}`}>
-              {value}
+            <span className={styles.BeNumber}>
+              {getValue() || "-"}
             </span>
           </div>
         );
       },
     },
     {
-      id: "invoice_no",
-      header: "Invoice No",
-      accessor: "invoice_no",
-      size: 140,
-      minSize: 140,
-      cell: ({ getValue }) => (
-        <span className={styles.PrimaryData}>{getValue() || "-"}</span>
-      ),
-    },
-    {
-      id: "supplier",
-      header: "Supplier",
-      accessor: "supplier",
+      id: "importer_name",
+      header: "IMPORTER NAME",
+      accessor: "importer_name",
       size: 200,
       minSize: 180,
-      cell: ({ getValue }) => (
-        <span className={styles.PrimaryData}>{getValue() || "-"}</span>
-      ),
+      cell: ({ getValue }) => {
+        const importer = getValue();
+        return (
+          <span className={styles.PrimaryData}>
+            {importer || "-"}
+          </span>
+        );
+      },
     },
     {
-      id: "invoice_dt",
-      header: "Invoice Date",
-      accessor: "invoice_dt",
+      id: "risk_indicator",
+      header: "RISK INDICATOR",
+      accessor: "risk_indicator",
+      size: 140,
+      minSize: 130,
+      cell: ({ getValue }) => {
+        const risk = getValue();
+        const riskClass = risk === "High" ? styles.RiskHigh :
+                         risk === "Medium" ? styles.RiskMedium :
+                         styles.RiskLow;
+        return (
+          <span className={`${styles.RiskBadge} ${riskClass}`}>
+            {risk || "-"}
+          </span>
+        );
+      },
+    },
+    {
+      id: "port_code",
+      header: "PORT CODE",
+      accessor: "port_code",
       size: 120,
+      minSize: 110,
+      cell: ({ getValue }) => {
+        const port = getValue();
+        return (
+          <span className={styles.PrimaryData}>
+            {port || "-"}
+          </span>
+        );
+      },
+    },
+    {
+      id: "status",
+      header: "STATUS",
+      accessor: "status",
+      size: 130,
       minSize: 120,
-      cell: ({ getValue }) => (
-        <span className={styles.MetaInfo}>{formatDate(getValue())}</span>
-      ),
-    },
-    {
-      id: "invoice_amount",
-      header: "Invoice Amount",
-      accessor: "invoice_amount",
-      size: 150,
-      minSize: 140,
-      cell: ({ getValue }) => (
-        <span className={styles.Amount}>{formatNumber(getValue())}</span>
-      ),
-    },
-    {
-      id: "invoice_currency",
-      header: "Currency",
-      accessor: "invoice_currency",
-      size: 100,
-      minSize: 90,
-      cell: ({ getValue }) => (
-        <span className={styles.Currency}>{getValue() || "-"}</span>
-      ),
-    },
-    {
-      id: "inv_ass_value",
-      header: "Assessment Value",
-      accessor: "inv_ass_value",
-      size: 160,
-      minSize: 140,
-      cell: ({ getValue }) => (
-        <span className={styles.Amount}>{formatNumber(getValue())}</span>
-      ),
+      cell: ({ getValue }) => {
+        const status = getValue();
+        const statusClass = status === "Cleared" ? styles.StatusCleared :
+                           status === "Approved" ? styles.StatusApproved :
+                           status === "Rejected" ? styles.StatusRejected :
+                           status === "Pending" ? styles.StatusPending :
+                           styles.StatusInProgress;
+        return (
+          <span className={`${styles.StatusBadge} ${statusClass}`}>
+            {status || "-"}
+          </span>
+        );
+      },
     },
   ];
 
@@ -244,6 +288,38 @@ const InvoicesTable = () => {
                       <td>{formatNumber(item.mat_amount)}</td>
                     </tr>
                   ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+
+          {invoice.duties && invoice.duties.length > 0 && (
+            <div className={styles.Section}>
+              <div className={styles.SectionTitle}>Duties</div>
+              <table className={styles.ItemsTable}>
+                <thead>
+                  <tr>
+                    <th>BE NO</th>
+                    <th>HS Code</th>
+                    <th>Accessible Value</th>
+                    <th>Total Duty</th>
+                    <th>Duty %</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {invoice.duties.map((duty, idx) => {
+                    const totalDutyPct = (duty.bcd_pct || 0) + (duty.igst_pct || 0) + (duty.h_cess_pct || 0) + (duty.sws_pct || 0);
+
+                    return (
+                      <tr key={idx}>
+                        <td>{duty.be_no || "-"}</td>
+                        <td>{duty.hs_code || "-"}</td>
+                        <td>{formatNumber(duty.mat_assess_value)}</td>
+                        <td>{formatNumber(duty.mat_duty)}</td>
+                        <td>{totalDutyPct.toFixed(2)}%</td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>

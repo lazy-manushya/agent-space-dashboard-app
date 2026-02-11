@@ -12,12 +12,27 @@
 
 .InvoiceId {
   font-weight: 600;
-  color: var(--table-primary-data);
+  color: var(--be-number);
+}
+
+.InvoiceNumber {
+  color: var(--be-number);
+  font-weight: 400;
+}
+
+.BeNumber {
+  color: var(--be-number);
+  font-weight: 400;
 }
 
 .PrimaryData {
-  font-weight: 600;
   color: var(--table-primary-data);
+  font-weight: 600;
+}
+
+.SecondaryData {
+  color: var(--table-secondary-data);
+  font-weight: 400;
 }
 
 .MetaInfo {
@@ -26,18 +41,137 @@
   font-weight: 400;
 }
 
-.Amount {
-  font-weight: 500;
-  color: var(--table-secondary-data);
-  text-align: right;
+.NumberCell {
+  text-align: left;
   font-variant-numeric: tabular-nums;
 }
 
-.Currency {
-  color: var(--table-primary-data);
-  font-weight: 500;
-  font-size: 0.75rem;
+.SupplierBadge {
+  display: inline-block;
+  padding: 0.25rem 0.875rem;
+  border-radius: 10rem;
+  font-weight: 400;
   text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+/* Supplier color variations based on hash */
+.SupplierBadge.supplier-0 {
+  background-color: var(--port-jnpt-bg);
+  color: var(--port-jnpt-text);
+}
+.SupplierBadge.supplier-1 {
+  background-color: var(--port-fspl-bg);
+  color: var(--port-fspl-text);
+}
+.SupplierBadge.supplier-2 {
+  background-color: var(--port-icct-bg);
+  color: var(--port-icct-text);
+}
+.SupplierBadge.supplier-3 {
+  background-color: var(--port-nsict-bg);
+  color: var(--port-nsict-text);
+}
+.SupplierBadge.supplier-4 {
+  background-color: var(--port-iicct-bg);
+  color: var(--port-iicct-text);
+}
+
+/* Port Badge Styles */
+.PortBadge {
+  display: inline-block;
+  padding: 0.25rem 0.875rem;
+  border-radius: 10rem;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.PortBadge.jnpt {
+  background-color: var(--port-jnpt-bg);
+  color: var(--port-jnpt-text);
+}
+
+.PortBadge.fspl {
+  background-color: var(--port-fspl-bg);
+  color: var(--port-fspl-text);
+}
+
+.PortBadge.icct {
+  background-color: var(--port-icct-bg);
+  color: var(--port-icct-text);
+}
+
+.PortBadge.nsict {
+  background-color: var(--port-nsict-bg);
+  color: var(--port-nsict-text);
+}
+
+.PortBadge.iicct {
+  background-color: var(--port-iicct-bg);
+  color: var(--port-iicct-text);
+}
+
+/* Risk Indicator Badge Styles */
+.RiskBadge {
+  display: inline-block;
+  padding: 0.25rem 0.875rem;
+  border-radius: 10rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  font-size: 0.75rem;
+}
+
+.RiskLow {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.RiskMedium {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.RiskHigh {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+/* Status Badge Styles */
+.StatusBadge {
+  display: inline-block;
+  padding: 0.25rem 0.875rem;
+  border-radius: 10rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  font-size: 0.75rem;
+}
+
+.StatusPending {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.StatusCleared {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.StatusInProgress {
+  background-color: #dbeafe;
+  color: #1e40af;
+}
+
+.StatusApproved {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.StatusRejected {
+  background-color: #fee2e2;
+  color: #991b1b;
 }
 
 .DetailRow {
