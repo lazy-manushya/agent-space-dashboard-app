@@ -937,7 +937,7 @@ function DashboardPage({ className }: IDashboardPageProps) {
           <div className={styles.StatsContainer}>
             <Card className={styles.StatCard}>
               <StatCard
-                secondaryContent="Total BOEs Filed"
+                secondaryContent="Total NUMBER OF BOE"
                 primaryContent={<Count value={2450} />}
                 isLoading={loading}
                 color="#667eea"
@@ -945,7 +945,7 @@ function DashboardPage({ className }: IDashboardPageProps) {
             </Card>
             <Card className={styles.StatCard}>
               <StatCard
-                secondaryContent="Provisional BOEs"
+                secondaryContent="Total Assessable Value"
                 primaryContent={<Count value={728} />}
                 isLoading={loading}
                 color="#4facfe"
@@ -953,18 +953,10 @@ function DashboardPage({ className }: IDashboardPageProps) {
             </Card>
             <Card className={styles.StatCard}>
               <StatCard
-                secondaryContent="BOEs with Licences"
+                secondaryContent="Total Duty paid"
                 primaryContent={<Count value={193} />}
                 isLoading={loading}
                 color="#43e97b"
-              />
-            </Card>
-            <Card className={styles.StatCard}>
-              <StatCard
-                secondaryContent="BOEs with SVB"
-                primaryContent={<Count value={112} />}
-                isLoading={loading}
-                color="#fa709a"
               />
             </Card>
           </div>
