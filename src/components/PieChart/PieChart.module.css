@@ -1,0 +1,123 @@
+.pieChart {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  font-size: 0.8125rem;
+  min-height: 0;
+  min-width: 0;
+}
+
+.chartContainer {
+  position: relative;
+  width: 100%;
+  flex: 1;
+  overflow: hidden;
+  min-height: 0;
+  min-width: 0;
+}
+
+.chartSvg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.pieSlice {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  stroke: #ffffff;
+  stroke-width: 2;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.1));
+}
+
+.pieSlice:hover {
+  opacity: 0.9;
+  stroke-width: 3;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.2));
+  transform: scale(1.02);
+  transform-origin: center;
+}
+
+.pieLabel {
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-anchor: middle;
+  dominant-baseline: central;
+  pointer-events: none;
+  opacity: 0;
+  animation: fadeInLabel 0.5s ease forwards;
+  animation-delay: 0.4s;
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  padding: 1rem 0 0 0;
+  font-size: 0.75rem;
+  flex-shrink: 0;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--table-cell-text);
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.legendItem:hover {
+  background: rgba(0, 0, 0, 0.05);
+  transform: translateY(-1px);
+}
+
+.legendColor {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+@keyframes fadeInLabel {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.tooltip {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.98);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-size: 0.8125rem;
+  color: var(--table-cell-text);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(10px);
+  z-index: 1000;
+  pointer-events: none;
+  animation: tooltipSlideIn 0.2s ease;
+  min-width: 120px;
+}
+
+@keyframes tooltipSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

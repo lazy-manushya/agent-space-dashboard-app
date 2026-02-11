@@ -23,10 +23,9 @@
 .FilterGroup label {
   font-weight: 500;
   font-size: 14px;
-  color: #333;
+  color: var(--filter-label-text);
 }
 
-/* Ensure DateRangePicker and all its children respect parent width */
 .FilterGroup [data-react-aria-pressable] {
   max-width: 100%;
   overflow: hidden;
@@ -45,29 +44,29 @@
 .SearchInput,
 .FilterSelect {
   padding: 8px 12px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--filter-input-border);
   border-radius: 4px;
   font-size: 14px;
   min-width: 200px;
-  background-color: #fff;
+  background-color: var(--filter-input-bg);
   transition: border-color 0.2s ease;
 }
 
 .SearchInput:focus,
 .FilterSelect:focus {
   outline: none;
-  border-color: #0066cc;
-  box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+  border-color: var(--filter-input-focus-border);
+  box-shadow: 0 0 0 3px var(--filter-input-focus-shadow);
 }
 
 .ClearButton {
   padding: 8px 16px;
-  background-color: #ffffff;
-  border: 1px solid #ccc;
+  background-color: var(--filter-button-bg);
+  border: 1px solid var(--filter-button-border);
   border-radius: 4px;
   font-size: 14px;
   font-weight: 500;
-  color: #000000;
+  color: var(--filter-button-text);
   cursor: pointer;
   transition:
     background-color 0.2s ease,
@@ -75,77 +74,240 @@
 }
 
 .ClearButton:hover {
-  background-color: #f5f5f5;
-  border-color: #999;
+  background-color: var(--filter-button-hover-bg);
+  border-color: var(--filter-button-hover-border);
 }
 
 .ClearButton:active {
-  background-color: #e8e8e8;
+  background-color: var(--filter-button-active-bg);
 }
 
 .SubContainer {
-  margin-top: 20px;
   overflow-x: auto;
 }
 
 .Table {
-  width: 100%;
+  width: auto;
+  min-width: 100%;
   border-collapse: collapse;
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  border-radius: 4px;
-  overflow: auto;
+  background-color: var(--table-row-even-bg);
+  border-radius: 8px;
+  overflow: hidden;
+  table-layout: fixed;
+  font-size: 0.8125rem;
 }
 
 .Table thead {
-  background-color: #f5f5f5;
-  border-bottom: 2px solid #ddd;
+  background-color: var(--table-header-bg);
 }
 
 .Table thead th {
-  padding: 12px 16px;
+  padding: 1rem;
   text-align: left;
+  vertical-align: middle;
   font-weight: 600;
-  color: #333;
-  font-size: 0.75rem;
+  color: var(--table-header-text);
+  font-size: 0.8125rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  position: sticky;
+  top: 0;
+  background-color: var(--table-header-bg);
+  z-index: 10;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  white-space: nowrap;
+}
+
+.Table thead th:first-child,
+.Table tbody td:first-child {
+  position: sticky;
+  left: 0;
+  background-color: var(--table-header-bg);
+  z-index: 9;
+}
+
+.Table tbody tr:nth-child(even) td:first-child {
+  background-color: var(--table-row-even-bg);
+}
+
+.Table tbody tr:nth-child(odd) td:first-child {
+  background-color: var(--table-row-odd-bg);
+}
+
+.Table tbody tr:hover td:first-child {
+  background-color: var(--table-row-hover-bg);
+}
+
+.Table thead th:first-child {
+  z-index: 11;
 }
 
 .Tr {
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--table-row-hover-bg);
   transition: background-color 0.2s ease;
+  background-color: var(--table-row-even-bg);
 }
 
 .Tr:hover {
-  background-color: #f9f9f9;
+  background-color: var(--table-row-odd-bg);
 }
 
 .td {
-  padding: 12px 16px;
-  color: #555;
+  padding: 6px 8px;
+  color: var(--table-cell-text);
+  text-align: center;
+  vertical-align: middle;
 }
 
 .Cell {
-  text-align: center;
-  font-size: 0.875rem;
+  text-align: left;
+  vertical-align: middle;
+  color: var(--table-cell-text);
+  padding: 0.75rem 1rem;
+  line-height: 1.6;
+}
+
+.PrimaryData {
+  color: var(--table-primary-data);
+  font-weight: 600;
+}
+
+.SecondaryData {
+  color: var(--table-secondary-data);
+  font-weight: 400;
+}
+
+.MetaInfo {
+  color: var(--table-meta-info);
+  font-size: 0.8125rem;
+  font-weight: 400;
 }
 
 .Cell > *,
 .Table thead th > * {
-  padding: 12px 16px;
+  padding: 0;
   display: inline-block;
 }
 
-.Cell,
-.Cell > *,
-.Table thead th,
-.Table thead th > * {
-  min-width: max-content;
+.Table thead th:has(span:first-child) {
+  width: auto;
+  white-space: nowrap;
 }
 
-.Th,
-.Cell {
-  min-width: max-content;
-  padding: 0.5rem;
+.Table thead th:nth-child(1) {
+  width: 160px;
+  min-width: 160px;
+}
+
+.Table thead th:nth-child(2) {
+  width: 90px;
+  min-width: 90px;
+}
+
+.Table thead th:nth-child(3) {
+  width: 140px;
+  min-width: 140px;
+}
+
+.Table thead th:nth-child(4) {
+  width: 150px;
+  min-width: 150px;
+}
+
+.Table thead th:nth-child(5) {
+  width: 120px;
+  min-width: 120px;
+}
+
+.Table thead th:nth-child(6) {
+  width: 130px;
+  min-width: 130px;
+}
+
+.Table thead th:nth-child(7) {
+  width: 120px;
+  min-width: 120px;
+}
+
+.Table thead th:nth-child(8) {
+  width: 120px;
+  min-width: 120px;
+}
+
+.Table thead th:nth-child(9),
+.Table thead th:nth-child(10),
+.Table thead th:nth-child(11) {
+  width: 110px;
+  min-width: 110px;
+}
+
+.Table thead th:nth-child(4),
+.Table tbody td:nth-child(4) {
+  padding-right: 28px;
+  position: relative;
+}
+
+.Table thead th:nth-child(4)::after,
+.Table tbody td:nth-child(4)::after {
+  content: "";
+  position: absolute;
+  right: 12px;
+  top: 20%;
+  bottom: 20%;
+  width: 1px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--details-separator) 20%,
+    var(--details-separator) 80%,
+    transparent
+  );
+}
+
+.Table thead th:nth-child(6),
+.Table tbody td:nth-child(6) {
+  padding-right: 28px;
+  position: relative;
+}
+
+.Table thead th:nth-child(6)::after,
+.Table tbody td:nth-child(6)::after {
+  content: "";
+  position: absolute;
+  right: 12px;
+  top: 20%;
+  bottom: 20%;
+  width: 1px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--details-separator) 20%,
+    var(--details-separator) 80%,
+    transparent
+  );
+}
+
+.Table thead th:nth-child(8),
+.Table tbody td:nth-child(8) {
+  padding-right: 28px;
+  position: relative;
+}
+
+.Table thead th:nth-child(8)::after,
+.Table tbody td:nth-child(8)::after {
+  content: "";
+  position: absolute;
+  right: 12px;
+  top: 20%;
+  bottom: 20%;
+  width: 1px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--details-separator) 20%,
+    var(--details-separator) 80%,
+    transparent
+  );
 }
 
 .Table tbody .Tr:last-child {
@@ -153,19 +315,64 @@
 }
 
 .Table tbody tr:nth-child(even) {
-  background-color: #f2f2f2;
+  background-color: var(--table-row-even-bg);
 }
 
-/* -------------------------------- */
+.Table tbody tr:nth-child(odd) {
+  background-color: var(--table-row-odd-bg);
+}
 
 .StatCard {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  grid-area: stats;
+  overflow: visible;
 }
 
-.Stat {
-  font-size: 96px;
+.GraphCard {
+  grid-area: graph;
+}
+
+.ChartCard,
+.GraphCard {
+  height: 480px;
+}
+
+.ChartCard {
+  grid-area: chart;
+}
+
+.TableCard {
+  grid-area: table;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  min-height: 680px;
+}
+
+.FiltersCard {
+  grid-area: filters;
+}
+
+.TableCard .Content {
+  font-size: 1rem;
+  color: rgb(var(--clr-primary-rgb));
+  overflow: auto;
+}
+
+.StatsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  height: 100%;
+}
+
+.StatsContainer > * {
+  flex: 1;
+}
+
+.StatsContainer > *,
+.StatsContainer > * > *,
+.StatsContainer > * > * > * {
+  height: 100%;
 }
 
 .Container {
@@ -174,14 +381,397 @@
   height: 100%;
 }
 
-.Container > * {
+.Container > *:not(.StatCard) {
   overflow: hidden;
 }
 
 @media screen and (min-width: 768px) {
   .Container {
     gap: 1.5rem;
-    grid-template-columns: 320px 1fr;
-    grid-template-rows: 160px 1fr;
+    display: grid;
+    grid-template-rows: 148px auto 1fr;
+    grid-template-columns: auto 1fr 1fr 1fr 1fr;
+    grid-template-areas:
+      "stats stats stats stats stats"
+      "graph graph graph chart chart"
+      "filters table table table table";
   }
+
+  .StatsContainer {
+    gap: 2rem;
+  }
+}
+
+.BeNumber {
+  color: var(--be-number);
+  font-weight: 400;
+}
+
+.PortBadge {
+  display: inline-block;
+  padding: 0.25rem 0.875rem;
+  border-radius: 10rem;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.PortBadge.jnpt {
+  background-color: var(--port-jnpt-bg);
+  color: var(--port-jnpt-text);
+}
+
+.PortBadge.fspl {
+  background-color: var(--port-fspl-bg);
+  color: var(--port-fspl-text);
+}
+
+.PortBadge.icct {
+  background-color: var(--port-icct-bg);
+  color: var(--port-icct-text);
+}
+
+.PortBadge.nsict {
+  background-color: var(--port-nsict-bg);
+  color: var(--port-nsict-text);
+}
+
+.PortBadge.iicct {
+  background-color: var(--port-iicct-bg);
+  color: var(--port-iicct-text);
+}
+
+.NumberCell {
+  text-align: left;
+  font-variant-numeric: tabular-nums;
+}
+
+.Table {
+  position: relative;
+  height: 100%;
+}
+
+.Table tbody [role="row"] [role="gridcell"] {
+  text-align: left !important;
+  vertical-align: middle !important;
+}
+
+.Table thead [role="row"] [role="columnheader"] {
+  text-align: left !important;
+  vertical-align: middle !important;
+}
+
+.Table thead {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.ColumnToggleSection {
+  margin-top: 32px;
+  padding: 0;
+  background: transparent;
+  border-radius: 0;
+  border: none;
+  box-shadow: none;
+  grid-column: 1 / -1;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow: visible;
+}
+
+.ColumnToggleSection > label:first-child {
+  color: #1f2937;
+  letter-spacing: 0.8px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ColumnToggleButtons {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.ColumnToggleButtons button {
+  padding: 8px 16px;
+  background: #ffffff;
+  color: #374151;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.ColumnToggleButtons button:hover {
+  background: #f9fafb;
+  border-color: #9ca3af;
+}
+
+.ColumnToggleButtons button:active {
+  background: #f3f4f6;
+}
+
+.ColumnToggles {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.CategoryGroup {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.CategoryGroup:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+}
+
+.CategoryHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  background: #f9fafb;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s ease;
+  border-bottom: 1px solid #e5e7eb;
+  position: relative;
+}
+
+.CategoryHeader:hover {
+  background: #f3f4f6;
+}
+
+.CategoryGroup:has(.CategoryColumns) .CategoryHeader::after {
+  content: "";
+  position: absolute;
+  left: 16px;
+  bottom: -12px;
+  width: 1px;
+  height: 12px;
+  background: #e5e7eb;
+}
+
+.CategoryIcon {
+  font-size: 12px;
+  color: #6b7280;
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+  width: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.CategoryEmoji {
+  font-size: 20px;
+  flex-shrink: 0;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #3b82f6;
+}
+
+.CategoryLabel {
+  flex: 1;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #374151;
+  letter-spacing: 0.3px;
+}
+
+.CategoryCheckbox {
+  width: 18px;
+  height: 18px;
+  accent-color: #3b82f6;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.CategoryColumns {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 12px 16px;
+  padding-left: 32px;
+  background: #ffffff;
+  animation: slideDown 0.2s ease;
+  position: relative;
+}
+
+.CategoryColumns::before {
+  content: "";
+  position: absolute;
+  left: 17px;
+  top: -1px;
+  bottom: calc(4px + 0.9 * (8px + 20px + 8px));
+  width: 1px;
+  background: #e5e7eb;
+  z-index: 1;
+}
+
+.CategoryColumns .ColumnToggle,
+.ColumnToggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.8125rem;
+  color: #6b7280;
+  min-width: 0;
+  max-width: 100%;
+  user-select: none;
+  position: relative;
+  margin-bottom: 2px;
+}
+
+.CategoryColumns .ColumnToggle::before {
+  content: "";
+  position: absolute;
+  left: -16px;
+  top: calc(50% - 4px);
+  width: 16px;
+  height: 8px;
+  background: transparent;
+  border-bottom: 1px solid #e5e7eb;
+  border-left: 1px solid #e5e7eb;
+  border-bottom-left-radius: 8px;
+}
+
+.ColumnToggle:hover {
+  background: #f9fafb;
+  border-color: #9ca3af;
+}
+
+.ColumnToggle:has(input:checked) {
+  background: #eff6ff;
+  border-color: #3b82f6;
+}
+
+.ColumnToggle:active {
+  background: #f3f4f6;
+}
+
+.ColumnToggle input[type="checkbox"] {
+  cursor: pointer;
+  width: 16px;
+  height: 16px;
+  accent-color: #3b82f6;
+  flex-shrink: 0;
+}
+
+.ColumnToggle span {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.4;
+  color: #374151;
+}
+
+.ColumnToggle:has(input:checked) span {
+  color: #1e40af;
+  font-weight: 600;
+}
+
+.ClickableRow {
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.ExpandIcon {
+  color: var(--expand-icon);
+  font-size: 0.7rem;
+  transition: transform 0.2s ease;
+  display: inline-block;
+  width: 12px;
+}
+
+.DetailsCell {
+  padding: 0 !important;
+  background-color: var(--table-row-hover-bg) !important;
+}
+
+.DetailsPanel {
+  padding: 24px 32px;
+  background: linear-gradient(
+    135deg,
+    var(--details-bg-start) 0%,
+    var(--details-bg-end) 100%
+  );
+  border-left: 3px solid var(--details-border);
+  animation: slideDown 0.2s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.DetailsTitle {
+  color: var(--details-title);
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--details-separator);
+}
+
+.DetailsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 16px 24px;
+}
+
+.DetailItem {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.DetailLabel {
+  font-size: 0.75rem;
+  color: var(--details-label);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 500;
+}
+
+.DetailValue {
+  font-size: 0.9rem;
+  color: var(--details-value);
+  font-weight: 400;
+  word-break: break-word;
 }

@@ -1,0 +1,41 @@
+.boeHeaderDisplay {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.detailsTitle {
+  color: var(--details-title);
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--details-separator);
+}
+
+.detailsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 16px 24px;
+}
+
+.detailItem {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.detailLabel {
+  font-size: 0.75rem;
+  color: var(--details-label);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 500;
+}
+
+.detailValue {
+  font-size: 0.9rem;
+  color: var(--details-value);
+  font-weight: 400;
+  word-break: break-word;
+}

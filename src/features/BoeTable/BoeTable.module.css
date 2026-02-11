@@ -1,0 +1,126 @@
+
+.SubContainer {
+	height: 100%;
+}
+
+.ExpandedDetailsContainer {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: rgba(0, 0, 0, 0.8);
+	z-index: 1000;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 20px;
+}
+
+.Cell {
+	text-align: left;
+	vertical-align: middle;
+	color: var(--table-cell-text);
+	padding: 0.75rem;
+	line-height: 1.6;
+}
+
+.PrimaryData {
+	color: var(--table-primary-data);
+	font-weight: 600;
+}
+
+.SecondaryData {
+	color: var(--table-secondary-data);
+	font-weight: 400;
+}
+
+.MetaInfo {
+	color: var(--table-meta-info);
+	font-size: 0.8125rem;
+	font-weight: 400;
+}
+
+.BeNumber {
+	color: var(--be-number);
+	font-weight: 400;
+}
+
+.PortBadge {
+	display: inline-block;
+	padding: 0.25rem 0.875rem;
+	border-radius: 10rem;
+	font-weight: 400;
+	text-transform: uppercase;
+	letter-spacing: 0.3px;
+}
+.PortBadge.jnpt {
+	background-color: var(--port-jnpt-bg);
+	color: var(--port-jnpt-text);
+}
+.PortBadge.fspl {
+	background-color: var(--port-fspl-bg);
+	color: var(--port-fspl-text);
+}
+.PortBadge.icct {
+	background-color: var(--port-icct-bg);
+	color: var(--port-icct-text);
+}
+.PortBadge.nsict {
+	background-color: var(--port-nsict-bg);
+	color: var(--port-nsict-text);
+}
+.PortBadge.iicct {
+	background-color: var(--port-iicct-bg);
+	color: var(--port-iicct-text);
+}
+
+.NumberCell {
+	text-align: left;
+	font-variant-numeric: tabular-nums;
+}
+
+.ClickableRow {
+	cursor: pointer;
+	transition: background-color 0.15s ease;
+}
+
+.ExpandIcon {
+	color: var(--expand-icon);
+	font-size: 0.7rem;
+	transition: transform 0.2s ease;
+	display: inline-block;
+	width: 12px;
+}
+
+.DetailsCell {
+	padding: 0 !important;
+	background-color: var(--table-row-hover-bg) !important;
+}
+
+.DetailsPanel {
+	padding: 24px 32px;
+	background: linear-gradient(
+		135deg,
+		var(--details-bg-start) 0%,
+		var(--details-bg-end) 100%
+	);
+	border-left: 3px solid var(--details-border);
+	animation: slideDown 0.2s ease;
+	border-radius: 8px;
+	max-width: 90vw;
+	max-height: 80vh;
+	overflow-y: auto;
+	box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+@keyframes slideDown {
+	from {
+		opacity: 0;
+		transform: translateY(-10px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}

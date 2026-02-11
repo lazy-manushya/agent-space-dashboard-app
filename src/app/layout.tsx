@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Roboto } from "next/font/google";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 import Layout from "@/features/Layout";
 import { RoutingProvider } from "@/services/Routing";
@@ -32,17 +33,19 @@ export default function RootLayout({
 }>) {
   return (
     <RoutingProvider>
-      <html lang="en">
-        <head>
-          <link
-            rel="stylesheet"
-            href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css"
-          />
-        </head>
-        <body className={`${robotoFont.variable}`}>
-          <Layout>{children}</Layout>
-        </body>
-      </html>
+      <NuqsAdapter>
+        <html lang="en">
+          <head>
+            <link
+              rel="stylesheet"
+              href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css"
+            />
+          </head>
+          <body className={`${robotoFont.variable}`}>
+            <Layout>{children}</Layout>
+          </body>
+        </html>
+      </NuqsAdapter>
     </RoutingProvider>
   );
 }

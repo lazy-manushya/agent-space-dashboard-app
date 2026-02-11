@@ -1,1 +1,2 @@
-export { default } from "@/pages_lib/BoeSearchPage";
+export { default } from "@/pages_lib/DashboardPage";
+

@@ -1,1 +1,1 @@
-export { default } from "@/pages_lib/DashboardPage";
+export { default } from "@/pages_lib/InvoicesPage";

@@ -1,0 +1,29 @@
+.boeHeaderBarChart {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--table-row-even-bg);
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.chartTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--table-primary-data);
+  margin-bottom: 0.5rem;
+}
+
+.chartSubtitle {
+  font-size: 0.8125rem;
+  color: var(--table-meta-info);
+  margin-bottom: 1rem;
+}
+
+.chartContainer {
+  flex: 1;
+  min-height: 300px;
+}

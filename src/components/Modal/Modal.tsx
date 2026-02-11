@@ -7,7 +7,13 @@ import Image from "@/components/Image";
 import { IModalProps } from "./Modal.types";
 import styles from "./Modal.module.css";
 
-function Modal({ className, isOpen, onOpenChange, children }: IModalProps) {
+function Modal({
+  className,
+  isOpen,
+  onOpenChange,
+  children,
+  style,
+}: IModalProps) {
   return (
     <ModalOverlay
       isDismissable
@@ -24,6 +30,7 @@ function Modal({ className, isOpen, onOpenChange, children }: IModalProps) {
         isOpen={isOpen}
         onOpenChange={onOpenChange}
         className={joinClassNames(styles.Modal, className)}
+        style={style}
       >
         <Button
           variant="secondary"

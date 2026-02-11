@@ -1,26 +1,30 @@
 .Container {
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
   --header-height: 104px;
   min-height: 100vh;
 }
 
 .Header {
-  position: absolute;
+  position: sticky;
   top: 0;
   left: 0;
   width: 100%;
+  /* background: rgb(var(--clr-primary-rgb) , 0.75); */
+}
+
+.HeaderInner {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  min-height: var(--header-height);
   padding: 0.75rem 1rem;
+  
 }
 
 .Main {
   height: 100vh;
-  padding-top: var(--header-height);
+  /* padding-top: var(--header-height); */
   overflow: auto;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  background: var(--gradient-primary);
+  background: #F8FAFC;
 }
 
 /* ------------------- */
@@ -45,12 +49,13 @@
   }
 
   .Main {
-    padding-top: var(--header-height);
+    /* padding-top: var(--header-height); */
+    padding-top: 2rem;
   }
 
   .Header {
     top: 0;
-    padding: 1.5rem;
+    padding: 0.75rem 1.5rem;
   }
 }
 

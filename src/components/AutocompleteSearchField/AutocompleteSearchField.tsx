@@ -7,10 +7,15 @@ import {
   Label,
   ListBox,
   ListBoxItem,
+  ListBoxSection,
+  Header,
   Popover,
 } from "react-aria-components";
 
-import { IAutocompleteSearchFieldProps } from "./AutocompleteSearchField.types";
+import {
+  IAutocompleteSearchFieldProps,
+  GroupedAutocompleteItem,
+} from "./AutocompleteSearchField.types";
 import styles from "./AutocompleteSearchField.module.css";
 
 function calculateRelevanceScore(label: string, searchTerm: string): number {
@@ -65,37 +70,68 @@ function getDateBoost(dateString: string): number {
   }
 }
 
-function AutocompleteSearchField<T extends { id: string; label: string }>({
+function AutocompleteSearchField<T extends GroupedAutocompleteItem>({
   label,
   placeholder,
   items,
   onSelectionChange,
   className,
   "aria-label": ariaLabel,
+  groupLabelConfig,
 }: IAutocompleteSearchFieldProps<T>) {
   const inputWrapperRef = useRef<HTMLDivElement>(null);
   const [inputWidth, setInputWidth] = useState<number | null>(null);
   const [InputValue, setInputValue] = React.useState("");
 
-  const filterItems = React.useMemo(() => {
+  // Group and filter items
+  const filterItems = React.useMemo((): {
+    groups: Record<string, T[]>;
+    ungrouped: T[];
+  } => {
     if (!InputValue.trim()) {
-      return [];
+      return { groups: {}, ungrouped: [] };
     }
-
     const lowerInput = InputValue.toLowerCase();
-
+    // Filter and sort
     const filtered = items.filter((item) => {
       return item.label.toLowerCase().includes(lowerInput);
     });
-
     const sorted = filtered.sort((a, b) => {
       const scoreA = calculateRelevanceScore(a.label, InputValue);
       const scoreB = calculateRelevanceScore(b.label, InputValue);
       return scoreB - scoreA;
     });
-
-    return sorted;
+    // Group by groupLabel (string[])
+    const groups: Record<string, T[]> = {};
+    const ungrouped: T[] = [];
+    sorted.forEach((item) => {
+      if (item.groupLabel) {
+        if (Array.isArray(item.groupLabel)) {
+          if (item.groupLabel.length > 0) {
+            item.groupLabel.forEach((group) => {
+              if (!groups[group]) groups[group] = [];
+              groups[group].push(item);
+            });
+          } else {
+            ungrouped.push(item);
+          }
+        } else if (
+          typeof item.groupLabel === "string" &&
+          item.groupLabel.trim() !== ""
+        ) {
+          if (!groups[item.groupLabel]) groups[item.groupLabel] = [];
+          groups[item.groupLabel].push(item);
+        } else {
+          ungrouped.push(item);
+        }
+      } else {
+        ungrouped.push(item);
+      }
+    });
+    return { groups, ungrouped };
   }, [items, InputValue]);
+
+  console.log("Filtered Items:", { filterItems, items });
 
   useEffect(() => {
     if (inputWrapperRef.current) {
@@ -109,8 +145,8 @@ function AutocompleteSearchField<T extends { id: string; label: string }>({
     typeof ariaLabel === "string"
       ? ariaLabel
       : typeof label === "string"
-      ? label
-      : "Search Field";
+        ? label
+        : "Search Field";
 
   return (
     <ComboBox
@@ -129,10 +165,15 @@ function AutocompleteSearchField<T extends { id: string; label: string }>({
         />
       </div>
 
-      {InputValue && (
-        <Popover className={styles.Popover} offset={8}>
-          <ListBox className={styles.ListBox} items={filterItems}>
-            {(item) => (
+      {!!InputValue && (
+        <Popover
+          className={styles.Popover}
+          offset={8}
+          style={{ width: `${inputWidth}px` }}
+        >
+          <ListBox className={styles.ListBox}>
+            {/* Render ungrouped items first */}
+            {filterItems.ungrouped.map((item: T) => (
               <ListBoxItem
                 key={item.id}
                 id={item.id}
@@ -141,6 +182,28 @@ function AutocompleteSearchField<T extends { id: string; label: string }>({
               >
                 {item.label}
               </ListBoxItem>
+            ))}
+            {/* Render grouped items using ListBoxSection and Header */}
+            {Object.entries(filterItems.groups).map(
+              ([groupLabel, groupItems]: [string, T[]]) => {
+                const config = groupLabelConfig?.[groupLabel];
+                const displayLabel = config?.label || groupLabel;
+                return (
+                  <ListBoxSection key={groupLabel}>
+                    <Header className={styles.ListBoxHeader}>{displayLabel}</Header>
+                    {groupItems.map((item: T) => (
+                      <ListBoxItem
+                        key={item.id}
+                        id={item.id}
+                        textValue={item.label}
+                        className={styles.ListBoxItem}
+                      >
+                        {item.label}
+                      </ListBoxItem>
+                    ))}
+                  </ListBoxSection>
+                );
+              },
             )}
           </ListBox>
         </Popover>

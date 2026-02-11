@@ -1,3 +1,11 @@
 .Container {
   font-size: 2rem;
+  color: #fff;
+  font-weight: 700;
+  color: rgb(var(--clr-primary-rgb));
+  border: 1px solid rgb(var(--clr-primary-rgb));
+  padding: 0.25rem 0.75rem;
+  border-top-left-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+  border-style: dashed;
 }

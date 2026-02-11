@@ -1,0 +1,228 @@
+/* Place for BoeFilters-specific styles. You can move filter-related styles here if needed. */
+
+.FilterSection {
+  margin-bottom: 20px;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.FilterGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.ClearButton {
+  padding: 8px 16px;
+  background-color: var(--filter-button-bg);
+  border: 1px solid var(--filter-button-border);
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--filter-button-text);
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.ClearButton:hover {
+  background-color: var(--filter-button-hover-bg);
+  border-color: var(--filter-button-hover-border);
+}
+
+.ClearButton:active {
+  background-color: var(--filter-button-active-bg);
+}
+
+.SearchInput {
+  padding: 8px 12px;
+  border: 1px solid var(--filter-input-border);
+  border-radius: 4px;
+  font-size: 14px;
+  min-width: 200px;
+  background-color: var(--filter-input-bg);
+  transition: border-color 0.2s ease;
+}
+
+.SearchInput:focus {
+  outline: none;
+  border-color: var(--filter-input-focus-border);
+  box-shadow: 0 0 0 3px var(--filter-input-focus-shadow);
+}
+
+.ColumnToggleSection {
+  margin-top: 32px;
+  padding: 0;
+  background: transparent;
+  border-radius: 0;
+  border: none;
+  box-shadow: none;
+  grid-column: 1 / -1;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow: visible;
+}
+
+.ColumnToggleButtons {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.ColumnToggles {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.CategoryGroup {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.CategoryHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  background: #f9fafb;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s ease;
+  border-bottom: 1px solid #e5e7eb;
+  position: relative;
+}
+
+.CategoryIcon {
+  font-size: 12px;
+  color: #6b7280;
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+  width: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.CategoryEmoji {
+  font-size: 20px;
+  flex-shrink: 0;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #3b82f6;
+}
+
+.CategoryLabel {
+  flex: 1;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #374151;
+  letter-spacing: 0.3px;
+}
+
+.CategoryCheckbox {
+  width: 18px;
+  height: 18px;
+  accent-color: #3b82f6;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.CategoryColumns {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 12px 16px;
+  padding-left: 32px;
+  background: #ffffff;
+  animation: slideDown 0.2s ease;
+  position: relative;
+}
+
+.ColumnToggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.8125rem;
+  color: #6b7280;
+  min-width: 0;
+  max-width: 100%;
+  user-select: none;
+  position: relative;
+  margin-bottom: 2px;
+}
+
+.ColumnToggle:hover {
+  background: #f9fafb;
+  border-color: #9ca3af;
+}
+
+.ColumnToggle:has(input:checked) {
+  background: #eff6ff;
+  border-color: #3b82f6;
+}
+
+.ColumnToggle:active {
+  background: #f3f4f6;
+}
+
+.ColumnToggle input[type="checkbox"] {
+  cursor: pointer;
+  width: 16px;
+  height: 16px;
+  accent-color: #3b82f6;
+  flex-shrink: 0;
+}
+
+.ColumnToggle span {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.4;
+  color: #374151;
+}
+
+.ColumnToggle:has(input:checked) span {
+  color: #1e40af;
+  font-weight: 600;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
