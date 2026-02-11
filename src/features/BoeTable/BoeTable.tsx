@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import { useState } from "react";
+
 import Table, { Column } from "@/components/Table";
 import TableShimmer from "@/components/TableShimmer";
 import Text from "@/components/Text";
@@ -6,6 +7,7 @@ import { useBoeHeaders } from "@/services/boe";
 import Modal from "@/components/Modal";
 import { IBoeHeader } from "@/types/data";
 import BoeHeaderDisplay from "@/features/BoeHeaderDisplay";
+
 import styles from "./BoeTable.module.css";
 
 // Number formatting utilities
@@ -240,10 +242,7 @@ const BoeTable = () => {
       {loading && <TableShimmer rows={10} columns={11} />}
       {error && <Text style={{ color: "red" }}>Error: {error}</Text>}
       {!loading && !error && boeHeaders.length > 0 && (
-        <Table<IBoeHeader>
-          columns={COLUMNS}
-          data={boeHeaders}
-        />
+        <Table<IBoeHeader> columns={COLUMNS} data={boeHeaders} />
       )}
 
       <Modal
