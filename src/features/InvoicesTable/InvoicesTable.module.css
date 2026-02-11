@@ -3,38 +3,40 @@
 }
 
 .ExpandIcon {
-  color: #6b7280;
-  font-size: 12px;
+  color: var(--expand-icon);
+  font-size: 0.7rem;
   transition: transform 0.2s ease;
   display: inline-block;
+  width: 12px;
 }
 
 .InvoiceId {
   font-weight: 600;
-  color: #1f2937;
+  color: var(--table-primary-data);
 }
 
 .PrimaryData {
-  font-weight: 500;
-  color: #374151;
+  font-weight: 600;
+  color: var(--table-primary-data);
 }
 
 .MetaInfo {
-  color: #6b7280;
-  font-size: 14px;
+  color: var(--table-meta-info);
+  font-size: 0.8125rem;
+  font-weight: 400;
 }
 
 .Amount {
   font-weight: 500;
-  color: #059669;
+  color: var(--table-secondary-data);
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
 .Currency {
-  color: #0891b2;
+  color: var(--table-primary-data);
   font-weight: 500;
-  font-size: 12px;
+  font-size: 0.75rem;
   text-transform: uppercase;
 }
 

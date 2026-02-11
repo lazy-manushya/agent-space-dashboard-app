@@ -40,9 +40,14 @@ const PieChartInner: React.FC<PieChartInnerProps> = ({
   const [hoveredSlice, setHoveredSlice] = useState<PieChartData | null>(null);
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
   const [mounted, setMounted] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
 
   React.useEffect(() => {
-    const timer = setTimeout(() => setMounted(true), 100);
+    setMounted(true);
+    // Delay visibility to prevent flickering
+    const timer = setTimeout(() => {
+      setIsVisible(true);
+    }, 150);
     return () => clearTimeout(timer);
   }, []);
 
@@ -95,7 +100,13 @@ const PieChartInner: React.FC<PieChartInnerProps> = ({
   return (
     <div className={`${styles.pieChart} ${className}`}>
       <div className={styles.chartContainer}>
-        <svg width="100%" height="100%" viewBox={`0 0 ${width} ${chartHeight}`} className={styles.chartSvg}>
+        <svg
+          width="100%"
+          height="100%"
+          viewBox={`0 0 ${width} ${chartHeight}`}
+          className={styles.chartSvg}
+          style={{ visibility: isVisible ? 'visible' : 'hidden' }}
+        >
           {/* Gradient definitions for slices */}
           <defs>
             {data.map((d, i) => {

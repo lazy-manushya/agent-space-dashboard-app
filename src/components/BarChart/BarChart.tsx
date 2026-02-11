@@ -40,9 +40,15 @@ const BarChartInner: React.FC<BarChartInnerProps> = ({
   const [hoveredBar, setHoveredBar] = useState<BarChartData | null>(null);
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
   const [mounted, setMounted] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
 
   React.useEffect(() => {
     setMounted(true);
+    // Delay visibility to prevent flickering
+    const timer = setTimeout(() => {
+      setIsVisible(true);
+    }, 150);
+    return () => clearTimeout(timer);
   }, []);
 
   // Bounds
@@ -83,7 +89,12 @@ const BarChartInner: React.FC<BarChartInnerProps> = ({
   return (
     <div className={`${styles.barChart} ${className}`}>
       <div className={styles.chartContainer}>
-        <svg width={width} height={height} className={styles.chartSvg}>
+        <svg
+          width={width}
+          height={height}
+          className={styles.chartSvg}
+          style={{ visibility: isVisible ? 'visible' : 'hidden' }}
+        >
           <Group left={margin.left} top={margin.top}>
             {/* Grid lines */}
             <GridRows

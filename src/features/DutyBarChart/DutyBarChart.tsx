@@ -31,7 +31,7 @@ const DutyBarChart: React.FC<IDutyBarChartProps> = ({ className }) => {
         getLabel={(d) => d.label}
         getValue={(d) => d.value}
         getColor={(d) => d.color}
-        margin={{ top: 20, right: 20, bottom: 40, left: 60 }}
+        margin={{ top: 20, right: 20, bottom: 40, left: 80 }}
       />
       <div className={styles.PortStats}>
         {stats.dataWithPercentages.map((item, index) => (
