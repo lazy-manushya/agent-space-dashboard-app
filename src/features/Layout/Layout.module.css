@@ -4,11 +4,11 @@
 }
 
 .Header {
-  position: absolute;
+  position: sticky;
   top: 0;
   left: 0;
   width: 100%;
-  background: rgb(var(--clr-primary-rgb) , 0.75);
+  /* background: rgb(var(--clr-primary-rgb) , 0.75); */
 }
 
 .HeaderInner {
@@ -21,7 +21,7 @@
 
 .Main {
   height: 100vh;
-  padding-top: var(--header-height);
+  /* padding-top: var(--header-height); */
   overflow: auto;
   background: var(--gradient-primary);
   background: #F8FAFC;
@@ -49,7 +49,8 @@
   }
 
   .Main {
-    padding-top: var(--header-height);
+    /* padding-top: var(--header-height); */
+    padding-top: 2rem;
   }
 
   .Header {

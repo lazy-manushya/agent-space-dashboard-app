@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.11.2",
+    "@tanstack/react-table": "^8.21.3",
+    "@visx/visx": "^3.12.0",
     "class-variance-authority": "^0.7.1",
     "lodash": "^4.17.21",
     "next": "^16.1.1",

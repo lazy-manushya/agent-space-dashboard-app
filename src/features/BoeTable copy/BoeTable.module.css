@@ -1,20 +1,17 @@
 
 .SubContainer {
-	height: 100%;
+	overflow-x: auto;
 }
 
-.ExpandedDetailsContainer {
-	position: fixed;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	background: rgba(0, 0, 0, 0.8);
-	z-index: 1000;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	padding: 20px;
+.Table {
+	width: auto;
+	min-width: 100%;
+	border-collapse: collapse;
+	background-color: var(--table-row-even-bg);
+	border-radius: 8px;
+	overflow: hidden;
+	table-layout: fixed;
+	font-size: 0.8125rem;
 }
 
 .Cell {
@@ -107,11 +104,6 @@
 	);
 	border-left: 3px solid var(--details-border);
 	animation: slideDown 0.2s ease;
-	border-radius: 8px;
-	max-width: 90vw;
-	max-height: 80vh;
-	overflow-y: auto;
-	box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
 }
 
 @keyframes slideDown {
@@ -123,4 +115,40 @@
 		opacity: 1;
 		transform: translateY(0);
 	}
+}
+
+.DetailsTitle {
+	color: var(--details-title);
+	font-size: 1rem;
+	font-weight: 600;
+	margin-bottom: 20px;
+	padding-bottom: 12px;
+	border-bottom: 1px solid var(--details-separator);
+}
+
+.DetailsGrid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+	gap: 16px 24px;
+}
+
+.DetailItem {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.DetailLabel {
+	font-size: 0.75rem;
+	color: var(--details-label);
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+	font-weight: 500;
+}
+
+.DetailValue {
+	font-size: 0.9rem;
+	color: var(--details-value);
+	font-weight: 400;
+	word-break: break-word;
 }

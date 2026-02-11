@@ -68,3 +68,7 @@
 .filter-white {
   filter: brightness(0) invert(100%);
 }
+
+.filter-clr-primary {
+  filter: brightness(0) saturate(100%) invert(45%) sepia(98%) saturate(1148%) hue-rotate(166deg) brightness(97%) contrast(90%);
+}
