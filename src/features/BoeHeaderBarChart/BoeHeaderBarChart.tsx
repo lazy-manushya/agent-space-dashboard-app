@@ -17,7 +17,6 @@ const BoeHeaderBarChart: React.FC<BoeHeaderBarChartProps> = ({
 }) => {
   return (
     <div className={`${styles.boeHeaderBarChart} ${className}`}>
-      <h3 className={styles.chartTitle}>BOE Headers by Port</h3>
       <p className={styles.chartSubtitle}>
         Distribution of Bill of Entry submissions across major ports
       </p>
