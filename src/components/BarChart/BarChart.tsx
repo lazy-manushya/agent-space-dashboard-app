@@ -226,7 +226,7 @@ const BarChart: React.FC<BarChartProps> = (props) => {
   
   // Otherwise, make it responsive
   return (
-    <div style={{ width: '100%', height: '100%', minHeight: '300px' }}>
+    <div style={{ width: '100%', height: '100%'}}>
       <ParentSize>
         {({ width: parentWidth, height: parentHeight }) => (
           <BarChartInner
