@@ -254,6 +254,7 @@ function BoeSearchPage({ className }: IBoeSearchPageProps) {
         <Card
           key={idx}
           className="p-1"
+          contentContainerClassName="d-flex align-items-center justify-content-center"
           style={{
             position: "absolute",
             top: card.top,
@@ -274,7 +275,11 @@ function BoeSearchPage({ className }: IBoeSearchPageProps) {
           }}
           aria-label={card.label}
         >
-          <span className="filter-clr-primary" role="img" aria-label={card.label}>
+          <span
+            className="filter-clr-primary"
+            role="img"
+            aria-label={card.label}
+          >
             {card.emoji}
           </span>
         </Card>
