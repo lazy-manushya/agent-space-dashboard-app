@@ -26,9 +26,13 @@ const StatCard: React.FC<StatCardProps> = ({
   }
 
   return (
-    <div className={`${styles.Stat} ${className || ""}`.trim()}>
-      {icon}
-      <div className="h-100 flex-grow-1 d-flex flex-column gap-3 justify-content-center align-items-center">
+    <div
+      className={`${styles.Stat} ${className || ""}`.trim()}
+      style={{ "--color": color } as React.CSSProperties}
+    >
+      {!!icon && <div className={styles.Icon}>{icon}</div>}
+
+      <div className={styles.ContentContainer}>
         {secondaryContent && (
           <div className={styles.SecondaryContent}>{secondaryContent}</div>
         )}
