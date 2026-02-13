@@ -1,5 +1,6 @@
 import React from "react";
 import { IoChevronDown, IoChevronForward } from "react-icons/io5";
+import { parseDate } from "@internationalized/date";
 import FieldGroup from "@/components/FieldGroup";
 import TextField from "@/components/TextField";
 import Button from "@/components/Button";
@@ -82,8 +83,8 @@ const BoeFilters: React.FC<BoeFiltersProps> = ({
         <DateRangePicker
           label="Date Range"
           value={{
-            start: startDate || null,
-            end: endDate || null,
+            start: startDate ? parseDate(startDate) : null,
+            end: endDate ? parseDate(endDate) : null,
           }}
           onChange={(value) =>
             onChange({
@@ -101,7 +102,7 @@ const BoeFilters: React.FC<BoeFiltersProps> = ({
           aria-label="Select minimum year filter"
           placeholder="All Years"
           value={minYear}
-          onChange={(value) => onChange({ minYear: value })}
+          onChange={(value) => onChange({ minYear: String(value) })}
           items={[
             { label: "All Years", value: "" },
             ...(metadataLoading
@@ -122,7 +123,7 @@ const BoeFilters: React.FC<BoeFiltersProps> = ({
           aria-label="Select maximum year filter"
           placeholder="All Years"
           value={maxYear}
-          onChange={(value) => onChange({ maxYear: value })}
+          onChange={(value) => onChange({ maxYear: String(value) })}
           items={[
             { label: "All Years", value: "" },
             ...(metadataLoading
@@ -143,7 +144,7 @@ const BoeFilters: React.FC<BoeFiltersProps> = ({
           aria-label="Select minimum gross weight filter"
           placeholder="All Gross Weights"
           value={minGWeight}
-          onChange={(value) => onChange({ minGWeight: value })}
+          onChange={(value) => onChange({ minGWeight: String(value) })}
           items={[
             { label: "All Gross Weights", value: "" },
             ...(metadataLoading
@@ -164,7 +165,7 @@ const BoeFilters: React.FC<BoeFiltersProps> = ({
           aria-label="Select maximum gross weight filter"
           placeholder="All Gross Weights"
           value={maxGWeight}
-          onChange={(value) => onChange({ maxGWeight: value })}
+          onChange={(value) => onChange({ maxGWeight: String(value) })}
           items={[
             { label: "All Gross Weights", value: "" },
             ...(metadataLoading
@@ -185,7 +186,7 @@ const BoeFilters: React.FC<BoeFiltersProps> = ({
           aria-label="Select minimum exchange rate filter"
           placeholder="All Exchange Rates"
           value={minExRate}
-          onChange={(value) => onChange({ minExRate: value })}
+          onChange={(value) => onChange({ minExRate: String(value) })}
           items={[
             { label: "All Exchange Rates", value: "" },
             ...(metadataLoading
@@ -206,7 +207,7 @@ const BoeFilters: React.FC<BoeFiltersProps> = ({
           aria-label="Select maximum exchange rate filter"
           placeholder="All Exchange Rates"
           value={maxExRate}
-          onChange={(value) => onChange({ maxExRate: value })}
+          onChange={(value) => onChange({ maxExRate: String(value) })}
           items={[
             { label: "All Exchange Rates", value: "" },
             ...(metadataLoading
@@ -227,7 +228,7 @@ const BoeFilters: React.FC<BoeFiltersProps> = ({
           aria-label="Select port code filter"
           placeholder="All Ports"
           value={port}
-          onChange={(value) => onChange({ port: value })}
+          onChange={(value) => onChange({ port: String(value) })}
           items={[
             { label: "All Ports", value: "" },
             ...(metadataLoading
@@ -248,7 +249,7 @@ const BoeFilters: React.FC<BoeFiltersProps> = ({
           aria-label="Select invoices filter"
           placeholder="All Invoices"
           value={invoices}
-          onChange={(value) => onChange({ invoices: value })}
+          onChange={(value) => onChange({ invoices: String(value) })}
           items={[
             { label: "All Invoices", value: "" },
             ...(metadataLoading
@@ -272,10 +273,10 @@ const BoeFilters: React.FC<BoeFiltersProps> = ({
       <div className={styles.ColumnToggleSection}>
         <Label>Column Visibility:</Label>
         <div className={styles.ColumnToggleButtons}>
-          <Button onClick={() => onChange({ showCore: true })} size="sm" variant="secondary">
+          <Button onClick={() => {}} size="sm" variant="secondary">
             Core Columns
           </Button>
-          <Button onClick={() => onChange({ showAll: true })} size="sm" variant="secondary">
+          <Button onClick={() => {}} size="sm" variant="secondary">
             All Columns
           </Button>
         </div>

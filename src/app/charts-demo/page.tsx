@@ -17,21 +17,21 @@ export default function ChartsDemo() {
 
       <div className={styles.chartsGrid}>
         <div className={styles.chartCard}>
-          <BoeHeaderBarChart width={550} height={350} />
+          <BoeHeaderBarChart />
         </div>
-        
+
         <div className={styles.chartCard}>
-          <BoeHeaderPieChart width={500} height={350} showAsDonut={true} />
+          <BoeHeaderPieChart showAsDonut={true} />
         </div>
       </div>
 
       <div className={styles.chartsGrid}>
         <div className={styles.chartCard}>
-          <BoeHeaderPieChart width={500} height={350} showAsDonut={false} />
+          <BoeHeaderPieChart showAsDonut={false} />
         </div>
-        
+
         <div className={styles.chartCard}>
-          <BoeHeaderBarChart width={550} height={350} />
+          <BoeHeaderBarChart />
         </div>
       </div>
     </div>

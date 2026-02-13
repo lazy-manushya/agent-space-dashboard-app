@@ -119,8 +119,17 @@ export interface IBoeInvoice {
   insurance?: number; // Insurance amount
   inv_ass_value?: number; // Invoice assessment value
 
+  // Additional fields for invoice table display
+  importer_name?: string; // Importer name
+  risk_indicator?: string; // Risk indicator (Low/Medium/High)
+  port_code?: string; // Port code
+  status?: string; // Status (Pending/Cleared/etc)
+
   // Item level details
   items?: IInvoiceItem[];
+
+  // Duty details
+  duties?: IBoeDuty[];
 }
 
 // ============================================================================
@@ -130,6 +139,9 @@ export interface IBoeInvoice {
 export interface IBoeDuty {
   duty_id: number; // Primary Key
   be_no: string; // Foreign Key to boe_header
+
+  // HS Code (CTH)
+  hs_code?: string; // Harmonized System Code (CTH)
 
   // Basic Customs Duty (BCD)
   bcd_pct?: number; // BCD percentage

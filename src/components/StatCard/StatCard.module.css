@@ -2,8 +2,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column-reverse;
-  gap: 0.5rem;
+  gap: 1rem;
+  text-align: center;
+  height: 100%;
 }
 
 .PrimaryContent {

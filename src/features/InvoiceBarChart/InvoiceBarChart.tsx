@@ -16,10 +16,7 @@ const InvoiceBarChart: React.FC<IInvoiceBarChartProps> = ({ className }) => {
     <div className={`${styles.Container} ${className || ""}`}>
       <BarChart
         data={DUMMY_INVOICE_DATA}
-        getLabel={(d) => d.label}
-        getValue={(d) => d.value}
-        getColor={(d) => d.color}
-        margin={{ top: 20, right: 20, bottom: 60, left: 70 }}
+        margin={{ top: 20, right: 20, bottom: 60, left: 80 }}
       />
     </div>
   );

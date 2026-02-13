@@ -27,142 +27,242 @@ const formatPercentage = (value: number | undefined): string => {
   return `${value.toFixed(2)}%`;
 };
 
-// Dummy data generator for duties
-const generateDummyDuties = (): IBoeDuty[] => {
-  const duties: IBoeDuty[] = [];
-  const beNos = [
-    "BE2024001",
-    "BE2024002",
-    "BE2024003",
-    "BE2024004",
-    "BE2024005",
-    "BE2024006",
-    "BE2024007",
-    "BE2024008",
-    "BE2024009",
-    "BE2024010",
-  ];
-
-  beNos.forEach((beNo, idx) => {
-    duties.push({
-      duty_id: idx + 1,
-      be_no: beNo,
-      bcd_pct: Math.random() * 20,
-      bcd_amount: Math.random() * 50000 + 10000,
-      bcd_duty_fg: Math.random() > 0.5 ? "Y" : "N",
-      bcd_notn_no: `BCN${Math.floor(Math.random() * 1000)}`,
-      bcd_notn_sno: `${Math.floor(Math.random() * 100)}`,
-      h_cess_pct: Math.random() * 5,
-      h_cess_amount: Math.random() * 5000 + 500,
-      sws_pct: Math.random() * 10,
-      sws_amount: Math.random() * 10000 + 1000,
-      igst_pct: Math.random() * 18 + 12,
-      igst_amount: Math.random() * 100000 + 20000,
-      igst_notn_no: `IGN${Math.floor(Math.random() * 1000)}`,
-      igst_notn_sno: `${Math.floor(Math.random() * 100)}`,
-      mat_assess_value: Math.random() * 500000 + 100000,
-      mat_duty: Math.random() * 100000 + 20000,
-    });
-  });
-
-  return duties;
-};
+// Static dummy data for duties (avoiding Math.random for SSR hydration)
+const DUMMY_DUTIES: IBoeDuty[] = [
+  {
+    duty_id: 1,
+    be_no: "BE2024001",
+    hs_code: "8471.30.00",
+    bcd_pct: 10.5,
+    bcd_amount: 35000,
+    bcd_duty_fg: "Y",
+    bcd_notn_no: "BCN123",
+    bcd_notn_sno: "45",
+    h_cess_pct: 2.5,
+    h_cess_amount: 2500,
+    sws_pct: 5.0,
+    sws_amount: 5500,
+    igst_pct: 18.0,
+    igst_amount: 65000,
+    igst_notn_no: "IGN456",
+    igst_notn_sno: "78",
+    mat_assess_value: 350000,
+    mat_duty: 45000,
+  },
+  {
+    duty_id: 2,
+    be_no: "BE2024002",
+    hs_code: "8517.12.00",
+    bcd_pct: 15.0,
+    bcd_amount: 42000,
+    bcd_duty_fg: "N",
+    bcd_notn_no: "BCN234",
+    bcd_notn_sno: "56",
+    h_cess_pct: 3.0,
+    h_cess_amount: 3000,
+    sws_pct: 6.5,
+    sws_amount: 6800,
+    igst_pct: 12.0,
+    igst_amount: 55000,
+    igst_notn_no: "IGN567",
+    igst_notn_sno: "89",
+    mat_assess_value: 420000,
+    mat_duty: 52000,
+  },
+  {
+    duty_id: 3,
+    be_no: "BE2024003",
+    hs_code: "9403.60.00",
+    bcd_pct: 8.5,
+    bcd_amount: 28000,
+    bcd_duty_fg: "Y",
+    bcd_notn_no: "BCN345",
+    bcd_notn_sno: "67",
+    h_cess_pct: 1.5,
+    h_cess_amount: 1800,
+    sws_pct: 4.0,
+    sws_amount: 4200,
+    igst_pct: 28.0,
+    igst_amount: 95000,
+    igst_notn_no: "IGN678",
+    igst_notn_sno: "90",
+    mat_assess_value: 280000,
+    mat_duty: 38000,
+  },
+  {
+    duty_id: 4,
+    be_no: "BE2024004",
+    hs_code: "6204.62.00",
+    bcd_pct: 12.0,
+    bcd_amount: 38000,
+    bcd_duty_fg: "Y",
+    bcd_notn_no: "BCN456",
+    bcd_notn_sno: "78",
+    h_cess_pct: 2.0,
+    h_cess_amount: 2200,
+    sws_pct: 5.5,
+    sws_amount: 5900,
+    igst_pct: 18.0,
+    igst_amount: 72000,
+    igst_notn_no: "IGN789",
+    igst_notn_sno: "12",
+    mat_assess_value: 380000,
+    mat_duty: 48000,
+  },
+  {
+    duty_id: 5,
+    be_no: "BE2024005",
+    hs_code: "7326.90.99",
+    bcd_pct: 18.0,
+    bcd_amount: 55000,
+    bcd_duty_fg: "N",
+    bcd_notn_no: "BCN567",
+    bcd_notn_sno: "89",
+    h_cess_pct: 4.0,
+    h_cess_amount: 4500,
+    sws_pct: 8.0,
+    sws_amount: 8500,
+    igst_pct: 12.0,
+    igst_amount: 48000,
+    igst_notn_no: "IGN890",
+    igst_notn_sno: "23",
+    mat_assess_value: 550000,
+    mat_duty: 68000,
+  },
+  {
+    duty_id: 6,
+    be_no: "BE2024006",
+    hs_code: "3926.90.99",
+    bcd_pct: 14.5,
+    bcd_amount: 45000,
+    bcd_duty_fg: "Y",
+    bcd_notn_no: "BCN678",
+    bcd_notn_sno: "90",
+    h_cess_pct: 3.5,
+    h_cess_amount: 3800,
+    sws_pct: 7.0,
+    sws_amount: 7200,
+    igst_pct: 18.0,
+    igst_amount: 78000,
+    igst_notn_no: "IGN901",
+    igst_notn_sno: "34",
+    mat_assess_value: 450000,
+    mat_duty: 58000,
+  },
+  {
+    duty_id: 7,
+    be_no: "BE2024007",
+    hs_code: "8528.72.00",
+    bcd_pct: 11.0,
+    bcd_amount: 36000,
+    bcd_duty_fg: "Y",
+    bcd_notn_no: "BCN789",
+    bcd_notn_sno: "12",
+    h_cess_pct: 2.8,
+    h_cess_amount: 3100,
+    sws_pct: 6.0,
+    sws_amount: 6500,
+    igst_pct: 28.0,
+    igst_amount: 105000,
+    igst_notn_no: "IGN012",
+    igst_notn_sno: "45",
+    mat_assess_value: 360000,
+    mat_duty: 46000,
+  },
+  {
+    duty_id: 8,
+    be_no: "BE2024008",
+    hs_code: "6109.10.00",
+    bcd_pct: 16.0,
+    bcd_amount: 48000,
+    bcd_duty_fg: "N",
+    bcd_notn_no: "BCN890",
+    bcd_notn_sno: "23",
+    h_cess_pct: 3.2,
+    h_cess_amount: 3500,
+    sws_pct: 7.5,
+    sws_amount: 7800,
+    igst_pct: 12.0,
+    igst_amount: 52000,
+    igst_notn_no: "IGN123",
+    igst_notn_sno: "56",
+    mat_assess_value: 480000,
+    mat_duty: 62000,
+  },
+  {
+    duty_id: 9,
+    be_no: "BE2024009",
+    hs_code: "8443.32.10",
+    bcd_pct: 13.5,
+    bcd_amount: 41000,
+    bcd_duty_fg: "Y",
+    bcd_notn_no: "BCN901",
+    bcd_notn_sno: "34",
+    h_cess_pct: 2.3,
+    h_cess_amount: 2700,
+    sws_pct: 5.8,
+    sws_amount: 6100,
+    igst_pct: 18.0,
+    igst_amount: 69000,
+    igst_notn_no: "IGN234",
+    igst_notn_sno: "67",
+    mat_assess_value: 410000,
+    mat_duty: 53000,
+  },
+  {
+    duty_id: 10,
+    be_no: "BE2024010",
+    hs_code: "4202.92.00",
+    bcd_pct: 9.5,
+    bcd_amount: 32000,
+    bcd_duty_fg: "Y",
+    bcd_notn_no: "BCN012",
+    bcd_notn_sno: "45",
+    h_cess_pct: 1.8,
+    h_cess_amount: 2100,
+    sws_pct: 4.5,
+    sws_amount: 4800,
+    igst_pct: 28.0,
+    igst_amount: 88000,
+    igst_notn_no: "IGN345",
+    igst_notn_sno: "78",
+    mat_assess_value: 320000,
+    mat_duty: 42000,
+  },
+];
 
 const DutiesTable = () => {
-  const [expandedRow, setExpandedRow] = useState<number | null>(null);
-  const [duties] = useState<IBoeDuty[]>(generateDummyDuties());
-
-  const toggleRowExpansion = (dutyId: number) => {
-    setExpandedRow(expandedRow === dutyId ? null : dutyId);
-  };
+  const [duties] = useState<IBoeDuty[]>(DUMMY_DUTIES);
 
   const COLUMNS: Column<IBoeDuty>[] = [
     {
-      id: "duty_id",
-      header: "Duty ID",
-      accessor: "duty_id",
-      size: 120,
-      minSize: 120,
+      id: "be_no",
+      header: "BE NO",
+      accessor: "be_no",
+      size: 140,
+      minSize: 140,
       fixed: true,
       cell: ({ getValue }) => {
-        const value = getValue();
-        const isExpanded = expandedRow === value;
-
         return (
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "8px",
-              cursor: "pointer",
-            }}
-            onClick={() => toggleRowExpansion(value)}
-          >
-            <span className={styles.ExpandIcon}>{isExpanded ? "▼" : "▶"}</span>
-            <span className={`${styles.DutyId} ${styles.PrimaryData}`}>
-              {value}
-            </span>
-          </div>
+          <span className={styles.PrimaryData}>
+            {getValue() || "-"}
+          </span>
         );
       },
     },
     {
-      id: "be_no",
-      header: "BE No",
-      accessor: "be_no",
-      size: 140,
-      minSize: 140,
+      id: "hs_code",
+      header: "HS Code",
+      accessor: "hs_code",
+      size: 120,
+      minSize: 120,
       cell: ({ getValue }) => (
-        <span className={styles.PrimaryData}>{getValue()}</span>
-      ),
-    },
-    {
-      id: "bcd_pct",
-      header: "BCD %",
-      accessor: "bcd_pct",
-      size: 100,
-      minSize: 100,
-      cell: ({ getValue }) => (
-        <span className={styles.Percentage}>
-          {formatPercentage(getValue())}
-        </span>
-      ),
-    },
-    {
-      id: "bcd_amount",
-      header: "BCD Amount",
-      accessor: "bcd_amount",
-      size: 130,
-      minSize: 130,
-      cell: ({ getValue }) => (
-        <span className={styles.Amount}>₹{formatNumber(getValue())}</span>
-      ),
-    },
-    {
-      id: "igst_pct",
-      header: "IGST %",
-      accessor: "igst_pct",
-      size: 100,
-      minSize: 100,
-      cell: ({ getValue }) => (
-        <span className={styles.Percentage}>
-          {formatPercentage(getValue())}
-        </span>
-      ),
-    },
-    {
-      id: "igst_amount",
-      header: "IGST Amount",
-      accessor: "igst_amount",
-      size: 140,
-      minSize: 140,
-      cell: ({ getValue }) => (
-        <span className={styles.Amount}>₹{formatNumber(getValue())}</span>
+        <span className={styles.PrimaryData}>{getValue() || "-"}</span>
       ),
     },
     {
       id: "mat_assess_value",
-      header: "Assessment Value",
+      header: "Accessible Value",
       accessor: "mat_assess_value",
       size: 160,
       minSize: 160,
@@ -180,75 +280,32 @@ const DutiesTable = () => {
         <span className={styles.Amount}>₹{formatNumber(getValue())}</span>
       ),
     },
+    {
+      id: "duty_pct",
+      header: "Duty %",
+      accessor: (row) => {
+        const bcdPct = row.bcd_pct || 0;
+        const igstPct = row.igst_pct || 0;
+        const hCessPct = row.h_cess_pct || 0;
+        const swsPct = row.sws_pct || 0;
+        const total = bcdPct + igstPct + hCessPct + swsPct;
+        return total.toFixed(2);
+      },
+      size: 120,
+      minSize: 120,
+      cell: ({ getValue }) => (
+        <span className={styles.Percentage}>
+          {getValue()}%
+        </span>
+      ),
+    },
   ];
-
-  const renderExpandedRow = (duty: IBoeDuty) => (
-    <tr className={styles.DetailRow}>
-      <td colSpan={COLUMNS.length}>
-        <div className={styles.DetailContent}>
-          <div className={styles.DetailGrid}>
-            <div className={styles.DetailItem}>
-              <div className={styles.DetailLabel}>BCD Duty Flag</div>
-              <div className={styles.DetailValue}>{duty.bcd_duty_fg || "-"}</div>
-            </div>
-            <div className={styles.DetailItem}>
-              <div className={styles.DetailLabel}>BCD Notification No</div>
-              <div className={styles.DetailValue}>{duty.bcd_notn_no || "-"}</div>
-            </div>
-            <div className={styles.DetailItem}>
-              <div className={styles.DetailLabel}>BCD Notification SNo</div>
-              <div className={styles.DetailValue}>{duty.bcd_notn_sno || "-"}</div>
-            </div>
-            <div className={styles.DetailItem}>
-              <div className={styles.DetailLabel}>Health Cess %</div>
-              <div className={styles.DetailValue}>
-                {formatPercentage(duty.h_cess_pct)}
-              </div>
-            </div>
-            <div className={styles.DetailItem}>
-              <div className={styles.DetailLabel}>Health Cess Amount</div>
-              <div className={styles.DetailValue}>
-                ₹{formatNumber(duty.h_cess_amount)}
-              </div>
-            </div>
-            <div className={styles.DetailItem}>
-              <div className={styles.DetailLabel}>SWS %</div>
-              <div className={styles.DetailValue}>
-                {formatPercentage(duty.sws_pct)}
-              </div>
-            </div>
-            <div className={styles.DetailItem}>
-              <div className={styles.DetailLabel}>SWS Amount</div>
-              <div className={styles.DetailValue}>
-                ₹{formatNumber(duty.sws_amount)}
-              </div>
-            </div>
-            <div className={styles.DetailItem}>
-              <div className={styles.DetailLabel}>IGST Notification No</div>
-              <div className={styles.DetailValue}>{duty.igst_notn_no || "-"}</div>
-            </div>
-            <div className={styles.DetailItem}>
-              <div className={styles.DetailLabel}>IGST Notification SNo</div>
-              <div className={styles.DetailValue}>{duty.igst_notn_sno || "-"}</div>
-            </div>
-          </div>
-        </div>
-      </td>
-    </tr>
-  );
 
   return (
     <div className={styles.Container}>
       <Table
         data={duties}
         columns={COLUMNS}
-        enableRowSelection={false}
-        enableSorting={true}
-        enableColumnResizing={true}
-        stickyHeader={true}
-        renderExpandedRow={renderExpandedRow}
-        expandedRows={expandedRow ? [expandedRow] : []}
-        getRowId={(row) => row.duty_id}
       />
     </div>
   );

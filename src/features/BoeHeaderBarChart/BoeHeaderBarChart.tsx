@@ -24,7 +24,7 @@ const BoeHeaderBarChart: React.FC<BoeHeaderBarChartProps> = ({
       <div className={styles.chartContainer}>
         <BarChart
           data={DUMMY_PORT_DATA}
-          margin={{ top: 20, right: 30, bottom: 60, left: 60 }}
+          margin={{ top: 20, right: 30, bottom: 60, left: 70 }}
           showLabels={true}
           animate={true}
         />
