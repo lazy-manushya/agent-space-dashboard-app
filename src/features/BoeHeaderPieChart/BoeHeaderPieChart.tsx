@@ -42,7 +42,6 @@ const BoeHeaderPieChart: React.FC<BoeHeaderPieChartProps> = ({
     <div className={`${styles.boeHeaderPieChart} ${className}`}>
       {!hideTitle && (
         <>
-          <h3 className={styles.chartTitle}>Duty Split</h3>
           <p className={styles.chartSubtitle}>
             Breakdown of duty components across all Bill of Entry submissions
           </p>
