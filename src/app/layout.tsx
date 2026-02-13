@@ -4,6 +4,7 @@ import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 import Layout from "@/features/Layout";
 import { RoutingProvider } from "@/services/Routing";
+import { APP_VERSION } from "@/config/app";
 
 import "@/styles/css/reset.css";
 import "@/styles/css/global.css";
@@ -43,6 +44,7 @@ export default function RootLayout({
           </head>
           <body className={`${plusJakartaSansFont.variable}`}>
             <Layout>{children}</Layout>
+            <span id="app-version">v {APP_VERSION}</span>
           </body>
         </html>
       </NuqsAdapter>
