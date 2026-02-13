@@ -3,6 +3,7 @@ import { joinClassNames } from "@/utils";
 import NavMenu from "@/components/NavMenu";
 import Logo from "@/features/Logo";
 import AlertsButton from "@/features/AlertsButton";
+import Button from "@/components/Button";
 
 import { ILayoutProps } from "./Layout.types";
 import styles from "./Layout.module.css";
@@ -48,6 +49,7 @@ function Layout({ children, className }: ILayoutProps) {
               ]}
             />
             {false && <AlertsButton />}
+            <Button>Export summary</Button>
           </div>
         </header>
       </div>
