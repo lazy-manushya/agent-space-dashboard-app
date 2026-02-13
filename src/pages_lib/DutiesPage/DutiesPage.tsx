@@ -95,6 +95,7 @@ function DutiesPage({ className }: IDutiesPageProps) {
           <div className={styles.StatsContainer}>
             <Card className={styles.StatCard}>
               <StatCard
+                icon={<i className="las la-file-alt" />}
                 secondaryContent="Total Number of Boe"
                 primaryContent={<Count value={1247} />}
                 color="#667eea"
@@ -109,6 +110,7 @@ function DutiesPage({ className }: IDutiesPageProps) {
             </Card> */}
             <Card className={styles.StatCard}>
               <StatCard
+                icon={<i className="las la-calculator" />}
                 secondaryContent=" Total Assessable Value"
                 primaryContent={<Count value={128500000} decimals={0} />}
                 color="#43e97b"
@@ -116,6 +118,7 @@ function DutiesPage({ className }: IDutiesPageProps) {
             </Card>
             <Card className={styles.StatCard}>
               <StatCard
+                icon={<i className="las la-percentage" />}
                 secondaryContent="Total Duty %"
                 primaryContent={<Count value={18.5} decimals={1} />}
                 color="#fa709a"
