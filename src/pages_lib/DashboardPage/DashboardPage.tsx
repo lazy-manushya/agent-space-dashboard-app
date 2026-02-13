@@ -23,7 +23,9 @@ import Text from "@/components/Text";
 import DateRangePicker from "@/components/DateRangePicker";
 import TableShimmer from "@/components/TableShimmer";
 import BoeHeaderBarChart from "@/features/BoeHeaderBarChart";
-import SplitsOverview from "@/features/SplitsOverview";
+import BoeHeaderPieChart from "@/features/BoeHeaderPieChart";
+import BoeAirSeaPieChart from "@/features/BoeAirSeaPieChart";
+import BoeCountryPieChart from "@/features/BoeCountryPieChart";
 import Count from "@/components/Count";
 
 import { IDashboardPageProps } from "./DashboardPage.types";
@@ -967,8 +969,14 @@ function DashboardPage({ className }: IDashboardPageProps) {
         <Card title="Duty Trend" className={styles.GraphCard}>
           <BoeHeaderBarChart />
         </Card>
-        <Card className={styles.ChartCard}>
-          <SplitsOverview />
+        <Card title="Duty Split" >
+          <BoeHeaderPieChart />
+        </Card>
+        <Card title="Air/Sea Split" >
+          <BoeAirSeaPieChart />
+        </Card>
+        <Card title="Country Split" >
+          <BoeCountryPieChart />
         </Card>
         <Card className={styles.TableCard}>
           <BoeTable />
