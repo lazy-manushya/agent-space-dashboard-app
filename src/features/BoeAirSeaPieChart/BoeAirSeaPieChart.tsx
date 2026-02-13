@@ -59,7 +59,6 @@ const BoeAirSeaPieChart: React.FC<BoeAirSeaPieChartProps> = ({
     <div className={`${styles.boeAirSeaPieChart} ${className}`}>
       {!hideTitle && (
         <>
-          <h3 className={styles.chartTitle}>Air vs Sea Split</h3>
           <p className={styles.chartSubtitle}>
             Distribution of shipments by transport mode
           </p>
