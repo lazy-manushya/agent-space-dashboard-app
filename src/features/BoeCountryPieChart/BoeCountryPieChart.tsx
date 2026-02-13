@@ -18,22 +18,10 @@ const BoeCountryPieChart: React.FC<BoeCountryPieChartProps> = ({
   hideTitle = false,
   chartMargin = 30,
 }) => {
-  // Calculate statistics
-  const stats = useMemo(() => {
-    const total = DUMMY_COUNTRY_DATA.reduce((sum, item) => sum + item.value, 0);
-
-    return {
-      total,
-      countries: DUMMY_COUNTRY_DATA.length,
-      topCountry: DUMMY_COUNTRY_DATA[0],
-    };
-  }, []);
-
   return (
     <div className={`${styles.boeCountryPieChart} ${className}`}>
       {!hideTitle && (
         <>
-          <h3 className={styles.chartTitle}>Country Split</h3>
           <p className={styles.chartSubtitle}>
             Distribution of imports by country of origin
           </p>
@@ -42,7 +30,12 @@ const BoeCountryPieChart: React.FC<BoeCountryPieChartProps> = ({
       <div className={styles.chartContainer}>
         <PieChart
           data={DUMMY_COUNTRY_DATA}
-          margin={{ top: chartMargin, right: chartMargin, bottom: chartMargin, left: chartMargin }}
+          margin={{
+            top: chartMargin,
+            right: chartMargin,
+            bottom: chartMargin,
+            left: chartMargin,
+          }}
           showLabels={false}
           animate={true}
           innerRadius={showAsDonut ? 60 : 0}
