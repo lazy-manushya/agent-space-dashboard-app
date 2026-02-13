@@ -333,11 +333,19 @@
 
 .ChartCard,
 .GraphCard {
-  height: 480px;
+  height: 520px;
 }
 
-.ChartCard {
-  grid-area: chart;
+.ChartCard1 {
+  grid-area: chart1;
+}
+
+.ChartCard2 {
+  grid-area: chart2;
+}
+
+.ChartCard3{
+  grid-area: chart3;
 }
 
 .TableCard {
@@ -389,11 +397,12 @@
   .Container {
     gap: 1.5rem;
     display: grid;
-    grid-template-rows: 148px auto 1fr;
+    grid-template-rows: 148px auto auto 1fr;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
     grid-template-areas:
       "stats stats stats stats stats"
-      "graph graph graph chart chart"
+      "graph graph graph chart1 chart1"
+      "chart2 chart2 chart3 chart3 chart3"
       "filters table table table table";
   }
 

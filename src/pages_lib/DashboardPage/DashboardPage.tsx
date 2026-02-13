@@ -630,307 +630,307 @@ function DashboardPage({ className }: IDashboardPageProps) {
     </div>
   );
 
-  const tableJsx = (
-    <div className={styles.SubContainer}>
-      {loading && <TableShimmer rows={10} columns={11} />}
-      {error && <Text style={{ color: "red" }}>Error: {error}</Text>}
-      {!loading && !error && boeHeaders.length > 0 && (
-        <Table className={styles.Table}>
-          <TableHeader>
-            {visibleColumns.be_no && (
-              <Column isRowHeader={getRowHeaderColumn() === "be_no"}>
-                <span>BE No</span>
-              </Column>
-            )}
-            {visibleColumns.year && (
-              <Column isRowHeader={getRowHeaderColumn() === "year"}>
-                <span>Year</span>
-              </Column>
-            )}
-            {visibleColumns.iec_no && (
-              <Column isRowHeader={getRowHeaderColumn() === "iec_no"}>
-                <span>IEC No</span>
-              </Column>
-            )}
-            {visibleColumns.gst_no && (
-              <Column isRowHeader={getRowHeaderColumn() === "gst_no"}>
-                <span>GST No</span>
-              </Column>
-            )}
-            {visibleColumns.port_code && (
-              <Column isRowHeader={getRowHeaderColumn() === "port_code"}>
-                <span>Port Code</span>
-              </Column>
-            )}
-            {visibleColumns.be_date && (
-              <Column isRowHeader={getRowHeaderColumn() === "be_date"}>
-                <span>BE Date</span>
-              </Column>
-            )}
-            {visibleColumns.pkg && (
-              <Column isRowHeader={getRowHeaderColumn() === "pkg"}>
-                <span>Packages</span>
-              </Column>
-            )}
-            {visibleColumns.g_wt && (
-              <Column isRowHeader={getRowHeaderColumn() === "g_wt"}>
-                <span>Gross Weight</span>
-              </Column>
-            )}
-            {visibleColumns.ex_rate && (
-              <Column isRowHeader={getRowHeaderColumn() === "ex_rate"}>
-                <span>Exchange Rate</span>
-              </Column>
-            )}
-            {visibleColumns.no_of_invoices && (
-              <Column isRowHeader={getRowHeaderColumn() === "no_of_invoices"}>
-                <span>Invoices</span>
-              </Column>
-            )}
-            {visibleColumns.total_items && (
-              <Column isRowHeader={getRowHeaderColumn() === "total_items"}>
-                <span>Items</span>
-              </Column>
-            )}
-          </TableHeader>
-          <TableBody>
-            {boeHeaders.map((header) => {
-              const isExpanded = expandedRow === header.be_no;
-              return (
-                <React.Fragment key={header.be_no}>
-                  <Row
-                    className={styles.ClickableRow}
-                    onAction={() => toggleRowExpansion(header.be_no)}
-                  >
-                    {visibleColumns.be_no && (
-                      <Cell className={styles.Cell}>
-                        <div
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: "8px",
-                          }}
-                        >
-                          <span className={styles.ExpandIcon}>
-                            {isExpanded ? "▼" : "▶"}
-                          </span>
-                          <span
-                            className={`${styles.BeNumber} ${styles.PrimaryData}`}
-                          >
-                            {header.be_no}
-                          </span>
-                        </div>
-                      </Cell>
-                    )}
-                    {visibleColumns.year && (
-                      <Cell className={styles.Cell}>
-                        <span className={styles.MetaInfo}>{header.year}</span>
-                      </Cell>
-                    )}
-                    {visibleColumns.iec_no && (
-                      <Cell className={styles.Cell}>
-                        <span className={styles.MetaInfo}>{header.iec_no}</span>
-                      </Cell>
-                    )}
-                    {visibleColumns.gst_no && (
-                      <Cell className={styles.Cell}>
-                        <span className={styles.MetaInfo}>{header.gst_no}</span>
-                      </Cell>
-                    )}
-                    {visibleColumns.port_code && (
-                      <Cell className={styles.Cell}>
-                        <span
-                          className={`${styles.PortBadge} ${styles[header.port_code?.toLowerCase()]} ${styles.PrimaryData}`}
-                        >
-                          {header.port_code}
-                        </span>
-                      </Cell>
-                    )}
-                    {visibleColumns.be_date && (
-                      <Cell className={styles.Cell}>
-                        <span className={styles.SecondaryData}>
-                          {header.be_date}
-                        </span>
-                      </Cell>
-                    )}
-                    {visibleColumns.pkg && (
-                      <Cell className={`${styles.Cell} ${styles.NumberCell}`}>
-                        <span className={styles.PrimaryData}>
-                          {formatNumber(header.pkg, 0)}
-                        </span>
-                      </Cell>
-                    )}
-                    {visibleColumns.g_wt && (
-                      <Cell className={`${styles.Cell} ${styles.NumberCell}`}>
-                        <span className={styles.PrimaryData}>
-                          {formatNumber(header.g_wt, 2)}
-                        </span>
-                      </Cell>
-                    )}
-                    {visibleColumns.ex_rate && (
-                      <Cell className={`${styles.Cell} ${styles.NumberCell}`}>
-                        <span className={styles.MetaInfo}>
-                          {formatDecimal(header.ex_rate, 2)}
-                        </span>
-                      </Cell>
-                    )}
-                    {visibleColumns.no_of_invoices && (
-                      <Cell className={`${styles.Cell} ${styles.NumberCell}`}>
-                        <span className={styles.MetaInfo}>
-                          {formatNumber(header.no_of_invoices, 0)}
-                        </span>
-                      </Cell>
-                    )}
-                    {visibleColumns.total_items && (
-                      <Cell className={`${styles.Cell} ${styles.NumberCell}`}>
-                        <span className={styles.MetaInfo}>
-                          {formatNumber(header.total_items, 0)}
-                        </span>
-                      </Cell>
-                    )}
-                  </Row>
-                  {isExpanded && (
-                    <Row key={`${header.be_no}-details`}>
-                      <Cell
-                        colSpan={
-                          Object.values(visibleColumns).filter(Boolean).length
-                        }
-                        className={styles.DetailsCell}
-                      >
-                        <div className={styles.DetailsPanel}>
-                          <h4 className={styles.DetailsTitle}>Details</h4>
-                          <div className={styles.DetailsGrid}>
-                            <div className={styles.DetailItem}>
-                              <span className={styles.DetailLabel}>Year:</span>
-                              <span className={styles.DetailValue}>
-                                {header.year}
-                              </span>
-                            </div>
-                            <div className={styles.DetailItem}>
-                              <span className={styles.DetailLabel}>
-                                IEC Number:
-                              </span>
-                              <span className={styles.DetailValue}>
-                                {header.iec_no}
-                              </span>
-                            </div>
-                            <div className={styles.DetailItem}>
-                              <span className={styles.DetailLabel}>
-                                GST Number:
-                              </span>
-                              <span className={styles.DetailValue}>
-                                {header.gst_no}
-                              </span>
-                            </div>
-                            <div className={styles.DetailItem}>
-                              <span className={styles.DetailLabel}>
-                                Port Code:
-                              </span>
-                              <span className={styles.DetailValue}>
-                                {header.port_code}
-                              </span>
-                            </div>
-                            <div className={styles.DetailItem}>
-                              <span className={styles.DetailLabel}>
-                                BE Date:
-                              </span>
-                              <span className={styles.DetailValue}>
-                                {header.be_date}
-                              </span>
-                            </div>
-                            <div className={styles.DetailItem}>
-                              <span className={styles.DetailLabel}>
-                                Packages:
-                              </span>
-                              <span className={styles.DetailValue}>
-                                {header.pkg?.toLocaleString()}
-                              </span>
-                            </div>
-                            <div className={styles.DetailItem}>
-                              <span className={styles.DetailLabel}>
-                                Gross Weight:
-                              </span>
-                              <span className={styles.DetailValue}>
-                                {header.g_wt?.toLocaleString(undefined, {
-                                  maximumFractionDigits: 2,
-                                })}
-                              </span>
-                            </div>
-                            <div className={styles.DetailItem}>
-                              <span className={styles.DetailLabel}>
-                                Exchange Rate (Exact):
-                              </span>
-                              <span className={styles.DetailValue}>
-                                {header.ex_rate}
-                              </span>
-                            </div>
-                            <div className={styles.DetailItem}>
-                              <span className={styles.DetailLabel}>
-                                Number of Invoices:
-                              </span>
-                              <span className={styles.DetailValue}>
-                                {header.no_of_invoices}
-                              </span>
-                            </div>
-                            <div className={styles.DetailItem}>
-                              <span className={styles.DetailLabel}>
-                                Total Items:
-                              </span>
-                              <span className={styles.DetailValue}>
-                                {header.total_items}
-                              </span>
-                            </div>
-                            {header.submission && (
-                              <div className={styles.DetailItem}>
-                                <span className={styles.DetailLabel}>
-                                  Submission:
-                                </span>
-                                <span className={styles.DetailValue}>
-                                  {header.submission}
-                                </span>
-                              </div>
-                            )}
-                            {header.assessment && (
-                              <div className={styles.DetailItem}>
-                                <span className={styles.DetailLabel}>
-                                  Assessment:
-                                </span>
-                                <span className={styles.DetailValue}>
-                                  {header.assessment}
-                                </span>
-                              </div>
-                            )}
-                            {header.examination && (
-                              <div className={styles.DetailItem}>
-                                <span className={styles.DetailLabel}>
-                                  Examination:
-                                </span>
-                                <span className={styles.DetailValue}>
-                                  {header.examination}
-                                </span>
-                              </div>
-                            )}
-                            {header.ooc && (
-                              <div className={styles.DetailItem}>
-                                <span className={styles.DetailLabel}>OOC:</span>
-                                <span className={styles.DetailValue}>
-                                  {header.ooc}
-                                </span>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      </Cell>
-                    </Row>
-                  )}
-                </React.Fragment>
-              );
-            })}
-          </TableBody>
-        </Table>
-      )}
-    </div>
-  );
+  // const tableJsx = (
+  //   <div className={styles.SubContainer}>
+  //     {loading && <TableShimmer rows={10} columns={11} />}
+  //     {error && <Text style={{ color: "red" }}>Error: {error}</Text>}
+  //     {!loading && !error && boeHeaders.length > 0 && (
+  //       <Table className={styles.Table}>
+  //         <TableHeader>
+  //           {visibleColumns.be_no && (
+  //             <Column isRowHeader={getRowHeaderColumn() === "be_no"}>
+  //               <span>BE No</span>
+  //             </Column>
+  //           )}
+  //           {visibleColumns.year && (
+  //             <Column isRowHeader={getRowHeaderColumn() === "year"}>
+  //               <span>Year</span>
+  //             </Column>
+  //           )}
+  //           {visibleColumns.iec_no && (
+  //             <Column isRowHeader={getRowHeaderColumn() === "iec_no"}>
+  //               <span>IEC No</span>
+  //             </Column>
+  //           )}
+  //           {visibleColumns.gst_no && (
+  //             <Column isRowHeader={getRowHeaderColumn() === "gst_no"}>
+  //               <span>GST No</span>
+  //             </Column>
+  //           )}
+  //           {visibleColumns.port_code && (
+  //             <Column isRowHeader={getRowHeaderColumn() === "port_code"}>
+  //               <span>Port Code</span>
+  //             </Column>
+  //           )}
+  //           {visibleColumns.be_date && (
+  //             <Column isRowHeader={getRowHeaderColumn() === "be_date"}>
+  //               <span>BE Date</span>
+  //             </Column>
+  //           )}
+  //           {visibleColumns.pkg && (
+  //             <Column isRowHeader={getRowHeaderColumn() === "pkg"}>
+  //               <span>Packages</span>
+  //             </Column>
+  //           )}
+  //           {visibleColumns.g_wt && (
+  //             <Column isRowHeader={getRowHeaderColumn() === "g_wt"}>
+  //               <span>Gross Weight</span>
+  //             </Column>
+  //           )}
+  //           {visibleColumns.ex_rate && (
+  //             <Column isRowHeader={getRowHeaderColumn() === "ex_rate"}>
+  //               <span>Exchange Rate</span>
+  //             </Column>
+  //           )}
+  //           {visibleColumns.no_of_invoices && (
+  //             <Column isRowHeader={getRowHeaderColumn() === "no_of_invoices"}>
+  //               <span>Invoices</span>
+  //             </Column>
+  //           )}
+  //           {visibleColumns.total_items && (
+  //             <Column isRowHeader={getRowHeaderColumn() === "total_items"}>
+  //               <span>Items</span>
+  //             </Column>
+  //           )}
+  //         </TableHeader>
+  //         <TableBody>
+  //           {boeHeaders.map((header) => {
+  //             const isExpanded = expandedRow === header.be_no;
+  //             return (
+  //               <React.Fragment key={header.be_no}>
+  //                 <Row
+  //                   className={styles.ClickableRow}
+  //                   onAction={() => toggleRowExpansion(header.be_no)}
+  //                 >
+  //                   {visibleColumns.be_no && (
+  //                     <Cell className={styles.Cell}>
+  //                       <div
+  //                         style={{
+  //                           display: "flex",
+  //                           alignItems: "center",
+  //                           gap: "8px",
+  //                         }}
+  //                       >
+  //                         <span className={styles.ExpandIcon}>
+  //                           {isExpanded ? "▼" : "▶"}
+  //                         </span>
+  //                         <span
+  //                           className={`${styles.BeNumber} ${styles.PrimaryData}`}
+  //                         >
+  //                           {header.be_no}
+  //                         </span>
+  //                       </div>
+  //                     </Cell>
+  //                   )}
+  //                   {visibleColumns.year && (
+  //                     <Cell className={styles.Cell}>
+  //                       <span className={styles.MetaInfo}>{header.year}</span>
+  //                     </Cell>
+  //                   )}
+  //                   {visibleColumns.iec_no && (
+  //                     <Cell className={styles.Cell}>
+  //                       <span className={styles.MetaInfo}>{header.iec_no}</span>
+  //                     </Cell>
+  //                   )}
+  //                   {visibleColumns.gst_no && (
+  //                     <Cell className={styles.Cell}>
+  //                       <span className={styles.MetaInfo}>{header.gst_no}</span>
+  //                     </Cell>
+  //                   )}
+  //                   {visibleColumns.port_code && (
+  //                     <Cell className={styles.Cell}>
+  //                       <span
+  //                         className={`${styles.PortBadge} ${styles[header.port_code?.toLowerCase()]} ${styles.PrimaryData}`}
+  //                       >
+  //                         {header.port_code}
+  //                       </span>
+  //                     </Cell>
+  //                   )}
+  //                   {visibleColumns.be_date && (
+  //                     <Cell className={styles.Cell}>
+  //                       <span className={styles.SecondaryData}>
+  //                         {header.be_date}
+  //                       </span>
+  //                     </Cell>
+  //                   )}
+  //                   {visibleColumns.pkg && (
+  //                     <Cell className={`${styles.Cell} ${styles.NumberCell}`}>
+  //                       <span className={styles.PrimaryData}>
+  //                         {formatNumber(header.pkg, 0)}
+  //                       </span>
+  //                     </Cell>
+  //                   )}
+  //                   {visibleColumns.g_wt && (
+  //                     <Cell className={`${styles.Cell} ${styles.NumberCell}`}>
+  //                       <span className={styles.PrimaryData}>
+  //                         {formatNumber(header.g_wt, 2)}
+  //                       </span>
+  //                     </Cell>
+  //                   )}
+  //                   {visibleColumns.ex_rate && (
+  //                     <Cell className={`${styles.Cell} ${styles.NumberCell}`}>
+  //                       <span className={styles.MetaInfo}>
+  //                         {formatDecimal(header.ex_rate, 2)}
+  //                       </span>
+  //                     </Cell>
+  //                   )}
+  //                   {visibleColumns.no_of_invoices && (
+  //                     <Cell className={`${styles.Cell} ${styles.NumberCell}`}>
+  //                       <span className={styles.MetaInfo}>
+  //                         {formatNumber(header.no_of_invoices, 0)}
+  //                       </span>
+  //                     </Cell>
+  //                   )}
+  //                   {visibleColumns.total_items && (
+  //                     <Cell className={`${styles.Cell} ${styles.NumberCell}`}>
+  //                       <span className={styles.MetaInfo}>
+  //                         {formatNumber(header.total_items, 0)}
+  //                       </span>
+  //                     </Cell>
+  //                   )}
+  //                 </Row>
+  //                 {isExpanded && (
+  //                   <Row key={`${header.be_no}-details`}>
+  //                     <Cell
+  //                       colSpan={
+  //                         Object.values(visibleColumns).filter(Boolean).length
+  //                       }
+  //                       className={styles.DetailsCell}
+  //                     >
+  //                       <div className={styles.DetailsPanel}>
+  //                         <h4 className={styles.DetailsTitle}>Details</h4>
+  //                         <div className={styles.DetailsGrid}>
+  //                           <div className={styles.DetailItem}>
+  //                             <span className={styles.DetailLabel}>Year:</span>
+  //                             <span className={styles.DetailValue}>
+  //                               {header.year}
+  //                             </span>
+  //                           </div>
+  //                           <div className={styles.DetailItem}>
+  //                             <span className={styles.DetailLabel}>
+  //                               IEC Number:
+  //                             </span>
+  //                             <span className={styles.DetailValue}>
+  //                               {header.iec_no}
+  //                             </span>
+  //                           </div>
+  //                           <div className={styles.DetailItem}>
+  //                             <span className={styles.DetailLabel}>
+  //                               GST Number:
+  //                             </span>
+  //                             <span className={styles.DetailValue}>
+  //                               {header.gst_no}
+  //                             </span>
+  //                           </div>
+  //                           <div className={styles.DetailItem}>
+  //                             <span className={styles.DetailLabel}>
+  //                               Port Code:
+  //                             </span>
+  //                             <span className={styles.DetailValue}>
+  //                               {header.port_code}
+  //                             </span>
+  //                           </div>
+  //                           <div className={styles.DetailItem}>
+  //                             <span className={styles.DetailLabel}>
+  //                               BE Date:
+  //                             </span>
+  //                             <span className={styles.DetailValue}>
+  //                               {header.be_date}
+  //                             </span>
+  //                           </div>
+  //                           <div className={styles.DetailItem}>
+  //                             <span className={styles.DetailLabel}>
+  //                               Packages:
+  //                             </span>
+  //                             <span className={styles.DetailValue}>
+  //                               {header.pkg?.toLocaleString()}
+  //                             </span>
+  //                           </div>
+  //                           <div className={styles.DetailItem}>
+  //                             <span className={styles.DetailLabel}>
+  //                               Gross Weight:
+  //                             </span>
+  //                             <span className={styles.DetailValue}>
+  //                               {header.g_wt?.toLocaleString(undefined, {
+  //                                 maximumFractionDigits: 2,
+  //                               })}
+  //                             </span>
+  //                           </div>
+  //                           <div className={styles.DetailItem}>
+  //                             <span className={styles.DetailLabel}>
+  //                               Exchange Rate (Exact):
+  //                             </span>
+  //                             <span className={styles.DetailValue}>
+  //                               {header.ex_rate}
+  //                             </span>
+  //                           </div>
+  //                           <div className={styles.DetailItem}>
+  //                             <span className={styles.DetailLabel}>
+  //                               Number of Invoices:
+  //                             </span>
+  //                             <span className={styles.DetailValue}>
+  //                               {header.no_of_invoices}
+  //                             </span>
+  //                           </div>
+  //                           <div className={styles.DetailItem}>
+  //                             <span className={styles.DetailLabel}>
+  //                               Total Items:
+  //                             </span>
+  //                             <span className={styles.DetailValue}>
+  //                               {header.total_items}
+  //                             </span>
+  //                           </div>
+  //                           {header.submission && (
+  //                             <div className={styles.DetailItem}>
+  //                               <span className={styles.DetailLabel}>
+  //                                 Submission:
+  //                               </span>
+  //                               <span className={styles.DetailValue}>
+  //                                 {header.submission}
+  //                               </span>
+  //                             </div>
+  //                           )}
+  //                           {header.assessment && (
+  //                             <div className={styles.DetailItem}>
+  //                               <span className={styles.DetailLabel}>
+  //                                 Assessment:
+  //                               </span>
+  //                               <span className={styles.DetailValue}>
+  //                                 {header.assessment}
+  //                               </span>
+  //                             </div>
+  //                           )}
+  //                           {header.examination && (
+  //                             <div className={styles.DetailItem}>
+  //                               <span className={styles.DetailLabel}>
+  //                                 Examination:
+  //                               </span>
+  //                               <span className={styles.DetailValue}>
+  //                                 {header.examination}
+  //                               </span>
+  //                             </div>
+  //                           )}
+  //                           {header.ooc && (
+  //                             <div className={styles.DetailItem}>
+  //                               <span className={styles.DetailLabel}>OOC:</span>
+  //                               <span className={styles.DetailValue}>
+  //                                 {header.ooc}
+  //                               </span>
+  //                             </div>
+  //                           )}
+  //                         </div>
+  //                       </div>
+  //                     </Cell>
+  //                   </Row>
+  //                 )}
+  //               </React.Fragment>
+  //             );
+  //           })}
+  //         </TableBody>
+  //       </Table>
+  //     )}
+  //   </div>
+  // );
 
   return (
     <div className="container h-100">
@@ -939,6 +939,7 @@ function DashboardPage({ className }: IDashboardPageProps) {
           <div className={styles.StatsContainer}>
             <Card className={styles.StatCard}>
               <StatCard
+                icon={<i className="las la-home" />}
                 secondaryContent="Total NUMBER OF BOE"
                 primaryContent={<Count value={2450} />}
                 isLoading={loading}
@@ -947,6 +948,7 @@ function DashboardPage({ className }: IDashboardPageProps) {
             </Card>
             <Card className={styles.StatCard}>
               <StatCard
+                icon={<i className="las la-dollar-sign" />}
                 secondaryContent="Total Assessable Value"
                 primaryContent={<Count value={728} />}
                 isLoading={loading}
@@ -955,6 +957,7 @@ function DashboardPage({ className }: IDashboardPageProps) {
             </Card>
             <Card className={styles.StatCard}>
               <StatCard
+                icon={<i className="las la-coins" />}
                 secondaryContent="Total Duty paid"
                 primaryContent={<Count value={193} />}
                 isLoading={loading}
@@ -969,14 +972,23 @@ function DashboardPage({ className }: IDashboardPageProps) {
         <Card title="Duty Trend" className={styles.GraphCard}>
           <BoeHeaderBarChart />
         </Card>
-        <Card title="Duty Split" >
+        <Card
+          title="Duty Split"
+          className={joinClassNames(styles.ChartCard, styles.ChartCard1)}
+        >
           <BoeHeaderPieChart />
         </Card>
-        <Card title="Air/Sea Split" >
-          <BoeAirSeaPieChart />
-        </Card>
-        <Card title="Country Split" >
+        <Card
+          title="Country Split"
+          className={joinClassNames(styles.ChartCard, styles.ChartCard2)}
+        >
           <BoeCountryPieChart />
+        </Card>
+        <Card
+          title="Air/Sea Split"
+          className={joinClassNames(styles.ChartCard, styles.ChartCard3)}
+        >
+          <BoeAirSeaPieChart />
         </Card>
         <Card className={styles.TableCard}>
           <BoeTable />
