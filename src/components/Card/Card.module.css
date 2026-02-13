@@ -25,5 +25,6 @@
 .Content {
   font-size: 1rem;
   color: #909090;
-  overflow: auto;
+  overflow: hidden;
+  flex-grow: 1;
 }
