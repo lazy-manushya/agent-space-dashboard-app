@@ -93,6 +93,7 @@ function InvoicesPage({ className }: IInvoicesPageProps) {
           <div className={styles.StatsContainer}>
             <Card className={styles.StatCard}>
               <StatCard
+                icon={<i className="las la-receipt" />}
                 secondaryContent="Total number of BOE"
                 primaryContent={<Count value={1247} />}
                 color="#667eea"
@@ -100,6 +101,7 @@ function InvoicesPage({ className }: IInvoicesPageProps) {
             </Card>
             <Card className={styles.StatCard}>
               <StatCard
+                icon={<i className="las la-certificate" />}
                 secondaryContent="BOE with Licence"
                 primaryContent={<Count value={342} decimals={0} />}
                 color="#4facfe"
@@ -107,6 +109,7 @@ function InvoicesPage({ className }: IInvoicesPageProps) {
             </Card>
             <Card className={styles.StatCard}>
               <StatCard
+                icon={<i className="las la-shield-alt" />}
                 secondaryContent="BOE with SVB"
                 primaryContent={<Count value={156} />}
                 color="#43e97b"
@@ -114,6 +117,7 @@ function InvoicesPage({ className }: IInvoicesPageProps) {
             </Card>
             <Card className={styles.StatCard}>
               <StatCard
+                icon={<i className="las la-handshake" />}
                 secondaryContent="BOE with Bond"
                 primaryContent={<Count value={89} />}
                 color="#fa709a"
