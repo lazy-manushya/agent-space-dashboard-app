@@ -10,7 +10,7 @@ import Button from "@/components/Button";
 import { ILayoutProps } from "./Layout.types";
 import styles from "./Layout.module.css";
 
-const EXPORT_SUMMARY_ROUTES = ["/", "/invoices", "/duties"];
+const EXPORT_SUMMARY_ROUTES = ["/audit", "/accounts", "/duties"];
 
 function Layout({ children, className }: ILayoutProps) {
   const pathName = usePathname();
