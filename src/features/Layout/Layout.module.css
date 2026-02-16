@@ -27,6 +27,7 @@
   background: #f8fafc;
   padding-bottom: 2rem;
   min-height: calc(100vh - 102px);
+  padding-inline: 1rem;
 }
 
 /* ------------------- */
