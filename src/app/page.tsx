@@ -1,10 +1,10 @@
 import { Suspense } from "react";
-import DashboardPage from "@/pages_lib/DashboardPage";
+import BoeSearchPage from "@/pages_lib/BoeSearchPage";
 
 export default function Page() {
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <DashboardPage />
+      <BoeSearchPage />
     </Suspense>
   );
 }
