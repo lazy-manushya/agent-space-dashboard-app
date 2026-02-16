@@ -1,6 +1,8 @@
 .Container {
   --header-height: 104px;
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .Header {
@@ -16,15 +18,15 @@
   align-items: center;
   justify-content: space-between;
   padding: 0.75rem 1rem;
-  
 }
 
 .Main {
-  min-height: 100vh;
+  flex-grow: 1;
   /* padding-top: var(--header-height); */
   background: var(--gradient-primary);
-  background: #F8FAFC;
-  margin-bottom: 2rem;
+  background: #f8fafc;
+  padding-bottom: 2rem;
+  min-height: calc(100vh - 102px);
 }
 
 /* ------------------- */
