@@ -1,6 +1,6 @@
 {
   "name": "boe-fe",
-  "version": "0.2.43",
+  "version": "0.3.48",
   "private": true,
   "scripts": {
     "start:dev": "next dev",

@@ -1,23 +1,21 @@
 .Stat {
   display: flex;
-  justify-content: center;
   align-items: center;
-  gap: 10%;
-  text-align: center;
+  gap: 2rem;
   height: 100%;
 }
 
 .PrimaryContent {
-  font-size: 3.5rem;
-  font-weight: 600;
+  font-size: 3rem;
+  font-weight: 700;
   color: var(--color, rgba(var(--clr-primary-rgb), 0.75));
   width: 100%;
 }
 
 .SecondaryContent {
   color: #979797;
-  font-size: 1rem;
-  font-weight: 400;
+  font-size: 1.25rem;
+  font-weight: 600;
   overflow: auto;
   width: 100%;
 }

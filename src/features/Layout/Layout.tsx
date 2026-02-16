@@ -31,26 +31,30 @@ function Layout({ children, className }: ILayoutProps) {
             <NavMenu
               className={styles.NavMenu}
               navItems={[
-                {
-                  title: "Home",
-                  href: "/",
-                  icon: <i className="las la-home" />,
-                },
+                // {
+                //   title: "Home",
+                //   href: "/",
+                //   icon: <i className="las la-home" />,
+                // },
                 {
                   title: "BOE",
                   href: "/boe",
                   icon: <i className="las la-book-open" />,
                 },
                 {
-                  title: "Invoices",
-                  href: "/invoices",
-                  icon: <i className="las la-receipt" />,
-                  // disabled: true,
+                  title: "Accounts",
+                  href: "/accounts",
+                  icon: <i className="las la-user" />,
                 },
                 {
                   title: "Duties",
                   href: "/duties",
                   icon: <i className="las la-file-invoice" />,
+                },
+                {
+                  title: "Audit",
+                  href: "/audit",
+                  icon: <i className="las la-receipt" />,
                   // disabled: true,
                 },
               ]}
