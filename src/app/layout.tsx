@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
-import { Plus_Jakarta_Sans } from "next/font/google";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
+import { Inter } from "next/font/google";
 
 import Layout from "@/features/Layout";
 import { RoutingProvider } from "@/services/Routing";
@@ -11,8 +11,10 @@ import "@/styles/css/global.css";
 import "@/styles/css/color.css";
 import "@/styles/css/custom-bootstrap.min.css";
 
-const plusJakartaSansFont = Plus_Jakarta_Sans({
-  variable: "--plus-jakarta-sans",
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-sans", // CSS variable for Tailwind
 });
 
 export const viewport: Viewport = {
@@ -42,8 +44,8 @@ export default function RootLayout({
               href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css"
             />
           </head>
-          <body className={`${plusJakartaSansFont.variable}`}>
-            <Layout>{children}</Layout>
+          <body className={inter.variable}>
+            <Layout className="font-sans">{children}</Layout>
             <span id="app-version">v {APP_VERSION}</span>
           </body>
         </html>

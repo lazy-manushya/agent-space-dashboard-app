@@ -9,6 +9,7 @@ import { IBoeHeader } from "@/types/data";
 import BoeHeaderDisplay from "@/features/BoeHeaderDisplay";
 
 import styles from "./BoeTable.module.css";
+import { joinClassNames } from "@/utils/classNames";
 
 // Number formatting utilities
 const formatNumber = (
@@ -37,7 +38,7 @@ const formatDecimal = (
   return Number(value.toFixed(maxDecimals)).toLocaleString();
 };
 
-const BoeTable = () => {
+const BoeTable = ({ className }: { className?: string }) => {
   const [expandedRow, setExpandedRow] = useState<string | null>(null);
 
   const toggleRowExpansion = (beNo: string) => {
@@ -238,7 +239,7 @@ const BoeTable = () => {
   }
 
   return (
-    <div className={styles.SubContainer}>
+    <div className={joinClassNames(styles.SubContainer, className)}>
       {loading && <TableShimmer rows={10} columns={11} />}
       {error && <Text style={{ color: "red" }}>Error: {error}</Text>}
       {!loading && !error && boeHeaders.length > 0 && (
