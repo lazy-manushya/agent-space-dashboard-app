@@ -6,16 +6,18 @@
 }
 
 .PrimaryContent {
-  font-size: 3rem;
+  font-size: 2rem;
   font-weight: 700;
   color: var(--color, rgba(var(--clr-primary-rgb), 0.75));
+  color: oklch(21% 0.034 264.665);
   width: 100%;
 }
 
 .SecondaryContent {
   color: #979797;
-  font-size: 1.25rem;
-  font-weight: 600;
+  color: oklch(21% 0.034 264.665);
+  font-size: 1rem;
+  font-weight: 400;
   overflow: auto;
   width: 100%;
 }
@@ -23,8 +25,9 @@
 .Icon {
   --size: 4rem;
   position: relative;
-  font-size: 2.5rem;
+  font-size: 2rem;
   color: var(--color, rgba(var(--clr-primary-rgb)));
+  color: #667eea;
   width: var(--size);
   height: var(--size);
   display: inline-flex;
@@ -40,6 +43,7 @@
   height: 100%;
   border-radius: 0.5rem;
   background-color: var(--color, rgba(var(--clr-primary-rgb)));
+  background-color: #667eea;
   animation: pulse 2s infinite;
   opacity: 0.25;
   z-index: 1;
@@ -52,4 +56,51 @@
   gap: 0.75rem;
   justify-content: center;
   align-items: center;
+}
+
+/* Size variants */
+.StatSmall {
+  gap: 1rem;
+}
+
+.StatSmall .Icon {
+  --size: 2.5rem;
+  font-size: 1.25rem;
+}
+
+.StatSmall .PrimaryContent {
+  font-size: 1.5rem;
+}
+
+.StatSmall .SecondaryContent {
+  font-size: 0.875rem;
+}
+
+.StatSmall .ContentContainer {
+  gap: 0.5rem;
+}
+
+.StatMedium {
+  /* Current default styles - no changes needed */
+}
+
+.StatLarge {
+  gap: 2.5rem;
+}
+
+.StatLarge .Icon {
+  --size: 5rem;
+  font-size: 2.5rem;
+}
+
+.StatLarge .PrimaryContent {
+  font-size: 2.5rem;
+}
+
+.StatLarge .SecondaryContent {
+  font-size: 1.125rem;
+}
+
+.StatLarge .ContentContainer {
+  gap: 1rem;
 }

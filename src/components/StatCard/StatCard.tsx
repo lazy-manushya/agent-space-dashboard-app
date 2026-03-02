@@ -1,17 +1,11 @@
 import React from "react";
 
+import { joinClassNames } from "@/utils/classNames";
 import StatCardLoading from "./StatCard.loading";
 
+import { StatCardProps } from "./StatCard.types";
 import styles from "./StatCard.module.css";
-
-export interface StatCardProps {
-  className?: string;
-  primaryContent: React.ReactNode;
-  secondaryContent?: React.ReactNode;
-  isLoading?: boolean;
-  color?: string;
-  icon?: React.ReactNode;
-}
+import { statCardStylesConfig } from "./StatCard.config";
 
 const StatCard: React.FC<StatCardProps> = ({
   className,
@@ -20,6 +14,7 @@ const StatCard: React.FC<StatCardProps> = ({
   isLoading,
   color,
   icon,
+  size,
 }) => {
   if (isLoading) {
     return <StatCardLoading />;
@@ -27,7 +22,10 @@ const StatCard: React.FC<StatCardProps> = ({
 
   return (
     <div
-      className={`${styles.Stat} ${className || ""}`.trim()}
+      className={joinClassNames(
+        statCardStylesConfig({ size }),
+        className
+      )}
       style={{ "--color": color } as React.CSSProperties}
     >
       {!!icon && <div className={styles.Icon}>{icon}</div>}
@@ -36,9 +34,7 @@ const StatCard: React.FC<StatCardProps> = ({
         {secondaryContent && (
           <div className={styles.SecondaryContent}>{secondaryContent}</div>
         )}
-        <div className={styles.PrimaryContent} style={color ? { color } : {}}>
-          {primaryContent}
-        </div>
+        <div className={styles.PrimaryContent}>{primaryContent}</div>
       </div>
     </div>
   );
