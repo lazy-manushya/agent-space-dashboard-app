@@ -1,16 +1,17 @@
 import React, { useMemo } from "react";
 import BarChart from "@/components/BarChart";
+import { CHART_COLORS } from '@/config/colors';
 import { IDutyBarChartProps } from "./DutyBarChart.types";
 import styles from "./DutyBarChart.module.css";
 
 // Duty data by Port
 const DUMMY_DUTY_DATA = [
-  { label: "INABG1", value: 12500000, color: "#667eea" },
-  { label: "INNSA1", value: 8900000, color: "#4facfe" },
-  { label: "INMAA1", value: 7200000, color: "#43e97b" },
-  { label: "INBLR4", value: 6800000, color: "#fa709a" },
-  { label: "INDEL1", value: 5300000, color: "#fee140" },
-  { label: "INCCU1", value: 4980000, color: "#00d4ff" },
+  { label: "INABG1", value: 12500000, color: CHART_COLORS[0] },
+  { label: "INNSA1", value: 8900000, color: CHART_COLORS[1] },
+  { label: "INMAA1", value: 7200000, color: CHART_COLORS[2] },
+  { label: "INBLR4", value: 6800000, color: CHART_COLORS[3] },
+  { label: "INDEL1", value: 5300000, color: CHART_COLORS[4] },
+  { label: "INCCU1", value: 4980000, color: CHART_COLORS[5] },
 ];
 
 const DutyBarChart: React.FC<IDutyBarChartProps> = ({ className }) => {

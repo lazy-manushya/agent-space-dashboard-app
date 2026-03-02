@@ -13,6 +13,7 @@ import Button from "@/components/Button";
 import FieldGroup from "@/components/FieldGroup";
 import Label from "@/components/Label";
 import Select from "@/components/Select";
+import { CHART_COLORS } from '@/config/colors';
 import { IInvoicesPageProps } from "./InvoicesPage.types";
 import styles from "./InvoicesPage.module.css";
 
@@ -96,7 +97,7 @@ function InvoicesPage({ className }: IInvoicesPageProps) {
                 icon={<i className="las la-receipt" />}
                 secondaryContent="Total number of BOE"
                 primaryContent={<Count value={1247} />}
-                color="#667eea"
+                color={CHART_COLORS[0]}
               />
             </Card>
             <Card className={styles.StatCard}>
@@ -104,7 +105,7 @@ function InvoicesPage({ className }: IInvoicesPageProps) {
                 icon={<i className="las la-certificate" />}
                 secondaryContent="BOE with Licence"
                 primaryContent={<Count value={342} decimals={0} />}
-                color="#4facfe"
+                color={CHART_COLORS[1]}
               />
             </Card>
             <Card className={styles.StatCard}>
@@ -112,7 +113,7 @@ function InvoicesPage({ className }: IInvoicesPageProps) {
                 icon={<i className="las la-shield-alt" />}
                 secondaryContent="BOE with SVB"
                 primaryContent={<Count value={156} />}
-                color="#43e97b"
+                color={CHART_COLORS[2]}
               />
             </Card>
             <Card className={styles.StatCard}>
@@ -120,7 +121,7 @@ function InvoicesPage({ className }: IInvoicesPageProps) {
                 icon={<i className="las la-handshake" />}
                 secondaryContent="BOE with Bond"
                 primaryContent={<Count value={89} />}
-                color="#fa709a"
+                color={CHART_COLORS[3]}
               />
             </Card>
           </div>

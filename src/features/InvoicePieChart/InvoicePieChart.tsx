@@ -1,14 +1,15 @@
 import React from "react";
 import PieChart from "@/components/PieChart";
+import { CHART_COLORS } from '@/config/colors';
 import { IInvoicePieChartProps } from "./InvoicePieChart.types";
 import styles from "./InvoicePieChart.module.css";
 
 const DUMMY_CURRENCY_DATA = [
-  { label: "USD", value: 42, color: "#667eea" },
-  { label: "EUR", value: 28, color: "#4facfe" },
-  { label: "GBP", value: 15, color: "#43e97b" },
-  { label: "INR", value: 10, color: "#fa709a" },
-  { label: "JPY", value: 5, color: "#fee140" },
+  { label: "USD", value: 42, color: CHART_COLORS[0] },
+  { label: "EUR", value: 28, color: CHART_COLORS[1] },
+  { label: "GBP", value: 15, color: CHART_COLORS[2] },
+  { label: "INR", value: 10, color: CHART_COLORS[3] },
+  { label: "JPY", value: 5, color: CHART_COLORS[4] },
 ];
 
 const InvoicePieChart: React.FC<IInvoicePieChartProps> = ({ className }) => {

@@ -6,6 +6,7 @@ import StatCard from "@/components/StatCard";
 import BarChart from "@/components/BarChart";
 import PieChart from "@/components/PieChart";
 import Table, { Column } from "@/components/Table";
+import { CHART_COLORS } from '@/config/colors';
 
 // HSN Data Interface
 interface IHsnData {
@@ -60,18 +61,18 @@ interface IBoeRecordData {
 }
 
 const DUMMY_DUTY_TREND_DATA = [
-  { label: "JNPT", value: 1250, color: "#667eea" },
-  { label: "FSPL", value: 980, color: "#4facfe" },
-  { label: "ICCT", value: 750, color: "#43e97b" },
-  { label: "NSICT", value: 620, color: "#fa709a" },
-  { label: "IICCT", value: 450, color: "#fee140" },
+  { label: "JNPT", value: 1250, color: CHART_COLORS[0] },
+  { label: "FSPL", value: 980, color: CHART_COLORS[1] },
+  { label: "ICCT", value: 750, color: CHART_COLORS[2] },
+  { label: "NSICT", value: 620, color: CHART_COLORS[3] },
+  { label: "IICCT", value: 450, color: CHART_COLORS[4] },
 ];
 
 const DUMMY_SPLIT_DATA = [
-  { label: "Basic Customs Duty", value: 4250, color: "#667eea" },
-  { label: "Social Welfare Surcharge", value: 425, color: "#4facfe" },
-  { label: "IGST", value: 8925, color: "#43e97b" },
-  { label: "Penalty/Interest/Fine", value: 150, color: "#fa709a" },
+  { label: "Basic Customs Duty", value: 4250, color: CHART_COLORS[0] },
+  { label: "Social Welfare Surcharge", value: 425, color: CHART_COLORS[1] },
+  { label: "IGST", value: 8925, color: CHART_COLORS[2] },
+  { label: "Penalty/Interest/Fine", value: 150, color: CHART_COLORS[3] },
 ];
 
 const DUMMY_HSN_DATA: IHsnData[] = [
@@ -273,7 +274,7 @@ const HSN_COLUMNS: Column<IHsnData>[] = [
     size: 80,
     minSize: 80,
     cell: ({ getValue }) => (
-      <span style={{ fontWeight: "600", color: "#667eea" }}>{getValue()}</span>
+      <span style={{ fontWeight: "600", color: CHART_COLORS[0] }}>{getValue()}</span>
     ),
   },
   {
@@ -343,7 +344,7 @@ const BOE_RECORDS_COLUMNS: Column<IBoeRecordData>[] = [
     minSize: 160,
     cell: ({ getValue }) => (
       <span
-        style={{ fontFamily: "monospace", fontWeight: "600", color: "#667eea" }}
+        style={{ fontFamily: "monospace", fontWeight: "600", color: CHART_COLORS[0] }}
       >
         {getValue()}
       </span>
@@ -392,11 +393,11 @@ const BOE_RECORDS_COLUMNS: Column<IBoeRecordData>[] = [
     cell: ({ getValue }) => {
       const getPortColor = (port: string) => {
         const colors: Record<string, string> = {
-          JNPT: "#667eea",
-          FSPL: "#4facfe",
-          ICCT: "#43e97b",
-          NSICT: "#fa709a",
-          IICCT: "#fee140",
+          JNPT: CHART_COLORS[0],
+          FSPL: CHART_COLORS[1],
+          ICCT: CHART_COLORS[2],
+          NSICT: CHART_COLORS[3],
+          IICCT: CHART_COLORS[4],
         };
         return colors[port] || "#6b7280";
       };

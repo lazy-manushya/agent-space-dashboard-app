@@ -6,6 +6,7 @@ import { AxisBottom, AxisLeft } from '@visx/axis';
 import { GridRows } from '@visx/grid';
 import { ParentSize } from '@visx/responsive';
 import { BarChartProps, BarChartData } from './BarChart.types';
+import { CHART_COLORS } from '@/config/colors';
 import styles from './BarChart.module.css';
 
 const defaultMargin = { top: 20, right: 30, bottom: 40, left: 50 };
@@ -14,19 +15,6 @@ interface BarChartInnerProps extends Omit<BarChartProps, 'width' | 'height'> {
   width: number;
   height: number;
 }
-
-// Modern color palette with gradients
-const MODERN_COLORS = [
-  '#667eea', // Purple
-  '#764ba2', // Deep Purple
-  '#f093fb', // Pink
-  '#4facfe', // Blue
-  '#00f2fe', // Cyan
-  '#43e97b', // Green
-  '#38f9d7', // Teal
-  '#fa709a', // Rose
-  '#fee140', // Yellow
-];
 
 const BarChartInner: React.FC<BarChartInnerProps> = ({
   data,
@@ -109,7 +97,7 @@ const BarChartInner: React.FC<BarChartInnerProps> = ({
             {/* Gradient definitions */}
             <defs>
               {data.map((d, i) => {
-                const color = d.color || MODERN_COLORS[i % MODERN_COLORS.length];
+              const color = d.color || CHART_COLORS[i % CHART_COLORS.length];
                 return (
                   <linearGradient
                     key={`gradient-${d.label}`}

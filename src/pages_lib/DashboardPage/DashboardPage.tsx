@@ -27,6 +27,7 @@ import BoeHeaderPieChart from "@/features/BoeHeaderPieChart";
 import BoeAirSeaPieChart from "@/features/BoeAirSeaPieChart";
 import BoeCountryPieChart from "@/features/BoeCountryPieChart";
 import Count from "@/components/Count";
+import { CHART_COLORS } from '@/config/colors';
 
 import { IDashboardPageProps } from "./DashboardPage.types";
 import styles from "./DashboardPage.module.css";
@@ -943,7 +944,7 @@ function DashboardPage({ className }: IDashboardPageProps) {
                 secondaryContent="Total NUMBER OF BOE"
                 primaryContent={<Count value={2450} />}
                 isLoading={loading}
-                color="#667eea"
+                color={CHART_COLORS[0]}
               />
             </Card>
             <Card className={styles.StatCard}>
@@ -952,7 +953,7 @@ function DashboardPage({ className }: IDashboardPageProps) {
                 secondaryContent="Total Assessable Value"
                 primaryContent={<Count value={728} />}
                 isLoading={loading}
-                color="#4facfe"
+                color={CHART_COLORS[1]}
               />
             </Card>
             <Card className={styles.StatCard}>
@@ -961,7 +962,7 @@ function DashboardPage({ className }: IDashboardPageProps) {
                 secondaryContent="Total Duty paid"
                 primaryContent={<Count value={193} />}
                 isLoading={loading}
-                color="#43e97b"
+                color={CHART_COLORS[2]}
               />
             </Card>
           </div>

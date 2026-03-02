@@ -1,5 +1,6 @@
 import React, { useMemo } from "react";
 import PieChart from "@/components/PieChart";
+import { CHART_COLORS } from '@/config/colors';
 import { BoeAirSeaPieChartProps } from "./BoeAirSeaPieChart.types";
 import styles from "./BoeAirSeaPieChart.module.css";
 
@@ -19,8 +20,8 @@ const DUMMY_AIR_SEA_DATA = {
 
 // Data for the pie chart visualization
 const PIE_CHART_DATA = [
-  { label: "Air Shipments", value: DUMMY_AIR_SEA_DATA.air.billOfEntries, color: "#667eea" },
-  { label: "Sea Shipments", value: DUMMY_AIR_SEA_DATA.sea.billOfEntries, color: "#4facfe" },
+  { label: "Air Shipments", value: DUMMY_AIR_SEA_DATA.air.billOfEntries, color: CHART_COLORS[0] },
+  { label: "Sea Shipments", value: DUMMY_AIR_SEA_DATA.sea.billOfEntries, color: CHART_COLORS[1] },
 ];
 
 const BoeAirSeaPieChart: React.FC<BoeAirSeaPieChartProps> = ({

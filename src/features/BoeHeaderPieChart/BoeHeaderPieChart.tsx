@@ -1,14 +1,15 @@
 import React, { useMemo } from "react";
 import PieChart from "@/components/PieChart";
+import { CHART_COLORS } from '@/config/colors';
 import { BoeHeaderPieChartProps } from "./BoeHeaderPieChart.types";
 import styles from "./BoeHeaderPieChart.module.css";
 
 // Duty split data representing different duty components
 const DUMMY_STATUS_DATA = [
-  { label: "Basic Customs Duty", value: 4250, color: "#667eea" },
-  { label: "Social Welfare Surcharge", value: 425, color: "#4facfe" },
-  { label: "IGST", value: 8925, color: "#43e97b" },
-  { label: "Penalty/Interest/Fine", value: 150, color: "#fa709a" },
+  { label: "Basic Customs Duty", value: 4250, color: CHART_COLORS[0] },
+  { label: "Social Welfare Surcharge", value: 425, color: CHART_COLORS[1] },
+  { label: "IGST", value: 8925, color: CHART_COLORS[2] },
+  { label: "Penalty/Interest/Fine", value: 150, color: CHART_COLORS[3] },
 ];
 
 const BoeHeaderPieChart: React.FC<BoeHeaderPieChartProps> = ({

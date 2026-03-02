@@ -1,15 +1,16 @@
 import React from "react";
 import PieChart from "@/components/PieChart";
+import { CHART_COLORS } from '@/config/colors';
 import { IDutyPieChartProps } from "./DutyPieChart.types";
 import styles from "./DutyPieChart.module.css";
 
 // Duty data by CHA (Customs House Agent)
 const DUMMY_DUTY_TYPE_DATA = [
-  { label: "ABC Customs Services", value: 28, color: "#667eea" },
-  { label: "Global Trade Logistics", value: 22, color: "#4facfe" },
-  { label: "Express Clearance Co.", value: 18, color: "#43e97b" },
-  { label: "Swift Customs Brokers", value: 15, color: "#fa709a" },
-  { label: "Others", value: 17, color: "#fee140" },
+  { label: "ABC Customs Services", value: 28, color: CHART_COLORS[0] },
+  { label: "Global Trade Logistics", value: 22, color: CHART_COLORS[1] },
+  { label: "Express Clearance Co.", value: 18, color: CHART_COLORS[2] },
+  { label: "Swift Customs Brokers", value: 15, color: CHART_COLORS[3] },
+  { label: "Others", value: 17, color: CHART_COLORS[4] },
 ];
 
 const DutyPieChart: React.FC<IDutyPieChartProps> = ({ className }) => {

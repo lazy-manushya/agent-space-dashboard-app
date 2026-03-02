@@ -1,15 +1,16 @@
 import React, { useMemo } from "react";
 import PieChart from "@/components/PieChart";
+import { CHART_COLORS } from '@/config/colors';
 import { BoeCountryPieChartProps } from "./BoeCountryPieChart.types";
 import styles from "./BoeCountryPieChart.module.css";
 
 // Country distribution data
 const DUMMY_COUNTRY_DATA = [
-  { label: "India", value: 1102, color: "#667eea" },
-  { label: "United States", value: 785, color: "#4facfe" },
-  { label: "China", value: 343, color: "#43e97b" },
-  { label: "Germany", value: 147, color: "#fa709a" },
-  { label: "Japan", value: 73, color: "#fee140" },
+  { label: "India", value: 1102, color: CHART_COLORS[0] },
+  { label: "United States", value: 785, color: CHART_COLORS[1] },
+  { label: "China", value: 343, color: CHART_COLORS[2] },
+  { label: "Germany", value: 147, color: CHART_COLORS[3] },
+  { label: "Japan", value: 73, color: CHART_COLORS[4] },
 ];
 
 const BoeCountryPieChart: React.FC<BoeCountryPieChartProps> = ({

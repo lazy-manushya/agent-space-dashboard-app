@@ -5,22 +5,10 @@ import { scaleOrdinal } from "@visx/scale";
 import { ParentSize } from "@visx/responsive";
 
 import { PieChartProps, PieChartData } from "./PieChart.types";
+import { CHART_COLORS } from '@/config/colors';
 import styles from "./PieChart.module.css";
 
 const defaultMargin = { top: 20, right: 30, bottom: 40, left: 30 };
-
-// Modern vibrant color palette
-const MODERN_PIE_COLORS = [
-  '#667eea', // Vibrant Purple
-  '#4facfe', // Bright Blue
-  '#43e97b', // Fresh Green
-  '#fa709a', // Coral Pink
-  '#fee140', // Sunny Yellow
-  '#30cfd0', // Turquoise
-  '#a8edea', // Mint
-  '#ff6b6b', // Warm Red
-  '#c44569', // Berry
-];
 
 interface PieChartInnerProps extends Omit<PieChartProps, "width" | "height"> {
   width: number;
@@ -64,10 +52,10 @@ const PieChartInner: React.FC<PieChartInnerProps> = ({
   const centerY = innerHeight / 2;
   const centerX = innerWidth / 2;
 
-  // Color scale with modern palette
+  // Color scale with centralized palette
   const colorScale = scaleOrdinal<string, string>({
     domain: data.map((d) => d.label),
-    range: data.map((d, i) => d.color || MODERN_PIE_COLORS[i % MODERN_PIE_COLORS.length]),
+    range: data.map((d, i) => d.color || CHART_COLORS[i % CHART_COLORS.length]),
   });
 
   // Accessor functions
@@ -110,7 +98,7 @@ const PieChartInner: React.FC<PieChartInnerProps> = ({
           {/* Gradient definitions for slices */}
           <defs>
             {data.map((d, i) => {
-              const color = d.color || MODERN_PIE_COLORS[i % MODERN_PIE_COLORS.length];
+              const color = d.color || CHART_COLORS[i % CHART_COLORS.length];
               return (
                 <radialGradient
                   key={`pie-gradient-${d.label}`}
