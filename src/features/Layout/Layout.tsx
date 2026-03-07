@@ -56,6 +56,11 @@ function Layout({ children, className }: ILayoutProps) {
                   href: "/reports",
                   icon: <i className="las la-chart-bar" />,
                 },
+                {
+                  title: "AI Chat",
+                  href: "/ai-chat",
+                  icon: <i className="las la-robot" />,
+                },
               ]}
             />
             {false && <AlertsButton />}
