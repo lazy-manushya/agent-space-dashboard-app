@@ -1,0 +1,124 @@
+.Container {
+  padding: 1.25rem;
+  flex: 1;
+}
+
+.Header {
+  margin-bottom: 1rem;
+}
+
+.Title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-primary, #1a1a1a);
+  margin: 0;
+}
+
+.ChatList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.ChatItem {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.5rem;
+  padding: 0.875rem;
+  background: var(--bg-secondary, #f1f3f4);
+  border: 1px solid var(--border-light, #e8eaed);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+  width: 100%;
+}
+
+.ChatItem:hover {
+  background: var(--bg-tertiary, #e8f0fe);
+  border-color: var(--primary-light, #4285f4);
+  transform: translateY(-1px);
+}
+
+.ChatItem.Active {
+  background: var(--primary-light, #e8f0fe);
+  border-color: var(--primary, #1976d2);
+}
+
+.ChatHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.ChatTitle {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-primary, #1a1a1a);
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.Timestamp {
+  font-size: 0.75rem;
+  color: var(--text-tertiary, #999);
+  flex-shrink: 0;
+}
+
+.LastMessage {
+  font-size: 0.8125rem;
+  color: var(--text-secondary, #666);
+  line-height: 1.4;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Scrollbar styling */
+.ChatList::-webkit-scrollbar {
+  width: 4px;
+}
+
+.ChatList::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.ChatList::-webkit-scrollbar-thumb {
+  background: var(--border-light, #e8eaed);
+  border-radius: 2px;
+}
+
+.ChatList::-webkit-scrollbar-thumb:hover {
+  background: var(--border-medium, #dadce0);
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .Container {
+    padding: 1rem;
+  }
+  
+  .ChatItem {
+    padding: 0.75rem;
+  }
+  
+  .ChatTitle {
+    font-size: 0.8125rem;
+  }
+  
+  .LastMessage {
+    font-size: 0.75rem;
+  }
+  
+  .Timestamp {
+    font-size: 0.6875rem;
+  }
+}

@@ -1,0 +1,75 @@
+.Container {
+  padding: 1.25rem;
+}
+
+.Header {
+  margin-bottom: 1rem;
+}
+
+.Title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-primary, #1a1a1a);
+  margin: 0;
+}
+
+.QueryList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.QueryCard {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem;
+  background: var(--bg-secondary, #f1f3f4);
+  border: 1px solid var(--border-light, #e8eaed);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+  width: 100%;
+}
+
+.QueryCard:hover {
+  background: var(--bg-tertiary, #e8f0fe);
+  border-color: var(--primary-light, #4285f4);
+  transform: translateY(-1px);
+}
+
+.QueryCard:active {
+  transform: translateY(0);
+}
+
+.Icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.QueryTitle {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-primary, #1a1a1a);
+  line-height: 1.4;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .Container {
+    padding: 1rem;
+  }
+  
+  .QueryCard {
+    padding: 0.75rem;
+  }
+  
+  .Icon {
+    font-size: 1.25rem;
+  }
+  
+  .QueryTitle {
+    font-size: 0.8125rem;
+  }
+}
